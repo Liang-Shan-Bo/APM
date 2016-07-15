@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+	<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+		<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+			<layout class="org.apache.log4j.PatternLayout">
+				<param name="ConversionPattern" value="%d{yyyy-MM-dd HH\:mm\:ss} [%p] %m %l%n"/>
+			</layout>
+			<filter class="org.apache.log4j.varia.LevelRangeFilter">
+				<param name="LevelMin" value="STDOUT" />
+				<param name="LevelMax" value="STDOUT" />
+			</filter>
+		</appender>
+
+		<!--  dubug级别日志输出配置         输出模式为每天输出一个 -->
+		<appender name="DEBUG" class="org.apache.log4j.DailyRollingFileAppender">
+			<!-- 日志输出位置及文件名 -->
+			<param name="File" value="F:/OutputLogs/cata-bug.log"/>   <!-- 本地文件路径 -->
+			<!--<param name="File" value="/usr/local/loggers/cata-bug.log"/>-->  <!-- 生产文件路径 -->
+			<!-- <param name="File" value="/usr/local/webs/loggers/cata-bug.log"/> -->  <!-- 测试文件路径 -->
+			<param name="Append" value="true"/>
+			<!-- 日志编码 -->
+			<param name="Encoding" value="UTF-8"/>
+			<!-- 日志后缀名 -->
+			<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+			<!-- 日志布局模式 PatternLayout可以灵活的指定布局格式  -->
+			<layout class="org.apache.log4j.PatternLayout">
+				<param name="ConversionPattern" value="%d{yyyy-MM-dd HH\:mm\:ss} [PRINT] %m%n"/>
+			</layout>
+			<!-- 日志级别过滤 -->
+			<filter class="org.apache.log4j.varia.LevelRangeFilter">
+				<param name="LevelMin" value="DEBUG" />
+				<param name="LevelMax" value="DEBUG" />
+			</filter>
+		</appender>
+
+		<!--  info级别日志输出配置         输出模式为每天输出一个 -->
+		<appender name="INFO" class="org.apache.log4j.DailyRollingFileAppender">
+			<!-- 日志输出位置及文件名 -->
+			<param name="File" value="F:/OutputLogs/cata-info.log"/>  <!-- 本地文件路径 -->
+			<!-- <param name="File" value="/usr/local/loggers/cata-info.log"/> -->  <!-- 生产文件路径 -->
+			<!-- <param name="File" value="/usr/local/webs/loggers/cata-info.log"/> -->  <!-- 测试文件路径 -->
+			<param name="Append" value="true"/>
+			<!-- 日志编码 -->
+			<param name="Encoding" value="UTF-8"/>
+			<!-- 日志后缀名 -->
+			<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+			<!-- 日志布局模式 PatternLayout可以灵活的指定布局格式  -->
+			<layout class="org.apache.log4j.PatternLayout">
+				<param name="ConversionPattern" value="%d{yyyy-MM-dd HH\:mm\:ss} [PRINT] %m%n"/>
+			</layout>
+			<!-- 日志级别过滤 -->
+			<filter class="org.apache.log4j.varia.LevelRangeFilter">
+				<param name="LevelMin" value="INFO" />
+				<param name="LevelMax" value="INFO" />
+			</filter>
+		</appender>
+
+		<!--  warn级别日志输出配置         输出模式为每天输出一个 -->
+		<appender name="WARN" class="org.apache.log4j.DailyRollingFileAppender">
+			<!-- 日志输出位置及文件名 -->
+			<param name="File" value="F:/OutputLogs/cata-war.log"/>  <!-- 本地文件路径 -->
+			<!-- <param name="File" value="/usr/local/loggers/cata-war.log"/> -->  <!-- 生产文件路径 -->
+			<!-- <param name="File" value="/usr/local/webs/loggers/cata-war.log"/> -->  <!-- 测试文件路径 -->
+			<param name="Append" value="true"/>
+			<!-- 日志编码 -->
+			<param name="Encoding" value="UTF-8"/>
+			<!-- 日志后缀名 -->
+			<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+			<!-- 日志布局模式 PatternLayout可以灵活的指定布局格式  -->
+			<layout class="org.apache.log4j.PatternLayout">
+				<param name="ConversionPattern" value="%d{yyyy-MM-dd HH\:mm\:ss} [PRINT] %m%n"/>
+			</layout>
+			<!-- 日志级别过滤 -->
+			<filter class="org.apache.log4j.varia.LevelRangeFilter">
+				<param name="LevelMin" value="WARN" />
+				<param name="LevelMax" value="WARN" />
+			</filter>
+		</appender>
+
+		<!--  error级别日志输出配置         输出模式为每天输出一个 -->
+		<appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+			<!-- 日志输出位置及文件名 -->
+			<param name="File" value="F:/OutputLogs/cata-err.log"/>  <!-- 本地文件路径 -->
+			<!-- <param name="File" value="/usr/local/loggers/cata-err.log"/> -->  <!-- 生产文件路径 -->
+			<!-- <param name="File" value="/usr/local/webs/loggers/cata-err.log"/> -->  <!-- 测试文件路径 -->
+			<param name="Append" value="true"/>
+			<!-- 日志编码 -->
+			<param name="Encoding" value="UTF-8"/>
+			<!-- 日志后缀名 -->
+			<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+			<!-- 日志布局模式 PatternLayout可以灵活的指定布局格式  -->
+			<layout class="org.apache.log4j.PatternLayout">
+				<param name="ConversionPattern" value="%d{yyyy-MM-dd HH\:mm\:ss} [PRINT] %m%n"/>
+			</layout>
+			<!-- 日志级别过滤 -->
+			<filter class="org.apache.log4j.varia.LevelRangeFilter">
+				<param name="LevelMin" value="ERROR" />
+				<param name="LevelMax" value="ERROR" />
+			</filter>
+		</appender>
+		
+		<root>
+			<priority value="debug"/>
+			<!-- <appender-ref ref="STDOUT"/> 
+			<appender-ref ref="DEBUG"/>-->
+			<appender-ref ref="INFO"/>
+			<appender-ref ref="WARN"/>
+			<appender-ref ref="ERROR"/>
+		</root>
+		
+</log4j:configuration>
