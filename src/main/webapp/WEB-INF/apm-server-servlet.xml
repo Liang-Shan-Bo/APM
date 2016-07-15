@@ -15,7 +15,8 @@
 	<mvc:annotation-driven />
 	<mvc:default-servlet-handler />  
 	<!-- Controller Annocation Scan Directory -->
-	<context:component-scan base-package="main.cata.controller" />
+	<context:component-scan base-package="apm.controller" />
+	<context:component-scan base-package="apm.service" />
 
 	<mvc:resources mapping="style/**" location="/,/style/"/> 
 	<mvc:resources mapping="js/**" location="/,/js/"/> 

@@ -266,7 +266,7 @@
        
       //判断当前浏览器是否支持WebSocket
       if('WebSocket' in window){
-          websocket = new WebSocket("ws://192.168.19.202:8877/apm/websocket");
+          websocket = new WebSocket("ws://fantaixi-apm.ap-northeast-1.elasticbeanstalk.com/websocket");
       }
       else{
           alert('Not support websocket')
