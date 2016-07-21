@@ -23,6 +23,10 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<!-- 系统信息队列监听 -->
+	<listener>  
+	    <listener-class>apm.listener.SystemListener</listener-class>  
+	</listener>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/applicationContext.xml</param-value>

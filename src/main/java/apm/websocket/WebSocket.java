@@ -1,9 +1,6 @@
 package apm.websocket;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -16,21 +13,14 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import org.hyperic.sigar.CpuPerc;
-import org.hyperic.sigar.Sigar;
-import org.hyperic.sigar.SigarException;
-
-import apm.entity.SystemInfo;
+import apm.listener.SystemListener;
 import apm.util.PropertiesUtil;
 
 @ServerEndpoint(value = "/websocket", encoders = {ServerEncoder.class})
 public class WebSocket {
-	// 消息队列存储数量
-	private static int count = Integer.parseInt(PropertiesUtil.getValue("ws", "websocket.count"));
+
 	// 推送消息时间间隔(ms)
-	private static int interval = Integer.parseInt(PropertiesUtil.getValue("ws", "websocket.interval"));
-	// 消息队列存储对象
-	private static List<SystemInfo> sysInfoList = new LinkedList<SystemInfo>();
+	private  static int interval = Integer.parseInt(PropertiesUtil.getValue("ws", "websocket.interval"));
 	// concurrent包的线程安全Set，用来存放每个客户端对应的WebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
 	private static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<WebSocket>();
 	// 与某个客户端的连接会话，需要通过它来给客户端发送数据
@@ -49,11 +39,8 @@ public class WebSocket {
 		this.session = session;
 		webSocketSet.add(this);
 		// 启动定时任务
-		if (timer == null) {
-			System.out.println("timer is null!");
-			timer = new Timer(true);
-			timer.schedule(task, 0, interval);
-		}
+		timer = new Timer(true);
+		timer.schedule(task, 0, interval);
 	}
 
 	/**
@@ -115,7 +102,7 @@ public class WebSocket {
 		// JSONObject jsonObject = JSONObject.fromObject(map);
 
 		if (session.isOpen()) {
-			session.getBasicRemote().sendObject(sysInfoList);
+			session.getBasicRemote().sendObject(SystemListener.sysInfoList);
 		}
 
 		// this.session.getBasicRemote().sendText(jsonObject.toString());
@@ -127,8 +114,6 @@ public class WebSocket {
 	 */
 	TimerTask task = new TimerTask() {
 		public void run() {
-			
-			refreshSysInfoList();
 			try {
 				sendMessage(session);
 			} catch (IOException e) {
@@ -138,27 +123,4 @@ public class WebSocket {
 			}
 		}
 	};
-
-	/**
-	 * 更新系统信息队列
-	 * 
-	 */
-	private static void refreshSysInfoList() {
-		Sigar sigar = new Sigar();
-		CpuPerc cpuList[] = null;
-		SystemInfo systemInfo = new SystemInfo();
-		try {
-			cpuList = sigar.getCpuPercList();
-		} catch (SigarException e) {
-			e.printStackTrace();
-		}
-		systemInfo.setUser(CpuPerc.format(cpuList[0].getUser()));
-		systemInfo.setDate(new Date());
-		System.out.println(systemInfo.getDate());
-		if (sysInfoList.size() >= count) {
-			sysInfoList.remove(0);
-		}
-		sysInfoList.add(systemInfo);
-		sigar.close();
-	}
 }
