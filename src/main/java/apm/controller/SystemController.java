@@ -1,5 +1,6 @@
 package apm.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 @Controller
 public class SystemController {
 
@@ -23,10 +25,11 @@ public class SystemController {
 	 * @param info
 	 * @param mod
 	 * @return
+	 * @throws IOException 
 	 */
 	
 	@RequestMapping(value = "/ec", method = RequestMethod.GET)
-	public String ec(Model model) {
+	public String ec(Model model) throws IOException {
 		return "ec";
 	}
 	@RequestMapping(value = "/show", method = RequestMethod.GET)

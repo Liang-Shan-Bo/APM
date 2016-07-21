@@ -1,7 +1,9 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*,apm.util.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+	String url = PropertiesUtil.getValue("ws", "websocket.url"); 
+	String interval = PropertiesUtil.getValue("ws", "websocket.interval"); 
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -204,10 +206,6 @@
 				</div>
 				<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 				<div id="main" style="width: 500px;height:300px;padding: 8px 20px 24px;float:left;margin-left:20px;"></div>
-	    			Welcome<br/>
-			    <input id="text" type="text" /><button onclick="send()">Send</button>    <button onclick="closeWebSocket()">Close</button>
-			    <div id="message">
-			    </div>
 			</div>
 
 			<div class="ace-settings-container" id="ace-settings-container">
@@ -261,136 +259,119 @@
 			class="icon-double-angle-up icon-only bigger-110"></i>
 		</a>
 	</div>
-	  <script type="text/javascript">
-      var websocket = null;
-       
-      //判断当前浏览器是否支持WebSocket
-      if('WebSocket' in window){
-          websocket = new WebSocket("ws://fantaixi-apm.ap-northeast-1.elasticbeanstalk.com/websocket");
-      }
-      else{
-          alert('Not support websocket')
-      }
-       
-      //连接发生错误的回调方法
-      websocket.onerror = function(){
-          setMessageInnerHTML("error");
-      };
-       
-      //连接成功建立的回调方法
-      websocket.onopen = function(event){
-          setMessageInnerHTML("open");
-      }
-       
-      //接收到消息的回调方法
-      websocket.onmessage = function(event){
-          setMessageInnerHTML(event.data);
-      }
-       
-      //连接关闭的回调方法
-      websocket.onclose = function(){
-          setMessageInnerHTML("close");
-      }
-       
-      //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-      window.onbeforeunload = function(){
-          websocket.close();
-      }
-       
-      //将消息显示在网页上
-      function setMessageInnerHTML(innerHTML){
-          document.getElementById('message').innerHTML += innerHTML + '<br/>';
-      }
-       
-      //关闭连接
-      function closeWebSocket(){
-          websocket.close();
-      }
-       
-      //发送消息
-      function send(){
-          var message = document.getElementById('text').value;
-          websocket.send(message);
-      }
-  </script>
 	<script type="text/javascript">
-	     // 基于准备好的dom，初始化echarts实例
-	     var myChart = echarts.init(document.getElementById('main'));
-	
-	     function randomData() {
-	         now = new Date(+now + oneDay);
-	         value = value + Math.random() * 21 - 10;
-	         return {
-	             name: now.toString(),
-	             value: [
-	                 [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('-'),
-	                 Math.round(value)
-	             ]
-	         }
-	     }
-	
-	     var data = [];
-	     var now = +new Date(1997, 9, 3);
-	     var oneDay = 24 * 3600 * 1000;
-	     var value = Math.random() * 1000;
-	     for (var i = 0; i < 1000; i++) {
-	         data.push(randomData());
-	     }
-	
-	     option = {
-	         title: {
-	             text: 'CPU'
-	         },
-	         tooltip: {
-	             trigger: 'axis',
-	             formatter: function (params) {
-	                 params = params[0];
-	                 var date = new Date(params.name);
-	                 return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
-	             },
-	             axisPointer: {
-	                 animation: false
-	             }
-	         },
-	         xAxis: {
-	             type: 'time',
-	             splitLine: {
-	                 show: false
-	             }
-	         },
-	         yAxis: {
-	             type: 'value',
-	             boundaryGap: [0, '100%'],
-	             splitLine: {
-	                 show: false
-	             }
-	         },
-	         series: [{
-	             name: '模拟数据',
-	             type: 'line',
-	             showSymbol: false,
-	             hoverAnimation: false,
-	             data: data
-	         }]
-	     };
-	
-	     timeTicket = setInterval(function () {
-	
-	         for (var i = 0; i < 5; i++) {
-	             data.shift();
-	             data.push(randomData());
-	         }
-	
-	         myChart.setOption({
-	             series: [{
-	                 data: data
-	             }]
-	         });
-	     }, 1000);
-	
-	     // 使用刚指定的配置项和数据显示图表。
-	     myChart.setOption(option);
-	 </script>
+		var websocket = null;
+		var url = "<%=url%>";
+		var jsonData = 0;
+		//判断当前浏览器是否支持WebSocket
+		if ('WebSocket' in window) {
+			websocket = new WebSocket(url);
+		} else {
+			alert('Not support websocket');
+		}
+
+		//连接发生错误的回调方法
+		websocket.onerror = function() {
+		}
+
+		//连接成功建立的回调方法
+		websocket.onopen = function(event) {
+		}
+
+		//接收到消息的回调方法
+		websocket.onmessage = function(event) {
+			var dataObject = null;
+			var json = JSON.parse(event.data);
+			data = [];
+			for (var i = 0; i < json.length; i++) {
+				var now = new Date(json[i].date.time);
+				dataObject = {
+					name : now.getHours() + ":" + now.getMinutes() + ":"
+							+ now.getSeconds(),
+					value : [ now, json[i].user.replace("%","") ]
+				}
+				data.push(dataObject);
+			}
+		}
+
+		//连接关闭的回调方法
+		websocket.onclose = function() {
+			clearInterval(sysInterval);
+		}
+
+		//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+		window.onbeforeunload = function() {
+			websocket.close();
+		}
+
+		//关闭连接
+		function closeWebSocket() {
+			websocket.close();
+		}
+
+		//发送消息
+		function send() {
+			websocket.send("");
+		}
+	</script>
+	<script type="text/javascript">
+		// 基于准备好的dom，初始化echarts实例
+		var cpuChart = echarts.init(document.getElementById('main'));
+		var data = [];
+		option = {
+			title : {
+				text : 'CPU使用率'
+			},
+			tooltip : {
+				trigger : 'axis',
+				formatter : function(params) {
+					params = params[0];
+					return params.name + ' : ' + params.value[1] + '%';
+				},
+				axisPointer : {
+					animation : false
+				}
+			},
+			xAxis : {
+				type : 'time',
+				name: '时间',
+				splitLine : {
+					show : false
+				}
+			},
+			yAxis : {
+				type : 'value',
+				name: 'CPU',
+				min : 0,
+				max : 100,
+				splitLine : {
+					show : false
+				},
+				axisLabel : {
+	                formatter: '{value}%'
+	            },
+			},
+			series : [ {
+				name : 'cpu',
+				type : 'line',
+				showSymbol : false,
+				hoverAnimation : false,
+				smooth:true,
+				data : data
+			} ]
+		};
+
+		var sysInterval = setInterval(function() {
+			cpuChart.setOption({
+				series : [ {
+					data : data
+				} ]
+			});
+		}, <%=interval%>);
+
+		// 使用刚指定的配置项和数据显示图表。
+		cpuChart.setOption(option);
+	</script>
 </body>
 </html>
 
