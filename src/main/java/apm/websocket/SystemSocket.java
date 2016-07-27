@@ -16,13 +16,13 @@ import javax.websocket.server.ServerEndpoint;
 import apm.listener.SystemListener;
 import apm.util.PropertiesUtil;
 
-@ServerEndpoint(value = "/websocket", encoders = {ServerEncoder.class})
-public class WebSocket {
+@ServerEndpoint(value = "/systemSocket", encoders = {SystemEncoder.class})
+public class SystemSocket {
 
 	// 推送消息时间间隔(ms)
 	private  static int interval = Integer.parseInt(PropertiesUtil.getValue("ws", "websocket.interval"));
 	// concurrent包的线程安全Set，用来存放每个客户端对应的WebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
-	private static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<WebSocket>();
+	private static CopyOnWriteArraySet<SystemSocket> webSocketSet = new CopyOnWriteArraySet<SystemSocket>();
 	// 与某个客户端的连接会话，需要通过它来给客户端发送数据
 	private Session session;
 	// 定时任务
@@ -86,27 +86,9 @@ public class WebSocket {
 	 * @throws EncodeException
 	 */
 	public void sendMessage(Session session) throws IOException, EncodeException {
-		// Map<String, Object> map = new HashMap<String, Object>();
-
-		// map.put("user", CpuPerc.format(cpuList[0].getUser()));
-		// map.put("sys", CpuPerc.format(cpuList[0].getSys()));
-		// map.put("wait", CpuPerc.format(cpuList[0].getWait()));
-		// map.put("id", CpuPerc.format(cpuList[0].getIdle()));
-		// map.put("com", CpuPerc.format(cpuList[0].getCombined()));
-
-		// map.put("user", CpuPerc.format(cpuList[1].getUser()));
-		// map.put("sys", CpuPerc.format(cpuList[1].getSys()));
-		// map.put("wait", CpuPerc.format(cpuList[1].getWait()));
-		// map.put("id", CpuPerc.format(cpuList[1].getIdle()));
-		// map.put("com", CpuPerc.format(cpuList[1].getCombined()));
-		// JSONObject jsonObject = JSONObject.fromObject(map);
-
 		if (session.isOpen()) {
 			session.getBasicRemote().sendObject(SystemListener.sysInfoList);
 		}
-
-		// this.session.getBasicRemote().sendText(jsonObject.toString());
-		// this.session.getAsyncRemote().sendText(message);
 	}
 
 	/**

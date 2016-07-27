@@ -85,13 +85,16 @@ public class SystemController {
 		return map;
 	}
 
-	@RequestMapping(value = "/test1", method = RequestMethod.POST)
+	@RequestMapping(value = "/test1", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> test1() throws SigarException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Sigar sigar = new Sigar();
 		String ifNames[] = sigar.getNetInterfaceList();
-		String name = ifNames[6];
+		for (String string : ifNames) {
+			System.out.println(sigar.getNetInterfaceConfig(string).getAddress());
+		}
+		String name = ifNames[9];
 		NetInterfaceConfig ifconfig = sigar.getNetInterfaceConfig(name);
 		NetInterfaceStat ifstat = sigar.getNetInterfaceStat(name);
 		map.put("name", name);
@@ -107,7 +110,7 @@ public class SystemController {
 		return map;
 	}
 
-	@RequestMapping(value = "/test2", method = RequestMethod.POST)
+	@RequestMapping(value = "/test2", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> test2() throws SigarException {
 		Map<String, Object> map = new HashMap<String, Object>();

@@ -205,7 +205,10 @@
 					</div>
 				</div>
 				<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-				<div id="main" style="width: 500px;height:300px;padding: 8px 20px 24px;float:left;margin-left:20px;"></div>
+				<div id="cpu" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
+				<div id="mem" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
+<!-- 				<div id="b" style="width: 500px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div> -->
+<!-- 				<div id="c" style="width: 500px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div> -->
 			</div>
 
 			<div class="ace-settings-container" id="ace-settings-container">
@@ -262,7 +265,7 @@
 	<script type="text/javascript">
 		var websocket = null;
 		var url = "<%=url%>";
-		var jsonData = 0;
+		var cpuCount = 0;
 		//判断当前浏览器是否支持WebSocket
 		if ('WebSocket' in window) {
 			websocket = new WebSocket(url);
@@ -282,16 +285,47 @@
 		websocket.onmessage = function(event) {
 			var dataObject = null;
 			var json = JSON.parse(event.data);
-			data = [];
-			for (var i = 0; i < json.length; i++) {
-				var now = new Date(json[i].date.time);
-				dataObject = {
-					name : now.getHours() + ":" + now.getMinutes() + ":"
-							+ now.getSeconds(),
-					value : [ now, json[i].user.replace("%","") ]
+			// 初始化cpu图表
+			if (cpuCount == 0) {
+				cpuCount = json[0].users.length;
+				var legend = [];
+				for (var i = 1; i <= cpuCount; i++) {
+					legend.push("CPU" + i);
 				}
-				data.push(dataObject);
+				cpuChart.setOption({
+					legend : {
+						data : legend
+					}
+				});
+				memChart.setOption({
+					yAxis : {max : json[i].totalMem}
+				});
 			}
+			//清空原有数据
+			for (var j = 0; j < cpuCount; j++) {
+				cpuData[j] = [];
+			}
+			memData = [];
+			// 写入新数据
+			for (var i = 0; i < json.length; i++) {
+				var now = new Date(json[i].time);
+				var time = now.getHours() + ":" + now.getMinutes() + ":"
+						+ now.getSeconds();
+				cpuList = [];
+				//写入新cpu列表数据
+				for (var j = 0; j < cpuCount; j++) {
+					cpuData[j].push({
+						name : time,
+						value : [ now, json[i].users[j].replace("%", "") ]
+					});
+				}
+				//写入新内存数据
+				memData.push({
+					name : time,
+					value : [ now, json[i].useMem ]
+				});
+			}
+			
 		}
 
 		//连接关闭的回调方法
@@ -316,17 +350,24 @@
 	</script>
 	<script type="text/javascript">
 		// 基于准备好的dom，初始化echarts实例
-		var cpuChart = echarts.init(document.getElementById('main'));
-		var data = [];
-		option = {
+		var cpuChart = echarts.init(document.getElementById('cpu'));
+		var cpuData = [];
+		cpuOption = {
 			title : {
 				text : 'CPU使用率'
+			},
+			legend : {
+				data : []
 			},
 			tooltip : {
 				trigger : 'axis',
 				formatter : function(params) {
-					params = params[0];
-					return params.name + ' : ' + params.value[1] + '%';
+					var relVal = params[0].name + "<br/>";
+					for (var i = 0; i < cpuCount; i++) {
+						relVal += params[i].seriesName + ":" + params[i].value[1]
+						+ "%<br/>";
+					}
+					return relVal;
 				},
 				axisPointer : {
 					animation : false
@@ -334,44 +375,118 @@
 			},
 			xAxis : {
 				type : 'time',
-				name: '时间',
+				name : '时间',
 				splitLine : {
 					show : false
 				}
 			},
 			yAxis : {
 				type : 'value',
-				name: 'CPU',
+				name : 'CPU',
 				min : 0,
 				max : 100,
 				splitLine : {
 					show : false
 				},
 				axisLabel : {
-	                formatter: '{value}%'
-	            },
+					formatter : '{value}%'
+				},
 			},
-			series : [ {
-				name : 'cpu',
+			series : []
+		};
+		//定时刷新图表
+		var sysInterval = setInterval(function() {
+			var cpuSeries = [];
+			for (var i = 0; i < cpuCount; i++) {
+				cpuSeries.push({
+					name : 'CPU'+ (i + 1),
+					type : 'line',
+					showSymbol : false,
+					hoverAnimation : false,
+					smooth : true,
+					data : cpuData[i]
+				});
+			}
+			cpuChart.setOption({
+				series : cpuSeries
+			});
+			memChart.setOption({
+				series : {data : memData}
+			});
+		},<%=interval%>);
+
+		// 使用刚指定的配置项和数据显示图表。
+		cpuChart.setOption(cpuOption);
+	</script>
+	<script type="text/javascript">
+		// 基于准备好的dom，初始化echarts实例
+		var memChart = echarts.init(document.getElementById('mem'));
+		var memData = [];
+		memOption = {
+			title : {
+				text : '内存使用率'
+			},
+			legend : {
+				data : ['内存']
+			},
+			tooltip : {
+				trigger : 'axis',
+				formatter : function(params) {
+					return params[0].name + ":" + params[0].value[1] + "M";
+				},
+				axisPointer : {
+					animation : false
+				}
+			},
+			xAxis : {
+				type : 'time',
+				name : '时间',
+				splitLine : {
+					show : false
+				}
+			},
+			yAxis : {
+				type : 'value',
+				name : '内存',
+				min : 0,
+				nameGap : 20,
+				splitLine : {
+					show : false
+				},
+				axisLabel : {
+					formatter : '{value}M'
+				},
+			},
+			series : [{
+				name : '内存',
 				type : 'line',
 				showSymbol : false,
 				hoverAnimation : false,
-				smooth:true,
-				data : data
-			} ]
+				smooth : true
+			}]
 		};
 
-		var sysInterval = setInterval(function() {
-			cpuChart.setOption({
-				series : [ {
-					data : data
-				} ]
-			});
-		}, <%=interval%>);
+// 		var sysInterval = setInterval(function() {
+// 			var cpuSeries = [];
+// 			for (var i = 0; i < cpuCount; i++) {
+// 				cpuSeries.push({
+// 					name : 'CPU1',
+// 					type : 'line',
+// 					showSymbol : false,
+// 					hoverAnimation : false,
+// 					smooth : true,
+// 					data : data[i]
+// 				});
+// 			}
+// 			memChart.setOption({
+// 				series : cpuSeries
+// 			});
+<%-- 		},<%=interval%>); --%>
 
 		// 使用刚指定的配置项和数据显示图表。
-		cpuChart.setOption(option);
+		memChart.setOption(memOption);
 	</script>
+	
 </body>
 </html>
 

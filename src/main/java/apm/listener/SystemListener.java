@@ -1,15 +1,17 @@
 package apm.listener;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.hyperic.sigar.CpuPerc;
+import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 
@@ -23,7 +25,7 @@ public class SystemListener implements ServletContextListener {
 	// 消息队列存储数量
 	private static int count = Integer.parseInt(PropertiesUtil.getValue("ws", "websocket.count"));
 	// 消息队列存储对象
-	public static List<SystemInfo> sysInfoList = new LinkedList<SystemInfo>();
+	public static List<SystemInfo> sysInfoList = new CopyOnWriteArrayList<SystemInfo>();
 	// 定时任务
 	private Timer timer = null;
 
@@ -40,14 +42,22 @@ public class SystemListener implements ServletContextListener {
 		public void run() {
 			Sigar sigar = new Sigar();
 			CpuPerc cpuList[] = null;
+			Mem mem =null;
 			SystemInfo systemInfo = new SystemInfo();
+			List<String> users = new ArrayList<String>();
 			try {
 				cpuList = sigar.getCpuPercList();
+				mem = sigar.getMem();
 			} catch (SigarException e) {
 				e.printStackTrace();
 			}
-			systemInfo.setUser(CpuPerc.format(cpuList[0].getUser()));
-			systemInfo.setDate(new Date());
+			for (CpuPerc cpuPerc : cpuList) {
+				users.add(CpuPerc.format(cpuPerc.getUser()));
+			}
+			systemInfo.setUsers(users);
+			systemInfo.setTime(new Date().getTime());
+			systemInfo.setTotalMem(mem.getTotal() / 1024L / 1024);
+			systemInfo.setUseMem(mem.getUsed() / 1024L / 1024);
 			if (sysInfoList.size() >= count) {
 				sysInfoList.remove(0);
 			}
