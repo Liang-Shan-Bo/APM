@@ -3,24 +3,27 @@ package apm.entity;
 import java.util.List;
 
 public class SystemInfo {
-
-	private List<String> users;
-
+	// CPU使用率列表
+	private List<Double> users;
+	// 磁盘使用率列表
+	private List<DiskEntity> disks;
+	// 时间轴
 	private Long time;
-
+	// 最大内存数
 	private Long totalMem;
-
+	// 已使用内存数
 	private Long useMem;
-	
+	// 单位时间间隔内网络总流量
 	private Long totalBytes;
 
-	public List<String> getUsers() {
+	public List<Double> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<String> users) {
+	public void setUsers(List<Double> users) {
 		this.users = users;
 	}
+
 
 	public Long getTime() {
 		return time;
@@ -53,5 +56,14 @@ public class SystemInfo {
 	public void setTotalBytes(Long totalBytes) {
 		this.totalBytes = totalBytes;
 	}
+
+	public List<DiskEntity> getDisks() {
+		return disks;
+	}
+
+	public void setDisks(List<DiskEntity> disks) {
+		this.disks = disks;
+	}
+
 
 }

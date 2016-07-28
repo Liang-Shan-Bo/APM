@@ -207,8 +207,8 @@
 				<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 				<div id="cpu" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
 				<div id="mem" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
-<!-- 				<div id="b" style="width: 500px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div> -->
-<!-- 				<div id="c" style="width: 500px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div> -->
+				<div id="net" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
+				<div id="disk" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
 			</div>
 
 			<div class="ace-settings-container" id="ace-settings-container">
@@ -266,6 +266,9 @@
 		var websocket = null;
 		var url = "<%=url%>";
 		var cpuCount = 0;
+		var diskCount = 0;
+		var cpuLegend = [];
+		var diskLegend = [];
 		//判断当前浏览器是否支持WebSocket
 		if ('WebSocket' in window) {
 			websocket = new WebSocket(url);
@@ -285,27 +288,40 @@
 		websocket.onmessage = function(event) {
 			var dataObject = null;
 			var json = JSON.parse(event.data);
-			// 初始化cpu图表
-			if (cpuCount == 0) {
+			// 初始化图表
+			if (cpuCount == 0 || diskCount == 0) {
 				cpuCount = json[0].users.length;
-				var legend = [];
+				diskCount = json[0].disks.length;
 				for (var i = 1; i <= cpuCount; i++) {
-					legend.push("CPU" + i);
+					cpuLegend.push("CPU" + i);
+				}
+				for (var i = 0; i < diskCount; i++) {
+					diskLegend.push(json[0].disks[i].devName);
 				}
 				cpuChart.setOption({
 					legend : {
-						data : legend
+						data : cpuLegend
+					}
+				});
+				diskChart.setOption({
+					legend : {
+						data : diskLegend
 					}
 				});
 				memChart.setOption({
 					yAxis : {max : json[i].totalMem}
 				});
+				
 			}
 			//清空原有数据
 			for (var j = 0; j < cpuCount; j++) {
 				cpuData[j] = [];
 			}
+			for (var j = 0; j < diskCount; j++) {
+				diskData[j] = [];
+			}
 			memData = [];
+			netData = [];
 			// 写入新数据
 			for (var i = 0; i < json.length; i++) {
 				var now = new Date(json[i].time);
@@ -316,7 +332,7 @@
 				for (var j = 0; j < cpuCount; j++) {
 					cpuData[j].push({
 						name : time,
-						value : [ now, json[i].users[j].replace("%", "") ]
+						value : [ now, json[i].users[j].toFixed(1)]
 					});
 				}
 				//写入新内存数据
@@ -324,6 +340,18 @@
 					name : time,
 					value : [ now, json[i].useMem ]
 				});
+				//写入新网络流量数据
+				netData.push({
+					name : time,
+					value : [ now, (json[i].totalBytes/1024).toFixed(1) ]
+				});
+				//写入新磁盘列表数据
+				for (var j = 0; j < diskCount; j++) {
+					diskData[j].push({
+						name : time,
+						value : [ now, json[i].disks[j].usePercent.toFixed(1)]
+					});
+				}
 			}
 			
 		}
@@ -349,7 +377,7 @@
 		}
 	</script>
 	<script type="text/javascript">
-		// 基于准备好的dom，初始化echarts实例
+		// CPU图表
 		var cpuChart = echarts.init(document.getElementById('cpu'));
 		var cpuData = [];
 		cpuOption = {
@@ -364,7 +392,7 @@
 				formatter : function(params) {
 					var relVal = params[0].name + "<br/>";
 					for (var i = 0; i < cpuCount; i++) {
-						relVal += params[i].seriesName + ":" + params[i].value[1]
+						relVal += params[i].seriesName + " : " + params[i].value[1]
 						+ "%<br/>";
 					}
 					return relVal;
@@ -397,6 +425,7 @@
 		//定时刷新图表
 		var sysInterval = setInterval(function() {
 			var cpuSeries = [];
+			var diskSeries = [];
 			for (var i = 0; i < cpuCount; i++) {
 				cpuSeries.push({
 					name : 'CPU'+ (i + 1),
@@ -407,11 +436,27 @@
 					data : cpuData[i]
 				});
 			}
+			for (var i = 0; i < diskCount; i++) {
+				diskSeries.push({
+					name : diskLegend[i],
+					type : 'line',
+					showSymbol : false,
+					hoverAnimation : false,
+					smooth : true,
+					data : diskData[i]
+				});
+			}
 			cpuChart.setOption({
 				series : cpuSeries
 			});
 			memChart.setOption({
 				series : {data : memData}
+			});
+			netChart.setOption({
+				series : {data : netData}
+			});
+			diskChart.setOption({
+				series : diskSeries
 			});
 		},<%=interval%>);
 
@@ -419,7 +464,7 @@
 		cpuChart.setOption(cpuOption);
 	</script>
 	<script type="text/javascript">
-		// 基于准备好的dom，初始化echarts实例
+		// 内存图表
 		var memChart = echarts.init(document.getElementById('mem'));
 		var memData = [];
 		memOption = {
@@ -432,7 +477,7 @@
 			tooltip : {
 				trigger : 'axis',
 				formatter : function(params) {
-					return params[0].name + ":" + params[0].value[1] + "M";
+					return params[0].name + " : " + params[0].value[1] + "M";
 				},
 				axisPointer : {
 					animation : false
@@ -466,27 +511,117 @@
 			}]
 		};
 
-// 		var sysInterval = setInterval(function() {
-// 			var cpuSeries = [];
-// 			for (var i = 0; i < cpuCount; i++) {
-// 				cpuSeries.push({
-// 					name : 'CPU1',
-// 					type : 'line',
-// 					showSymbol : false,
-// 					hoverAnimation : false,
-// 					smooth : true,
-// 					data : data[i]
-// 				});
-// 			}
-// 			memChart.setOption({
-// 				series : cpuSeries
-// 			});
-<%-- 		},<%=interval%>); --%>
-
 		// 使用刚指定的配置项和数据显示图表。
 		memChart.setOption(memOption);
 	</script>
-	
+	<script type="text/javascript">
+		// 网络图表
+		var netChart = echarts.init(document.getElementById('net'));
+		var netData = [];
+		netOption = {
+			title : {
+				text : '网络流量统计'
+			},
+			legend : {
+				data : ['网络']
+			},
+			tooltip : {
+				trigger : 'axis',
+				formatter : function(params) {
+					var relVal = params[0].name + " : ";
+					var netBytes = params[0].value[1];
+					if (netBytes < 1024) {
+						relVal += netBytes + "K";
+					}else {
+						relVal += (netBytes / 1024).toFixed(1) + "M"
+					}
+					return relVal;
+				},
+				axisPointer : {
+					animation : false
+				}
+			},
+			xAxis : {
+				type : 'time',
+				name : '时间',
+				splitLine : {
+					show : false
+				}
+			},
+			yAxis : {
+				type : 'value',
+				name : '网络',
+				min : 0,
+				nameGap : 20,
+				splitLine : {
+					show : false
+				},
+				axisLabel : {
+					formatter : '{value}K'
+				},
+			},
+			series : [{
+				name : '网络',
+				type : 'line',
+				showSymbol : false,
+				hoverAnimation : false,
+				smooth : true
+			}]
+		};
+
+		// 使用刚指定的配置项和数据显示图表。
+		netChart.setOption(netOption);
+	</script>
+	<script type="text/javascript">
+		// 磁盘图表
+		var diskChart = echarts.init(document.getElementById('disk'));
+		var diskData = [];
+		diskOption = {
+			title : {
+				text : '磁盘使用率'
+			},
+			legend : {
+				data : []
+			},
+			tooltip : {
+				trigger : 'axis',
+				formatter : function(params) {
+					var relVal = params[0].name + "<br/>";
+					for (var i = 0; i < diskCount; i++) {
+						relVal += params[i].seriesName + " : " + params[i].value[1]
+						+ "%<br/>";
+					}
+					return relVal;
+				},
+				axisPointer : {
+					animation : false
+				}
+			},
+			xAxis : {
+				type : 'time',
+				name : '时间',
+				splitLine : {
+					show : false
+				}
+			},
+			yAxis : {
+				type : 'value',
+				name : '磁盘',
+				min : 0,
+				max : 100,
+				splitLine : {
+					show : false
+				},
+				axisLabel : {
+					formatter : '{value}%'
+				},
+			},
+			series : []
+		};
+
+		// 使用刚指定的配置项和数据显示图表。
+		diskChart.setOption(diskOption);
+	</script>
 </body>
 </html>
 
