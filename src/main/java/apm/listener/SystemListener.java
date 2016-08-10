@@ -17,8 +17,8 @@ import org.hyperic.sigar.NetInterfaceStat;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 
-import apm.entity.DiskEntity;
-import apm.entity.SystemInfo;
+import apm.entity.system.DiskEntity;
+import apm.entity.system.SystemInfo;
 import apm.util.PropertiesUtil;
 
 public class SystemListener implements ServletContextListener {

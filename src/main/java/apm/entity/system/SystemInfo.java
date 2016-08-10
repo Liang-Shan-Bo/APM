@@ -1,8 +1,9 @@
-package apm.entity;
+package apm.entity.system;
 
 import java.util.List;
 
 public class SystemInfo {
+	
 	// CPU使用率列表
 	private List<Double> users;
 	// 磁盘使用率列表
@@ -23,7 +24,6 @@ public class SystemInfo {
 	public void setUsers(List<Double> users) {
 		this.users = users;
 	}
-
 
 	public Long getTime() {
 		return time;
@@ -64,6 +64,5 @@ public class SystemInfo {
 	public void setDisks(List<DiskEntity> disks) {
 		this.disks = disks;
 	}
-
 
 }

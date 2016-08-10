@@ -1,8 +1,10 @@
-package apm.controller;
+package apm.controller.system;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.FileSystem;
@@ -10,9 +12,14 @@ import org.hyperic.sigar.FileSystemUsage;
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.NetInterfaceConfig;
 import org.hyperic.sigar.NetInterfaceStat;
+import org.hyperic.sigar.NetStat;
+import org.hyperic.sigar.ProcCpu;
+import org.hyperic.sigar.ProcMem;
 import org.hyperic.sigar.ProcState;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
+import org.hyperic.sigar.cmd.Ps;
+import org.hyperic.sigar.ptql.ProcessFinder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,15 +35,40 @@ public class SystemController {
 	 * @param mod
 	 * @return
 	 * @throws IOException 
+	 * @throws InterruptedException 
 	 */
 	
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/ec", method = RequestMethod.GET)
-	public String ec(Model model) throws IOException {
+	public String ec(Model model) throws IOException, InterruptedException {
+//		Properties p=System.getProperties();//获取当前的系统属性
+//		  p.list(System.out);//将属性列表输出
+//		  System.out.print("CPU个数:");//Runtime.getRuntime()获取当前运行时的实例
+//		  System.out.println(Runtime.getRuntime().availableProcessors());//availableProcessors()获取当前电脑CPU数量
+//		  System.out.print("虚拟机内存总量:");
+//		  System.out.println(Runtime.getRuntime().totalMemory());//totalMemory()获取java虚拟机中的内存总量
+//		  System.out.print("虚拟机空闲内存量:");
+//		  System.out.println(Runtime.getRuntime().freeMemory());//freeMemory()获取java虚拟机中的空闲内存量
+//		  System.out.print("虚拟机使用最大内存量:");
+//		  System.out.println(Runtime.getRuntime().maxMemory());//maxMemory()获取java虚拟机试图使用的最大内存量
+		try {
+			Sigar sigar = new Sigar();
+			ProcCpu pCpu = new ProcCpu();
+		    pCpu.gather(sigar, 4076);
+//			cpu.gather(sigar, 4076);
+//			Thread.sleep(1000);
+			System.out.println("getPercent:" + pCpu.getUser());
+			System.out.println("getPercent:" + pCpu.getTotal());
+			sigar.close();
+		} catch (SigarException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "ec";
 	}
-	@RequestMapping(value = "/show", method = RequestMethod.GET)
-	public String show(Model model) {
-		return "test";
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index(Model model) {
+		return "index";
 	}
 	@RequestMapping(value = "/show1", method = RequestMethod.GET)
 	public String show1(Model model) {

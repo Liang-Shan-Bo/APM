@@ -1,4 +1,4 @@
-package apm.entity;
+package apm.entity.system;
 
 public class DiskEntity {
 

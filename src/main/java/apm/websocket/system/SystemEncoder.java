@@ -1,4 +1,4 @@
-package apm.websocket;
+package apm.websocket.system;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -7,7 +7,7 @@ import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 import net.sf.json.JSONArray;
-import apm.entity.SystemInfo;
+import apm.entity.system.SystemInfo;
 
 public class SystemEncoder implements Encoder.Text<CopyOnWriteArrayList<SystemInfo>> {
 

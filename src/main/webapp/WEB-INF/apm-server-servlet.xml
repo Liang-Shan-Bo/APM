@@ -17,6 +17,7 @@
 	<!-- Controller Annocation Scan Directory -->
 	<context:component-scan base-package="apm.controller" />
 	<context:component-scan base-package="apm.service" />
+	<context:component-scan base-package="apm.dao" />
 
 	<mvc:resources mapping="style/**" location="/,/style/"/> 
 	<mvc:resources mapping="js/**" location="/,/js/"/> 

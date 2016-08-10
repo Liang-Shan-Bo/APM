@@ -1,4 +1,4 @@
-package apm.websocket;
+package apm.websocket.system;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -20,7 +20,7 @@ import apm.util.PropertiesUtil;
 public class SystemSocket {
 
 	// 推送消息时间间隔(ms)
-	private  static int interval = Integer.parseInt(PropertiesUtil.getValue("ws", "websocket.interval"));
+	private static int interval = Integer.parseInt(PropertiesUtil.getValue("ws", "websocket.interval"));
 	// concurrent包的线程安全Set，用来存放每个客户端对应的WebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
 	private static CopyOnWriteArraySet<SystemSocket> webSocketSet = new CopyOnWriteArraySet<SystemSocket>();
 	// 与某个客户端的连接会话，需要通过它来给客户端发送数据
