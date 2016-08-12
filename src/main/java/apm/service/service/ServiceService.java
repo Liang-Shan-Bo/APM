@@ -8,6 +8,10 @@ import apm.dao.service.ServiceDao;
 import apm.entity.service.ServiceEntity;
 import apm.util.Page;
 
+/**
+ * @author 服务监控事务管理
+ *
+ */
 @Service
 public class ServiceService {
 
@@ -24,7 +28,7 @@ public class ServiceService {
 	}
 
 	/**
-	 * 条件查询服务列表
+	 * 分页查询服务列表
 	 * 
 	 * @return Page
 	 */

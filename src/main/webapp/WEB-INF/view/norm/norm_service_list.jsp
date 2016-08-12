@@ -51,7 +51,7 @@
 
 					<ul class="breadcrumb">
 						<li><i class="icon-home home-icon"></i> <a href="#">主页</a></li>
-						<li class="active">服务监控</li>
+						<li class="active">服务指标</li>
 					</ul>
 					<!-- .breadcrumb -->
 				</div>
@@ -59,56 +59,47 @@
 				<div class="page-content">
 					<div class="page-header">
 						<h1>
-							服务监控<small> <i class="icon-double-angle-right"></i> 查看
+							服务指标<small> <i class="icon-double-angle-right"></i> 查看
 							</small>
 						</h1>
 					</div>
-					<!-- 服务管理列表 -->
-					<form id="queryForm" class="form-inline checkForm" action="<%=path%>/serviceList" method="get">
+					<!-- 服务指标列表 -->
+					<form id="queryForm" class="form-inline checkForm" action="<%=path%>/serviceNormList" method="get">
 						<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
 					</form>
-					<a href="<%=path%>/createService" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加服务</a>
+					<a href="<%=path%>/createNorm" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加服务指标</a>
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="table-responsive">
 								<table id="sample-table-2" class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
-											<th>系统名称</th>
-											<th>IP地址</th>
-											<th>端口号</th>
-											<th>开启状态</th>
-											<th>负载</th>
-											<th>使用指标</th>
-											<th></th>
+											<th>指标名称</th>
+											<th>正常负载</th>
+											<th>警告负载</th>
+											<th>过高负载</th>
+											<th>使用情况</th>
+											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${page.resultList}" var="service">
+										<c:forEach items="${page.resultList}" var="norm">
 											<tr>
-												<td>${service.serviceName}</td>
-												<td>${service.serviceAddress}</td>
-												<td>${service.servicePort}</td>
+												<td>${norm.normName}</td>
+												<td>${norm.normNormal}M</td>
+												<td>${norm.normWarning}M</td>
+												<td>${norm.normDanger}M</td>
 												<td>
-													<c:if test="${service.status == 0}">关闭</c:if>
-													<c:if test="${service.status != 0}">开启</c:if>
+													<c:if test="${norm.used == true}">已使用</c:if>
+													<c:if test="${norm.used == false}">未使用</c:if>
 												</td>
-												<td>
-													<c:if test="${service.load == 0}"><span class="label label-sm label-inverse">无</span></c:if>
-													<c:if test="${service.load == 1}"><span class="label label-sm label-success">良好</span></c:if>
-													<c:if test="${service.load == 2}"><span class="label label-sm label-success">正常</span></c:if>
-													<c:if test="${service.load == 3}"><span class="label label-sm label-warning">警告</span></c:if>
-													<c:if test="${service.load == 4}"><span class="label label-sm label-danger">过高</span></c:if>
-												</td>
-												<td>${service.normName}</td>
 												<td>
 													<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-														<c:if test="${service.status != 0}">
-															<a class="blue" href="serviceDetail?id=${service.id}" title="查看"> <i class="icon-zoom-in bigger-130"></i></a> 
-														</c:if>
-														<a class="green" href="updateService?id=${service.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
-														<c:if test="${service.id != 1}">
-															<a class="red" href="#" onclick="deleteService('${service.id}');" title="删除" > <i class="icon-trash bigger-130"></i></a>
+														<c:if test="${norm.id != 1}">
+															<a class="green" href="updateServiceNorm?id=${norm.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
+															<c:if test="${norm.used == false}">
+																<a class="red" href="#" onclick="deleteService('${norm.id}');" title="删除"> <i class="icon-trash bigger-130"></i></a>
+															</c:if> 
 														</c:if>
 													</div>
 												</td>
@@ -121,7 +112,7 @@
 							</div>
 						</div>
 					</div>
-					<!-- 服务管理列表 -->
+					<!-- 服务指标列表 -->
 				</div>
 			</div>
 		</div>
@@ -130,12 +121,12 @@
 		</a>
 	</div>
 	<script type="text/javascript">
-		// 删除服务
+		// 删除指标
 		function deleteService(id) {
 			bootbox.setDefaults("locale","zh_CN");  
 			bootbox.confirm("是否确认删除？", function(re) {
 				if (re) {
-					location.href = "deleteService?id=" + id;
+					location.href = "deleteNorm?id=" + id;
 				}
 			});
 		}

@@ -24,10 +24,6 @@
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
 <script src="style/assets/js/ace-extra.min.js"></script>
-<script src="style/echarts/echarts.js"></script>
-<script type="text/javascript">
-
-</script>
 </head>
 
 <body>
@@ -104,6 +100,19 @@
 										<input type="text" id="monitorPort" class="col-xs-10 col-sm-4" name="monitorPort"/>
 									</div>
 								</div>
+								
+								<div class="space-4"></div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="normName"> 指标名称 </label>
+									<div class="col-sm-9">
+										<select name="normId">
+											<c:forEach items="${normList}" var="norm">
+											<option value="${norm.id}">${norm.normName}</option>
+											</c:forEach>
+										</select> 
+									</div>
+								</div>
 		
 								<div class="space-4"></div>
 		
@@ -141,9 +150,6 @@
 						switch (data.connectResult) {
 						case 0:
 							$("#createForm").submit();
-							break;
-						case 1:
-							alert("服务地址无法连接");
 							break;
 						case 2:
 							alert("服务端口无法连接");
@@ -229,7 +235,7 @@
 					required: "请输入监控端口号",
 					range: "请输入1-65535之间的数字",
 					remote: "该IP地址与端口已存在"
-				},
+				}
 			},
 	
 			invalidHandler: function (event, validator) { //display error alert on form submit   

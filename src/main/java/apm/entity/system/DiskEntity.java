@@ -1,5 +1,9 @@
 package apm.entity.system;
 
+/**
+ * @author 磁盘实体类
+ *
+ */
 public class DiskEntity {
 
 	public DiskEntity() {

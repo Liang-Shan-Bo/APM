@@ -1,7 +1,7 @@
 package apm.entity.service;
 
 /**
- * 服务实体类
+ * 服务监控实体类
  *
  */
 public class ServiceEntity {
@@ -54,8 +54,16 @@ public class ServiceEntity {
 	private String spanTime;
 	// 状态(0:关闭;1:开启)
 	private Integer status;
-	// 负载(0:无;1:正常;2：较高;3：过高;)
+	// 负载(0:无;1:良好;2：正常;3：警告;4:过高)
 	private Integer load;
+	// 指标ID
+	private Integer normId;
+	// 指标名称
+	private String normName;
+	// 报警策略ID
+	private Integer warnId;
+	// 报警策略名称
+	private Integer warnName;
 
 	public Integer getId() {
 		return id;
@@ -206,5 +214,29 @@ public class ServiceEntity {
 	}
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
+	}
+	public Integer getNormId() {
+		return normId;
+	}
+	public void setNormId(Integer normId) {
+		this.normId = normId;
+	}
+	public Integer getWarnId() {
+		return warnId;
+	}
+	public void setWarnId(Integer warnId) {
+		this.warnId = warnId;
+	}
+	public String getNormName() {
+		return normName;
+	}
+	public void setNormName(String normName) {
+		this.normName = normName;
+	}
+	public Integer getWarnName() {
+		return warnName;
+	}
+	public void setWarnName(Integer warnName) {
+		this.warnName = warnName;
 	}
 }

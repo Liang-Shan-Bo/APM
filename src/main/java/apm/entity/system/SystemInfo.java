@@ -2,6 +2,10 @@ package apm.entity.system;
 
 import java.util.List;
 
+/**
+ * @author 系统参数实体类
+ *
+ */
 public class SystemInfo {
 	
 	// CPU使用率列表

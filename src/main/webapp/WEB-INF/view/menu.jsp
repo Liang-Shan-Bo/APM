@@ -32,7 +32,7 @@
 		</li>
 		<li>
 			<a href="#" class="dropdown-toggle"> 
-				<i class="icon-desktop"></i><span class="menu-text">性能监控 </span><b class="arrow icon-angle-down"></b>
+				<i class="icon-desktop"></i><span class="menu-text">系统监控 </span><b class="arrow icon-angle-down"></b>
 			</a>
 			<ul class="submenu">
 			<!--style="display: block;"-->
@@ -59,7 +59,7 @@
 					<a href="#"> <i class="icon-double-angle-right"></i> 服务策略</a>
 				</li>
 				<li>
-					<a href="#"> <i class="icon-double-angle-right"></i> 性能策略</a>
+					<a href="#"> <i class="icon-double-angle-right"></i> 系统策略</a>
 				</li>
 			</ul>
 		</li>
@@ -69,10 +69,10 @@
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="#"> <i class="icon-double-angle-right"></i> 服务指标</a>
+					<a href="<%=basePath%>/serviceNormList"> <i class="icon-double-angle-right"></i> 服务指标</a>
 				</li>
 				<li>
-					<a href="#"> <i class="icon-double-angle-right"></i> 性能指标</a>
+					<a href="<%=basePath%>/systemNormList""> <i class="icon-double-angle-right"></i> 系统指标</a>
 				</li>
 			</ul>
 		</li>

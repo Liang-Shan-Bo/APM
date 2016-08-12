@@ -12,7 +12,7 @@ import apm.entity.service.ServiceEntity;
 import apm.util.Page;
 
 /**
- * 服务管理DAO
+ * 服务监控DAO
  *
  */
 @Repository
@@ -44,16 +44,18 @@ public class ServiceDao {
 	}
 
 	/**
-	 * 根据ID查询服务信息
+	 * 分页查询服务信息列表
 	 * 
-	 * @return Page
+	 * @return List<ServiceEntity>
 	 */
 	public List<ServiceEntity> getServiceList(Page<ServiceEntity> page) {
 		String sql = "SELECT * FROM (" + 
-					 "SELECT A.*, ROWNUM RN FROM ( " + 
-					 "select * from apm_service_info t " + 
-					 "order by t.id ) A " + 
-					 "WHERE ROWNUM <= ? ) page " + 
+						 "SELECT A.*, ROWNUM RN FROM ( " + 
+						 "select t.*,n.norm_name " +
+							 "from apm_service_info t,apm_norm n " + 
+							 "where t.norm_id = n.id " +
+							 "order by t.id ) A " + 
+						 "WHERE ROWNUM <= ? ) page " + 
 					 "WHERE RN >= ?";
 		List<ServiceEntity> list = (List<ServiceEntity>) jdbcTemplate.query(sql,
 				new Object[]{page.getEndRow(), page.getStartRow()}, new BeanPropertyRowMapper<ServiceEntity>(
@@ -78,15 +80,18 @@ public class ServiceDao {
 						"system_version," +
 						"jvm_vendor," +
 						"jvm_name," +
-						"jvm_version" +
-					") values(?,?,?,?,?,?,?,?,?,?,?,?)";
+						"jvm_version," +
+						"norm_id," +
+						"warn_id" +
+					") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		jdbcTemplate.update(
 				sql,
 				new Object[]{getId(), serviceEntity.getServiceName(), serviceEntity.getServiceAddress(),
 						serviceEntity.getServicePort(), serviceEntity.getMonitorPort(),
 						serviceEntity.getCpuAvailableCount(), serviceEntity.getSystemName(),
 						serviceEntity.getSystemArch(), serviceEntity.getSystemVersion(), serviceEntity.getJvmVendor(),
-						serviceEntity.getJvmName(), serviceEntity.getJvmVersion()});
+						serviceEntity.getJvmName(), serviceEntity.getJvmVersion(), serviceEntity.getNormId(),
+						serviceEntity.getWarnId()});
 	}
 	
 	/**
@@ -98,10 +103,12 @@ public class ServiceDao {
 						"service_name=?," +
 						"service_address=?," +
 						"service_port=?," +
-					 	"monitor_port=?" +
+					 	"monitor_port=?," +
+					 	"norm_id=?" +
 					  	"where id=?";
 		jdbcTemplate.update(sql, new Object[]{serviceEntity.getServiceName(), serviceEntity.getServiceAddress(),
-				serviceEntity.getServicePort(), serviceEntity.getMonitorPort(), serviceEntity.getId()});
+				serviceEntity.getServicePort(), serviceEntity.getMonitorPort(), serviceEntity.getNormId(),
+				serviceEntity.getId()});
 	}
 	
 	/**
@@ -120,7 +127,10 @@ public class ServiceDao {
 	 */
 	public int getId() {
 		String sql = "select max(id) from apm_service_info";
-		int id = jdbcTemplate.queryForObject(sql,Integer.class);
+		Integer id = jdbcTemplate.queryForObject(sql,Integer.class);
+		if (id == null) {
+			return 1;
+		}
 		return ++id;
 	}
 	

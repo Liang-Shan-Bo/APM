@@ -24,10 +24,6 @@
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
 <script src="style/assets/js/ace-extra.min.js"></script>
-<script src="style/echarts/echarts.js"></script>
-<script type="text/javascript">
-
-</script>
 </head>
 
 <body>
@@ -70,7 +66,7 @@
 					<!-- 编辑服务 -->
 					<div class="row">
 						<div class="col-xs-12">
-							<form id="createForm" class="form-horizontal" role="form" action="<%=path%>/updateService" method="post">
+							<form id="updateForm" class="form-horizontal" role="form" action="<%=path%>/updateService" method="post">
 								<input type="hidden" id="id" name="id" value="${serviceEntity.id}"/>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="serviceName"> 服务名称 </label>
@@ -105,6 +101,19 @@
 										<input type="text" id="monitorPort" class="col-xs-10 col-sm-4" name="monitorPort" value="${serviceEntity.monitorPort}"/>
 									</div>
 								</div>
+								
+								<div class="space-4"></div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="normName"> 指标名称 </label>
+									<div class="col-sm-9">
+										<select name="normId">
+											<c:forEach items="${normList}" var="norm">
+											<option value="${norm.id}" <c:if test="${norm.id == serviceEntity.normId}">selected="selected"</c:if>>${norm.normName}</option>
+											</c:forEach>
+										</select> 
+									</div>
+								</div>
 		
 								<div class="space-4"></div>
 		
@@ -115,6 +124,7 @@
 										<button class="btn" type="reset"><i class="icon-undo bigger-110"></i>重&nbsp;&nbsp;&nbsp;&nbsp;置</button>
 									</div>
 								</div>
+								
 							</form>
 						</div>
 					</div>
@@ -129,7 +139,7 @@
 	<script type="text/javascript">
 		// 点击提交
 		$("#submitBtn").click(function() {
-			if ($("#createForm").valid()) {
+			if ($("#updateForm").valid()) {
 				$.ajax({
 					url : "<%=path%>/testConnect",
 					method : 'post',
@@ -141,10 +151,7 @@
 					success : function(data){
 						switch (data.connectResult) {
 						case 0:
-							$("#createForm").submit();
-							break;
-						case 1:
-							alert("服务地址无法连接");
+							$("#updateForm").submit();
 							break;
 						case 2:
 							alert("服务端口无法连接");
@@ -177,7 +184,7 @@
 		}, "Ip地址格式错误");
 		
 		// 校验表单
-		$("#createForm").validate({
+		$("#updateForm").validate({
 			errorElement: 'div',
 			errorClass: 'help-block',
 			focusInvalid: false,
@@ -232,7 +239,7 @@
 					required: "请输入监控端口号",
 					range: "请输入1-65535之间的数字",
 					remote: "该IP地址与端口已存在"
-				},
+				}
 			},
 	
 			invalidHandler: function (event, validator) { //display error alert on form submit   

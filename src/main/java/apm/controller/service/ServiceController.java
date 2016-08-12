@@ -3,7 +3,6 @@ package apm.controller.service;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
-import java.lang.management.MemoryUsage;
 import java.lang.management.OperatingSystemMXBean;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -26,16 +25,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import apm.entity.norm.NormEntity;
 import apm.entity.service.ServiceEntity;
+import apm.service.norm.NormService;
 import apm.service.service.ServiceService;
 import apm.util.Constants;
 import apm.util.Page;
 
+/**
+ * @author 服务监控控制层
+ *
+ */
 @Controller
 public class ServiceController {
 
 	@Resource
 	private ServiceService serviceService;
+
+	@Resource
+	private NormService normService;
 
 	/**
 	 * 服务列表页面
@@ -45,7 +53,7 @@ public class ServiceController {
 	@RequestMapping(value = "/serviceList", method = RequestMethod.GET)
 	public String serviceList(Model model, Page<ServiceEntity> page) {
 		page = serviceService.getServiceList(page);
-		page.setResultList(setServieStatus(page.getResultList())); ;
+		page.setResultList(setServieStatus(page.getResultList()));;
 		model.addAttribute("page", page);
 		return "service/service_list";
 	}
@@ -71,7 +79,9 @@ public class ServiceController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/createService", method = RequestMethod.GET)
-	public String createPage() {
+	public String createPage(Model model) {
+		List<NormEntity> normList = normService.getServiceNormListAll();
+		model.addAttribute("normList", normList);
 		return "service/service_create";
 	}
 
@@ -83,10 +93,14 @@ public class ServiceController {
 	@RequestMapping(value = "/createService", method = RequestMethod.POST)
 	public String createService(Model model, ServiceEntity serviceEntity) {
 		serviceEntity = setServieInfo(serviceEntity);
+		
+		//临时代码
+		serviceEntity.setWarnId(1);
+		//
 		serviceService.createService(serviceEntity);
 		return "redirect:/serviceList";
 	}
-	
+
 	/**
 	 * 跳转到修改服务页面
 	 * 
@@ -96,6 +110,8 @@ public class ServiceController {
 	public String updatePage(Model model, @RequestParam int id) {
 		ServiceEntity serviceEntity = serviceService.getServiceById(id);
 		model.addAttribute("serviceEntity", serviceEntity);
+		List<NormEntity> normList = normService.getServiceNormListAll();
+		model.addAttribute("normList", normList);
 		return "service/service_update";
 	}
 
@@ -109,7 +125,7 @@ public class ServiceController {
 		serviceService.updateService(serviceEntity);
 		return "redirect:/serviceList";
 	}
-	
+
 	/**
 	 * 删除服务
 	 * 
@@ -143,14 +159,6 @@ public class ServiceController {
 	 * @return int(0：连接正常;1:IP地址无法连接;2:服务端口无法连接;3:监控端口无法连接)
 	 */
 	private static int ServieConnect(String Address, int port, int jmxPort) {
-		// 测试IP地址是否连接正常
-		try {
-			if (!InetAddress.getByName(Address).isReachable(3000)) {
-				return Constants.HOST_LINK_REEOR;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		// 测试端口是否已启用
 		Socket socket = new Socket();
 		try {
@@ -180,7 +188,7 @@ public class ServiceController {
 	 * 
 	 * @return String
 	 */
-	private static List<ServiceEntity> setServieStatus(List<ServiceEntity> list) {
+	private List<ServiceEntity> setServieStatus(List<ServiceEntity> list) {
 		for (ServiceEntity serviceEntity : list) {
 			int port = Integer.parseInt(serviceEntity.getServicePort());
 			int jmxport = Integer.parseInt(serviceEntity.getMonitorPort());
@@ -188,11 +196,12 @@ public class ServiceController {
 			if (connectResult != 0) {
 				serviceEntity.setStatus(Constants.SERVICE_STATUS_CLOSE);
 				serviceEntity.setLoad(Constants.SERVICE_LOAD_NONE);
-			}else {
+			} else {
 				serviceEntity.setStatus(Constants.SERVICE_STATUS_OPEN);
 				String serviceUrl = "service:jmx:rmi:///jndi/rmi://" + serviceEntity.getServiceAddress() + ":"
 						+ serviceEntity.getMonitorPort() + "/jmxrmi";
 				JMXConnector jmxConnector = null;
+
 				try {
 					// 连接监控服务
 					JMXServiceURL ServiceURL = new JMXServiceURL(serviceUrl);
@@ -201,16 +210,18 @@ public class ServiceController {
 					// 获取内存信息
 					MemoryMXBean memoryMXBean = ManagementFactory.newPlatformMXBeanProxy(mBeanServerConnection,
 							ManagementFactory.MEMORY_MXBEAN_NAME, MemoryMXBean.class);
-					// 堆内存信息
-					MemoryUsage heapMemoryUsage = memoryMXBean.getHeapMemoryUsage();
-					// 非堆内存信息
-					MemoryUsage nonHeapMemoryUsage = memoryMXBean.getNonHeapMemoryUsage();
-					long memUsed = heapMemoryUsage.getUsed() + nonHeapMemoryUsage.getUsed();
-					// 临时代码
-					if (memUsed / 1024 / 1024 < 200) {
-						serviceEntity.setLoad(Constants.SERVICE_LOAD_NORMAL);
-					} else if (memUsed / 1024 / 1024 > 200) {
+					// 获取指标
+					NormEntity normEntity = normService.getNormById(serviceEntity.getNormId());
+					int memTotal = (int) ((memoryMXBean.getHeapMemoryUsage().getUsed() + memoryMXBean
+							.getNonHeapMemoryUsage().getUsed()) / 1024 / 1024);
+					if (memTotal >= normEntity.getNormDanger()) {
+						serviceEntity.setLoad(Constants.SERVICE_LOAD_DANGER);
+					} else if (memTotal >= normEntity.getNormWarning() && memTotal < normEntity.getNormDanger()) {
 						serviceEntity.setLoad(Constants.SERVICE_LOAD_WARNING);
+					} else if (memTotal > normEntity.getNormNormal() && memTotal < normEntity.getNormWarning()) {
+						serviceEntity.setLoad(Constants.SERVICE_LOAD_NORMAL);
+					}else {
+						serviceEntity.setLoad(Constants.SERVICE_LOAD_FAVORABLE);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -268,7 +279,7 @@ public class ServiceController {
 		}
 		return serviceEntity;
 	}
-	
+
 	/**
 	 * 校验IP和端口是否已存在
 	 * 
@@ -277,9 +288,9 @@ public class ServiceController {
 	@RequestMapping(value = "/checkPort", method = RequestMethod.GET)
 	@ResponseBody
 	private boolean checkPort(ServiceEntity serviceEntity) {
-		return serviceService.checkPort(serviceEntity) ;
+		return serviceService.checkPort(serviceEntity);
 	}
-	
+
 	/**
 	 * 校验IP和监控端口是否已存在
 	 * 
@@ -288,7 +299,7 @@ public class ServiceController {
 	@RequestMapping(value = "/checkJmxPort", method = RequestMethod.GET)
 	@ResponseBody
 	private boolean checkJmxPort(ServiceEntity serviceEntity) {
-		return serviceService.checkJmxPort(serviceEntity) ;
+		return serviceService.checkJmxPort(serviceEntity);
 	}
 
 }

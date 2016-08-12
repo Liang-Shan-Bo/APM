@@ -2,8 +2,18 @@ package apm.util;
 
 import java.util.Formatter;
 
+/**
+ * @author 日期处理类
+ *
+ */
 public class DateUtil {
 
+	/**
+	 * 格式化秒数为天数时分秒
+	 * 
+	 * @param span
+	 * @return
+	 */
 	public static String formatTimeSpan(long span) {
 		span = span / 1000;
 		long seconds = span % 60;

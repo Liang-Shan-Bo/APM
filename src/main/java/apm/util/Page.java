@@ -2,6 +2,12 @@ package apm.util;
 
 import java.util.List;
 
+/**
+ * 
+ * @author 分页类
+ *
+ * @param <T>
+ */
 public class Page<T> {
 
 	public static final int NUMBERS_PER_PAGE = 10;
@@ -62,20 +68,28 @@ public class Page<T> {
 	public void setResultList(List<T> resultList) {
 		this.resultList = resultList;
 	}
-	
+
+	/**
+	 * 初始化分页信息
+	 */
 	public void init() {
 		if (this.currentPage == 0) {
 			this.currentPage = 1;
 		}
-		this.startRow = numPerPage * (currentPage - 1) + 1;  
-        this.endRow = this.startRow + numPerPage - 1;  
+		this.startRow = numPerPage * (currentPage - 1) + 1;
+		this.endRow = this.startRow + numPerPage - 1;
 	}
-	
-	public void setPage(List<T> resultList ,int count) {
+
+	/**
+	 * 分页处理
+	 * 
+	 * @param resultList
+	 * @param count
+	 */
+	public void setPage(List<T> resultList, int count) {
 		this.resultList = resultList;
 		this.totalRow = count;
-		this.totalPage = (totalRow + numPerPage -1) / numPerPage;
+		this.totalPage = (totalRow + numPerPage - 1) / numPerPage;
 	}
-	
 
 }
