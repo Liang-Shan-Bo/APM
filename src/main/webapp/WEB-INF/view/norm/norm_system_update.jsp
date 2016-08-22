@@ -71,9 +71,7 @@
 								<input type="hidden" id="serviceType" name="serviceType" value="${normEntity.serviceType}"/>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="normName"> 指标名称 </label>
-									<div class="col-sm-9">
-										<input type="text" id="normName" class="col-xs-10 col-sm-4" name="normName" readonly="readonly" value="${normEntity.normName}"/>
-									</div>
+									<label class="col-xs-2"> ${normEntity.normName}</label>
 								</div>
 		
 								<div class="space-4"></div>
@@ -119,9 +117,9 @@
 		
 								<div class="clearfix form-actions">
 									<div class="col-md-offset-3 col-md-9">
-										<a id="submitBtn" class="btn btn-info"><i class="icon-ok bigger-110"></i>提&nbsp;&nbsp;&nbsp;&nbsp;交</a>
+										<a onclick="history.back()"  class="btn"><i class="icon-reply bigger-110"></i>返&nbsp;&nbsp;&nbsp;&nbsp;回</a>
 										&nbsp; &nbsp; &nbsp;
-										<button class="btn" type="reset"><i class="icon-undo bigger-110"></i>重&nbsp;&nbsp;&nbsp;&nbsp;置</button>
+										<a id="submitBtn" class="btn btn-info"><i class="icon-ok bigger-110"></i>提&nbsp;&nbsp;&nbsp;&nbsp;交</a>
 									</div>
 								</div>
 							</form>

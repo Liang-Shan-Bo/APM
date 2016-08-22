@@ -106,9 +106,22 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="normName"> 指标名称 </label>
 									<div class="col-sm-9">
-										<select name="normId">
+										<select id="normName" name="normId">
 											<c:forEach items="${normList}" var="norm">
 											<option value="${norm.id}">${norm.normName}</option>
+											</c:forEach>
+										</select> 
+									</div>
+								</div>
+								
+								<div class="space-4"></div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="alarmPolicyName"> 策略名称 </label>
+									<div class="col-sm-9">
+										<select id="alarmPolicyName" name="alarmPolicyId">
+											<c:forEach items="${alarmPolicyList}" var="alarmPolicy">
+											<option value="${alarmPolicy.id}">${alarmPolicy.alarmPolicyName}</option>
 											</c:forEach>
 										</select> 
 									</div>
@@ -118,9 +131,9 @@
 		
 								<div class="clearfix form-actions">
 									<div class="col-md-offset-3 col-md-9">
-										<a id="submitBtn" class="btn btn-info"><i class="icon-ok bigger-110"></i>提&nbsp;&nbsp;&nbsp;&nbsp;交</a>
+										<a onclick="history.back()"  class="btn"><i class="icon-reply bigger-110"></i>返&nbsp;&nbsp;&nbsp;&nbsp;回</a>
 										&nbsp; &nbsp; &nbsp;
-										<button class="btn" type="reset"><i class="icon-undo bigger-110"></i>重&nbsp;&nbsp;&nbsp;&nbsp;置</button>
+										<a id="submitBtn" class="btn btn-info"><i class="icon-ok bigger-110"></i>提&nbsp;&nbsp;&nbsp;&nbsp;交</a>
 									</div>
 								</div>
 							</form>

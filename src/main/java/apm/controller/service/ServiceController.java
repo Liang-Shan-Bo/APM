@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.OperatingSystemMXBean;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.HashMap;
@@ -25,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import apm.entity.alrampolicy.AlarmPolicyEntity;
 import apm.entity.norm.NormEntity;
 import apm.entity.service.ServiceEntity;
+import apm.service.alrampolicy.AlarmPolicyService;
 import apm.service.norm.NormService;
 import apm.service.service.ServiceService;
 import apm.util.Constants;
@@ -44,6 +45,9 @@ public class ServiceController {
 
 	@Resource
 	private NormService normService;
+	
+	@Resource
+	private AlarmPolicyService alarmPolicyService;
 
 	/**
 	 * 服务列表页面
@@ -80,8 +84,12 @@ public class ServiceController {
 	 */
 	@RequestMapping(value = "/createService", method = RequestMethod.GET)
 	public String createPage(Model model) {
+		//获取指标列表
 		List<NormEntity> normList = normService.getServiceNormListAll();
 		model.addAttribute("normList", normList);
+		//获取策略列表
+		List<AlarmPolicyEntity> alarmPolicyList = alarmPolicyService.getServiceAlarmPolicyListAll();
+		model.addAttribute("alarmPolicyList", alarmPolicyList);
 		return "service/service_create";
 	}
 
@@ -93,10 +101,6 @@ public class ServiceController {
 	@RequestMapping(value = "/createService", method = RequestMethod.POST)
 	public String createService(Model model, ServiceEntity serviceEntity) {
 		serviceEntity = setServieInfo(serviceEntity);
-		
-		//临时代码
-		serviceEntity.setWarnId(1);
-		//
 		serviceService.createService(serviceEntity);
 		return "redirect:/serviceList";
 	}
@@ -110,8 +114,12 @@ public class ServiceController {
 	public String updatePage(Model model, @RequestParam int id) {
 		ServiceEntity serviceEntity = serviceService.getServiceById(id);
 		model.addAttribute("serviceEntity", serviceEntity);
+		//获取指标列表
 		List<NormEntity> normList = normService.getServiceNormListAll();
 		model.addAttribute("normList", normList);
+		//获取策略列表
+		List<AlarmPolicyEntity> alarmPolicyList = alarmPolicyService.getServiceAlarmPolicyListAll();
+		model.addAttribute("alarmPolicyList", alarmPolicyList);
 		return "service/service_update";
 	}
 
@@ -218,7 +226,7 @@ public class ServiceController {
 						serviceEntity.setLoad(Constants.SERVICE_LOAD_DANGER);
 					} else if (memTotal >= normEntity.getNormWarning() && memTotal < normEntity.getNormDanger()) {
 						serviceEntity.setLoad(Constants.SERVICE_LOAD_WARNING);
-					} else if (memTotal > normEntity.getNormNormal() && memTotal < normEntity.getNormWarning()) {
+					} else if (memTotal >= normEntity.getNormNormal() && memTotal < normEntity.getNormWarning()) {
 						serviceEntity.setLoad(Constants.SERVICE_LOAD_NORMAL);
 					}else {
 						serviceEntity.setLoad(Constants.SERVICE_LOAD_FAVORABLE);

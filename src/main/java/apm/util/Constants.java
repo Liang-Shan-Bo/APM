@@ -36,6 +36,11 @@ public class Constants {
 	// 系统指标类型
 	public static final int SYSTEM_NORM_TYPE = 2;
 
+	// 服务策略类型
+	public static final int SERVICE_POLICY_TYPE = 1;
+	// 系统策略类型
+	public static final int SYSTEM_POLICY_TYPE = 2;
+
 	// CPU指标
 	public static final int NORM_CPU = 1;
 	// 内存指标

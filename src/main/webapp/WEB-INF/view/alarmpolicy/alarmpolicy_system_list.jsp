@@ -51,7 +51,7 @@
 
 					<ul class="breadcrumb">
 						<li><i class="icon-home home-icon"></i> <a href="#">主页</a></li>
-						<li class="active">服务监控</li>
+						<li class="active">系统策略</li>
 					</ul>
 					<!-- .breadcrumb -->
 				</div>
@@ -59,59 +59,58 @@
 				<div class="page-content">
 					<div class="page-header">
 						<h1>
-							服务监控<small> <i class="icon-double-angle-right"></i> 查看
+							系统策略<small> <i class="icon-double-angle-right"></i> 查看
 							</small>
 						</h1>
 					</div>
-					<!-- 服务管理列表 -->
-					<form id="queryForm" class="form-inline checkForm" action="<%=path%>/serviceList" method="get">
+					<!-- 系统策略列表 -->
+					<form id="queryForm" class="form-inline checkForm" action="<%=path%>/systemAlarmPolicyList" method="get">
 						<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
 					</form>
-					<a href="<%=path%>/createService" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加服务</a>
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="table-responsive">
 								<table id="sample-table-2" class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
-											<th>系统名称</th>
-											<th>IP地址</th>
-											<th>端口号</th>
-											<th>开启状态</th>
-											<th>负载</th>
-											<th>使用指标</th>
-											<th>使用策略</th>
-											<th></th>
+											<th>策略名称</th>
+											<th>是否报警</th>
+											<th>站内信报警</th>
+											<th>邮件报警</th>
+											<th>短信报警</th>
+											<th>报警策略</th>
+											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${page.resultList}" var="service">
+										<c:forEach items="${alarmPolicyEntity}" var="alarmPolicy">
 											<tr>
-												<td>${service.serviceName}</td>
-												<td>${service.serviceAddress}</td>
-												<td>${service.servicePort}</td>
+												<td>${alarmPolicy.alarmPolicyName}</td>
 												<td>
-													<c:if test="${service.status == 0}">关闭</c:if>
-													<c:if test="${service.status != 0}">开启</c:if>
+													<c:if test="${alarmPolicy.sendFlag == 0}">不报警</c:if>
+													<c:if test="${alarmPolicy.sendFlag == 1}">报警</c:if>
 												</td>
 												<td>
-													<c:if test="${service.load == 0}"><span class="label label-sm label-inverse">无</span></c:if>
-													<c:if test="${service.load == 1}"><span class="label label-sm label-success">良好</span></c:if>
-													<c:if test="${service.load == 2}"><span class="label label-sm label-success">正常</span></c:if>
-													<c:if test="${service.load == 3}"><span class="label label-sm label-warning">警告</span></c:if>
-													<c:if test="${service.load == 4}"><span class="label label-sm label-danger">过高</span></c:if>
+													<c:if test="${alarmPolicy.sendMessage == 0}">不发送</c:if>
+													<c:if test="${alarmPolicy.sendMessage == 1}">发送</c:if>
 												</td>
-												<td>${service.normName}</td>
-												<td>${service.alarmPolicyName}</td>
+												<td>
+													<c:if test="${alarmPolicy.sendEmail == 0}">不发送</c:if>
+													<c:if test="${alarmPolicy.sendEmail == 1}">发送</c:if>
+												</td>
+												<td>
+													<c:if test="${alarmPolicy.sendPhone == 0}">不发送</c:if>
+													<c:if test="${alarmPolicy.sendPhone == 1}">发送</c:if>
+												</td>
+												<td>
+													<c:if test="${alarmPolicy.alarmPolicyLevel == 1}">一般</c:if>
+													<c:if test="${alarmPolicy.alarmPolicyLevel == 2}">警告</c:if>
+													<c:if test="${alarmPolicy.alarmPolicyLevel == 3}">过高</c:if>
+												</td>
 												<td>
 													<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-														<c:if test="${service.status != 0}">
-															<a class="blue" href="serviceDetail?id=${service.id}" title="查看"> <i class="icon-zoom-in bigger-130"></i></a> 
-														</c:if>
-														<a class="green" href="updateService?id=${service.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
-														<c:if test="${service.id != 1}">
-															<a class="red" href="#" onclick="deleteService('${service.id}');" title="删除" > <i class="icon-trash bigger-130"></i></a>
-														</c:if>
+														<a class="blue" href="detailAlarmPolicy?id=${alarmPolicy.id}" title="查看"> <i class="icon-zoom-in bigger-130"></i></a> 
+														<a class="green" href="updateSystemAlarmPolicy?id=${alarmPolicy.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
 													</div>
 												</td>
 											</tr>
@@ -123,7 +122,7 @@
 							</div>
 						</div>
 					</div>
-					<!-- 服务管理列表 -->
+					<!-- 系统策略列表 -->
 				</div>
 			</div>
 		</div>
@@ -132,12 +131,12 @@
 		</a>
 	</div>
 	<script type="text/javascript">
-		// 删除服务
-		function deleteService(id) {
+		// 删除策略
+		function deletePolicy(id) {
 			bootbox.setDefaults("locale","zh_CN");  
 			bootbox.confirm("是否确认删除？", function(re) {
 				if (re) {
-					location.href = "deleteService?id=" + id;
+					location.href = "deleteAlarmPolicy?id=" + id;
 				}
 			});
 		}

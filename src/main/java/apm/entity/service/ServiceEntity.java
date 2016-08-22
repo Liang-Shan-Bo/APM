@@ -61,9 +61,9 @@ public class ServiceEntity {
 	// 指标名称
 	private String normName;
 	// 报警策略ID
-	private Integer warnId;
+	private Integer alarmPolicyId;
 	// 报警策略名称
-	private Integer warnName;
+	private String alarmPolicyName;
 
 	public Integer getId() {
 		return id;
@@ -221,22 +221,22 @@ public class ServiceEntity {
 	public void setNormId(Integer normId) {
 		this.normId = normId;
 	}
-	public Integer getWarnId() {
-		return warnId;
-	}
-	public void setWarnId(Integer warnId) {
-		this.warnId = warnId;
-	}
 	public String getNormName() {
 		return normName;
 	}
 	public void setNormName(String normName) {
 		this.normName = normName;
 	}
-	public Integer getWarnName() {
-		return warnName;
+	public Integer getAlarmPolicyId() {
+		return alarmPolicyId;
 	}
-	public void setWarnName(Integer warnName) {
-		this.warnName = warnName;
+	public void setAlarmPolicyId(Integer alarmPolicyId) {
+		this.alarmPolicyId = alarmPolicyId;
+	}
+	public String getAlarmPolicyName() {
+		return alarmPolicyName;
+	}
+	public void setAlarmPolicyName(String alarmPolicyName) {
+		this.alarmPolicyName = alarmPolicyName;
 	}
 }

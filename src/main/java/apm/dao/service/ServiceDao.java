@@ -51,9 +51,12 @@ public class ServiceDao {
 	public List<ServiceEntity> getServiceList(Page<ServiceEntity> page) {
 		String sql = "SELECT * FROM (" + 
 						 "SELECT A.*, ROWNUM RN FROM ( " + 
-						 "select t.*,n.norm_name " +
-							 "from apm_service_info t,apm_norm n " + 
-							 "where t.norm_id = n.id " +
+						 "select t.*,n.norm_name,p.alarm_policy_name " +
+							 "from apm_service_info t " +
+							 "join apm_norm n " + 
+							 "on t.norm_id = n.id " +
+							 "join apm_alarm_policy p " + 
+							 "on t.alarm_policy_id = p.id " +
 							 "order by t.id ) A " + 
 						 "WHERE ROWNUM <= ? ) page " + 
 					 "WHERE RN >= ?";
@@ -82,16 +85,16 @@ public class ServiceDao {
 						"jvm_name," +
 						"jvm_version," +
 						"norm_id," +
-						"warn_id" +
-					") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+						"alarm_policy_id" +
+					") values(APM_SERVICE_INFO_SEQ.Nextval,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		jdbcTemplate.update(
 				sql,
-				new Object[]{getId(), serviceEntity.getServiceName(), serviceEntity.getServiceAddress(),
+				new Object[]{serviceEntity.getServiceName(), serviceEntity.getServiceAddress(),
 						serviceEntity.getServicePort(), serviceEntity.getMonitorPort(),
 						serviceEntity.getCpuAvailableCount(), serviceEntity.getSystemName(),
 						serviceEntity.getSystemArch(), serviceEntity.getSystemVersion(), serviceEntity.getJvmVendor(),
 						serviceEntity.getJvmName(), serviceEntity.getJvmVersion(), serviceEntity.getNormId(),
-						serviceEntity.getWarnId()});
+						serviceEntity.getAlarmPolicyId()});
 	}
 	
 	/**
@@ -104,11 +107,12 @@ public class ServiceDao {
 						"service_address=?," +
 						"service_port=?," +
 					 	"monitor_port=?," +
-					 	"norm_id=?" +
+					 	"norm_id=?," +
+					 	"alarm_policy_id=?" +
 					  	"where id=?";
 		jdbcTemplate.update(sql, new Object[]{serviceEntity.getServiceName(), serviceEntity.getServiceAddress(),
 				serviceEntity.getServicePort(), serviceEntity.getMonitorPort(), serviceEntity.getNormId(),
-				serviceEntity.getId()});
+				serviceEntity.getAlarmPolicyId(), serviceEntity.getId()});
 	}
 	
 	/**
@@ -118,20 +122,6 @@ public class ServiceDao {
 	public void deleteService(int id) {
 		String sql = "delete from apm_service_info where id=?";
 		jdbcTemplate.update(sql, new Object[]{id});
-	}
-	
-	/**
-	 * 获取ID
-	 * 
-	 * @return Page
-	 */
-	public int getId() {
-		String sql = "select max(id) from apm_service_info";
-		Integer id = jdbcTemplate.queryForObject(sql,Integer.class);
-		if (id == null) {
-			return 1;
-		}
-		return ++id;
 	}
 	
 	/**

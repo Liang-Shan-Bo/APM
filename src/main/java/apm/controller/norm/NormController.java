@@ -105,7 +105,7 @@ public class NormController {
 	@RequestMapping(value = "/updateNorm", method = RequestMethod.POST)
 	public String updateNorm(Model model, NormEntity normEntity) {
 		normService.updateNorm(normEntity);
-		if (normEntity.getServiceType() == 1) {
+		if (normEntity.getServiceType() == Constants.SERVICE_NORM_TYPE) {
 			return "redirect:/serviceNormList";
 		}else {
 			return "redirect:/systemNormList";
@@ -131,8 +131,8 @@ public class NormController {
 	 */
 	@RequestMapping(value = "/checkName", method = RequestMethod.GET)
 	@ResponseBody
-	private boolean checkName(String normName) {
-		return normService.checkName(normName);
+	private boolean checkName(NormEntity normEntity) {
+		return normService.checkName(normEntity);
 	}
 	
 	/**

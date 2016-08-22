@@ -50,7 +50,7 @@ public class NormDao {
 	 * @return List<NormEntity>
 	 */
 	public List<NormEntity> getServiceNormListAll() {
-		String sql = "select * from apm_norm where service_type = 1";
+		String sql = "select * from apm_norm where service_type = 1 order by id";
 		List<NormEntity> list = (List<NormEntity>) jdbcTemplate.query(sql, new BeanPropertyRowMapper<NormEntity>(
 				NormEntity.class));
 		return list;
@@ -81,7 +81,7 @@ public class NormDao {
 	 * @return List<NormEntity>
 	 */
 	public List<NormEntity> getSystemNormList() {
-		String sql = "select * from apm_norm t where t.service_type = 2";
+		String sql = "select * from apm_norm t where t.service_type = 2 order by id";
 		List<NormEntity> list = (List<NormEntity>) jdbcTemplate.query(sql, new BeanPropertyRowMapper<NormEntity>(
 				NormEntity.class));
 		return list;
@@ -100,9 +100,9 @@ public class NormDao {
 						"norm_warning," +
 						"norm_danger," +
 						"service_type" +
-					") values(?,?,?,?,?,?,?)";
+					") values(APM_NORM_SEQ.Nextval,?,?,?,?,?,?)";
 		jdbcTemplate.update(sql,
-				new Object[]{getId(), normEntity.getNormName(), normEntity.getNormType(), normEntity.getNormNormal(),
+				new Object[]{normEntity.getNormName(), normEntity.getNormType(), normEntity.getNormNormal(),
 						normEntity.getNormWarning(), normEntity.getNormDanger(), Constants.SERVICE_NORM_TYPE});
 	}
 	
@@ -132,20 +132,6 @@ public class NormDao {
 	}
 	
 	/**
-	 * 获取ID
-	 * 
-	 * @return int
-	 */
-	public int getId() {
-		String sql = "select max(id) from apm_norm";
-		Integer id = jdbcTemplate.queryForObject(sql, Integer.class);
-		if (id == null) {
-			return 1;
-		}
-		return ++id;
-	}
-	
-	/**
 	 * 校验指标名称是否存在
 	 * 
 	 * @return int
@@ -157,7 +143,7 @@ public class NormDao {
 	}
 	
 	/**
-	 * 校验指标名称是否存在
+	 * 校验指标名称是否被使用
 	 * 
 	 * @return int
 	 */

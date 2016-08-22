@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>  
 <div class="navbar navbar-default" id="navbar">
 	<script type="text/javascript">
 		try {
@@ -41,7 +42,7 @@
 				<li class="light-blue">
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle"> 
 						<img class="nav-user-photo" src="style/assets/avatars/user.jpg" alt="Jason's Photo" /> 
-						<span class="user-info"> <small>欢迎光临,</small> Admin </span> 
+						<span class="user-info"> <small>欢迎 登录<br/><shiro:user><shiro:principal/></shiro:user></span> 
 						<i class="icon-caret-down"></i>
 					</a>
 					<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">

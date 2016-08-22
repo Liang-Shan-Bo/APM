@@ -19,6 +19,7 @@
         <param-value>60000</param-value>
     </context-param>
     <!-- Log4J Configuration -->
+    
   	<!-- Context Listener -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -29,7 +30,7 @@
 	</listener>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/applicationContext.xml</param-value>
+		<param-value>/WEB-INF/applicationContext*</param-value>
 	</context-param>
 	
 	<!-- Character Encoding Filter -->
@@ -78,6 +79,17 @@
 	</servlet-mapping>
 	<!-- Static Resource Config -->
 	
+	<!-- Shiro Config -->
+	<filter>
+		<filter-name>shiroFilter</filter-name>
+	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>shiroFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- Shiro Config -->
+	
 	<!-- Spring MVC Dispatcher Servlet Config -->
 	<servlet>
 		<servlet-name>apm-server</servlet-name>
@@ -95,7 +107,7 @@
 	
 	<!-- Spring MVC Dispatcher Servlet Config -->
 	<welcome-file-list>
-  		<welcome-file>/WEB-INF/view/index.jsp</welcome-file>
+  		<welcome-file>/WEB-INF/view/login/login.jsp</welcome-file>
   	</welcome-file-list>
   	
   	<error-page>  

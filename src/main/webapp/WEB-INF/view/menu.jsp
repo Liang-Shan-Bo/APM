@@ -56,10 +56,10 @@
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="#"> <i class="icon-double-angle-right"></i> 服务策略</a>
+					<a href="<%=basePath%>/serviceAlarmPolicyList"> <i class="icon-double-angle-right"></i> 服务策略</a>
 				</li>
 				<li>
-					<a href="#"> <i class="icon-double-angle-right"></i> 系统策略</a>
+					<a href="<%=basePath%>/systemAlarmPolicyList"> <i class="icon-double-angle-right"></i> 系统策略</a>
 				</li>
 			</ul>
 		</li>
@@ -82,7 +82,7 @@
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="#"> <i class="icon-double-angle-right"></i> 系统信息</a>
+					<a href="#"> <i class="icon-double-angle-right"></i> 操作系统信息</a>
 				</li>
 				<li>
 					<a href="#"> <i class="icon-double-angle-right"></i> ping监控</a>

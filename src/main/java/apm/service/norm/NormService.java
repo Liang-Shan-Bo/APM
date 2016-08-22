@@ -88,10 +88,17 @@ public class NormService {
 	 * 
 	 * @return boolean
 	 */
-	public boolean checkName(String normName) {
-		if (normDao.checkName(normName) != 0) {
+	public boolean checkName(NormEntity normEntity) {
+		if (normEntity.getId() != null) {
+			if (normDao.getNormById(normEntity.getId()).getNormName()
+					.equals(normEntity.getNormName())) {
+				return true;
+			}
+		}
+		int count = normDao.checkName(normEntity.getNormName());
+		if (count > 0) {
 			return false;
-		}else {
+		} else {
 			return true;
 		}
 	}
