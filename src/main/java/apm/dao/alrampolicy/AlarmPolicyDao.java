@@ -1,9 +1,12 @@
 package apm.dao.alrampolicy;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -42,6 +45,17 @@ public class AlarmPolicyDao {
 		AlarmPolicyEntity AlarmPolicyEntity = (AlarmPolicyEntity) jdbcTemplate.queryForObject(sql, new Object[]{id},
 				new BeanPropertyRowMapper<AlarmPolicyEntity>(AlarmPolicyEntity.class));
 		return AlarmPolicyEntity;
+	}
+	
+	/**
+	 * 根据策略名获取ID
+	 * 
+	 * @return AlarmPolicyEntity
+	 */
+	public Integer getAlarmPolicyByName(String name) {
+		String sql = "select id from apm_alarm_policy where alarm_policy_name=?";
+		Integer id = (Integer) jdbcTemplate.queryForObject(sql, new Object[]{name}, Integer.class);
+		return id;
 	}
 	
 	/**
@@ -99,24 +113,13 @@ public class AlarmPolicyDao {
 						"send_message," +
 						"send_email," +
 						"send_phone," +
-						"message_start_time," +
-						"message_end_time," +
-						"email_start_time," +
-						"email_end_time," +
-						"phone_start_time," +
-						"phone_end_time," +
 						"alarm_policy_level," +
-						"alarm_policy_type" +
-					") values(APM_ALARM_POLICY_SEQ.Nextval,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		jdbcTemplate.update(
-				sql,
-				new Object[]{alarmPolicyEntity.getAlarmPolicyName(), alarmPolicyEntity.getSendFlag(),
-						alarmPolicyEntity.getSendMessage(), alarmPolicyEntity.getSendEmail(),
-						alarmPolicyEntity.getSendPhone(), alarmPolicyEntity.getMessageStartTime(),
-						alarmPolicyEntity.getMessageEndTime(), alarmPolicyEntity.getEmailStartTime(),
-						alarmPolicyEntity.getEmailEndTime(), alarmPolicyEntity.getPhoneStartTime(),
-						alarmPolicyEntity.getPhoneEndTime(), alarmPolicyEntity.getAlarmPolicyLevel(),
-						Constants.SERVICE_POLICY_TYPE});
+						"alarm_policy_type," +
+						"delete_flag" +
+					    ") values(APM_ALARM_POLICY_SEQ.Nextval,?,?,?,?,?,?,?,1)";
+		jdbcTemplate.update(sql, new Object[]{alarmPolicyEntity.getAlarmPolicyName(), alarmPolicyEntity.getSendFlag(),
+				alarmPolicyEntity.getSendMessage(), alarmPolicyEntity.getSendEmail(), alarmPolicyEntity.getSendPhone(),
+				alarmPolicyEntity.getAlarmPolicyLevel(), Constants.SERVICE_POLICY_TYPE});
 	}
 	
 	/**
@@ -130,23 +133,11 @@ public class AlarmPolicyDao {
 						"send_message=?," +
 						"send_email=?," +
 						"send_phone=?," +
-						"message_start_time=?," +
-						"message_end_time=?," +
-						"email_start_time=?," +
-						"email_end_time=?," +
-						"phone_start_time=?," +
-						"phone_end_time=?," +
 						"alarm_policy_level=?" +
 					  	"where id=?";
-		jdbcTemplate.update(
-				sql,
-				new Object[]{alarmPolicyEntity.getAlarmPolicyName(), alarmPolicyEntity.getSendFlag(),
-						alarmPolicyEntity.getSendMessage(), alarmPolicyEntity.getSendEmail(),
-						alarmPolicyEntity.getSendPhone(), alarmPolicyEntity.getMessageStartTime(),
-						alarmPolicyEntity.getMessageEndTime(), alarmPolicyEntity.getEmailStartTime(),
-						alarmPolicyEntity.getEmailEndTime(), alarmPolicyEntity.getPhoneStartTime(),
-						alarmPolicyEntity.getPhoneEndTime(), alarmPolicyEntity.getAlarmPolicyLevel(),
-						alarmPolicyEntity.getId()});
+		jdbcTemplate.update(sql, new Object[]{alarmPolicyEntity.getAlarmPolicyName(), alarmPolicyEntity.getSendFlag(),
+				alarmPolicyEntity.getSendMessage(), alarmPolicyEntity.getSendEmail(), alarmPolicyEntity.getSendPhone(),
+				alarmPolicyEntity.getAlarmPolicyLevel(), alarmPolicyEntity.getId()});
 	}
 	
 	/**
@@ -155,6 +146,15 @@ public class AlarmPolicyDao {
 	 */
 	public void deleteAlarmPolicy(int id) {
 		String sql = "delete from apm_alarm_policy where id=?";
+		jdbcTemplate.update(sql, new Object[]{id});
+	}
+	
+	/**
+	 * 删除策略角色列表
+	 * 
+	 */
+	public void deleteAlarmPolicyUser(int id) {
+		String sql = "delete from apm_policy_user where alarm_policy_id=?";
 		jdbcTemplate.update(sql, new Object[]{id});
 	}
 	
@@ -177,6 +177,30 @@ public class AlarmPolicyDao {
 	public int getPolicyCount(int id) {
 		String sql = "select count(*) from apm_service_info where alarm_policy_id = ?";
 		return jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
+	}
+	
+	/**
+	 * 添加策略角色
+	 * 
+	 */
+	public void createAlarmPolicyUser(int policyId, int[] users) {
+		if (users == null) {
+			return;
+		}
+		String sql = "insert into apm_policy_user(alarm_policy_id,user_id) values (?,?)";
+		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setInt(1, policyId);
+				ps.setInt(2, users[i]);
+			}
+
+			@Override
+			public int getBatchSize() {
+				return users.length;
+			}
+		});
 	}
 	
 }

@@ -130,7 +130,6 @@
 		});
 
 		// 校验表单
-		
 		$("#updateForm").validate({
 			errorElement : 'div',
 			errorClass : 'help-block',

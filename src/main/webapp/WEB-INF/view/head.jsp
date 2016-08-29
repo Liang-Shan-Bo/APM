@@ -42,7 +42,14 @@
 				<li class="light-blue">
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle"> 
 						<img class="nav-user-photo" src="style/assets/avatars/user.jpg" alt="Jason's Photo" /> 
-						<span class="user-info"> <small>欢迎 登录<br/><shiro:user><shiro:principal/></shiro:user></span> 
+						<span class="user-info"> 
+							<small>
+								欢迎登录<br/>
+								<shiro:user>
+									<shiro:principal/>
+								</shiro:user>
+							</small>
+						</span> 
 						<i class="icon-caret-down"></i>
 					</a>
 					<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">

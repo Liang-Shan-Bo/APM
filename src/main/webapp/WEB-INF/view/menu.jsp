@@ -72,7 +72,7 @@
 					<a href="<%=basePath%>/serviceNormList"> <i class="icon-double-angle-right"></i> 服务指标</a>
 				</li>
 				<li>
-					<a href="<%=basePath%>/systemNormList""> <i class="icon-double-angle-right"></i> 系统指标</a>
+					<a href="<%=basePath%>/systemNormList"> <i class="icon-double-angle-right"></i> 系统指标</a>
 				</li>
 			</ul>
 		</li>

@@ -1,6 +1,6 @@
 package apm.entity.user;
 
-import java.util.Set;
+import java.util.Date;
 
 /**
  * 用户实体类
@@ -16,8 +16,18 @@ public class User {
 	private String password;
 	// 姓名
 	private String userName;
-	// 角色列表
-	private Set<String> roleList;
+	// 手机号
+	private String phone;
+	// 邮箱地址
+	private String email;
+	// 创建时间
+	private Date createTime;
+	// 创建人
+	private Date createUser;
+	// 修改时间
+	private Date updateTime;
+	// 修改
+	private Date updateUser;
 
 	public Integer getId() {
 		return id;
@@ -37,17 +47,47 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Set<String> getRoleList() {
-		return roleList;
-	}
-	public void setRoleList(Set<String> roleList) {
-		this.roleList = roleList;
-	}
 	public String getLoginName() {
 		return loginName;
 	}
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public Date getCreateUser() {
+		return createUser;
+	}
+	public void setCreateUser(Date createUser) {
+		this.createUser = createUser;
+	}
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+	public Date getUpdateUser() {
+		return updateUser;
+	}
+	public void setUpdateUser(Date updateUser) {
+		this.updateUser = updateUser;
 	}
 
 }

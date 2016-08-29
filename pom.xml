@@ -129,6 +129,11 @@
 			<artifactId>sigar</artifactId>
 			<version>1.6.2</version>
 		</dependency>
+		<dependency>
+		    <groupId>ch.ethz.ganymed</groupId>
+		    <artifactId>ganymed-ssh2</artifactId>
+		    <version>262</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>apm</finalName>

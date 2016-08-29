@@ -56,7 +56,7 @@
 											<fieldset>
 												<label class="block clearfix">
 													<span class="block input-icon input-icon-right">
-														<input type="text" class="form-control" placeholder="用户名" name="userName"/>
+														<input type="text" class="form-control" placeholder="用户名" name="loginName"/>
 														<i class="icon-user"></i>
 													</span>
 												</label>

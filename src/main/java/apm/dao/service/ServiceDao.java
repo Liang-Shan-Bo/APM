@@ -57,7 +57,7 @@ public class ServiceDao {
 							 "on t.norm_id = n.id " +
 							 "join apm_alarm_policy p " + 
 							 "on t.alarm_policy_id = p.id " +
-							 "order by t.id ) A " + 
+							 "order by t.delete_flag,t.id ) A " + 
 						 "WHERE ROWNUM <= ? ) page " + 
 					 "WHERE RN >= ?";
 		List<ServiceEntity> list = (List<ServiceEntity>) jdbcTemplate.query(sql,
@@ -85,8 +85,13 @@ public class ServiceDao {
 						"jvm_name," +
 						"jvm_version," +
 						"norm_id," +
-						"alarm_policy_id" +
-					") values(APM_SERVICE_INFO_SEQ.Nextval,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+						"alarm_policy_id," +
+						"service_user_name," +
+						"service_password," +
+						"startup_path," +
+						"shutdown_path," +
+						"delete_falg" +
+					") values(APM_SERVICE_INFO_SEQ.Nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)";
 		jdbcTemplate.update(
 				sql,
 				new Object[]{serviceEntity.getServiceName(), serviceEntity.getServiceAddress(),
@@ -94,7 +99,9 @@ public class ServiceDao {
 						serviceEntity.getCpuAvailableCount(), serviceEntity.getSystemName(),
 						serviceEntity.getSystemArch(), serviceEntity.getSystemVersion(), serviceEntity.getJvmVendor(),
 						serviceEntity.getJvmName(), serviceEntity.getJvmVersion(), serviceEntity.getNormId(),
-						serviceEntity.getAlarmPolicyId()});
+						serviceEntity.getAlarmPolicyId(), serviceEntity.getServiceUserName(),
+						serviceEntity.getServicePassword(), serviceEntity.getStartupPath(),
+						serviceEntity.getShutdownPath()});
 	}
 	
 	/**
@@ -108,11 +115,19 @@ public class ServiceDao {
 						"service_port=?," +
 					 	"monitor_port=?," +
 					 	"norm_id=?," +
-					 	"alarm_policy_id=?" +
+					 	"alarm_policy_id=?," +
+					 	"service_user_name=?," +
+						"service_password=?," +
+						"startup_path=?," +
+						"shutdown_path=?" +
 					  	"where id=?";
-		jdbcTemplate.update(sql, new Object[]{serviceEntity.getServiceName(), serviceEntity.getServiceAddress(),
-				serviceEntity.getServicePort(), serviceEntity.getMonitorPort(), serviceEntity.getNormId(),
-				serviceEntity.getAlarmPolicyId(), serviceEntity.getId()});
+		jdbcTemplate.update(
+				sql,
+				new Object[]{serviceEntity.getServiceName(), serviceEntity.getServiceAddress(),
+						serviceEntity.getServicePort(), serviceEntity.getMonitorPort(), serviceEntity.getNormId(),
+						serviceEntity.getAlarmPolicyId(), serviceEntity.getServiceUserName(),
+						serviceEntity.getServicePassword(), serviceEntity.getStartupPath(),
+						serviceEntity.getShutdownPath(), serviceEntity.getId()});
 	}
 	
 	/**

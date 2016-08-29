@@ -16,6 +16,14 @@ public class ServiceEntity {
 	private String servicePort;
 	// 服务监控端口号
 	private String monitorPort;
+	// 登录系统用户名
+	private String serviceUserName;
+	// 登录系统用户口令
+	private String servicePassword;
+	// 启动脚本路径
+	private String startupPath;
+	// 关闭脚本路径
+	private String shutdownPath;
 	// CPU可使用数
 	private Integer cpuAvailableCount;
 	// 系统名称
@@ -64,6 +72,8 @@ public class ServiceEntity {
 	private Integer alarmPolicyId;
 	// 报警策略名称
 	private String alarmPolicyName;
+	// 删除标识(0:不可删除;1:可删除)
+	private Integer deleteFlag;
 
 	public Integer getId() {
 		return id;
@@ -238,5 +248,35 @@ public class ServiceEntity {
 	}
 	public void setAlarmPolicyName(String alarmPolicyName) {
 		this.alarmPolicyName = alarmPolicyName;
+	}
+	public String getStartupPath() {
+		return startupPath;
+	}
+	public void setStartupPath(String startupPath) {
+		this.startupPath = startupPath;
+	}
+	public String getShutdownPath() {
+		return shutdownPath;
+	}
+	public void setShutdownPath(String shutdownPath) {
+		this.shutdownPath = shutdownPath;
+	}
+	public String getServiceUserName() {
+		return serviceUserName;
+	}
+	public void setServiceUserName(String serviceUserName) {
+		this.serviceUserName = serviceUserName;
+	}
+	public String getServicePassword() {
+		return servicePassword;
+	}
+	public void setServicePassword(String servicePassword) {
+		this.servicePassword = servicePassword;
+	}
+	public Integer getDeleteFlag() {
+		return deleteFlag;
+	}
+	public void setDeleteFlag(Integer deleteFlag) {
+		this.deleteFlag = deleteFlag;
 	}
 }

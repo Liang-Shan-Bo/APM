@@ -22,7 +22,9 @@ public class NormEntity {
 	private Integer serviceType;
 	// 是否使用
 	private boolean used;
-	
+	// 删除标识(0:不可删除;1:可删除)
+	private Integer deleteFlag;
+
 	public Integer getId() {
 		return id;
 	}
@@ -70,5 +72,11 @@ public class NormEntity {
 	}
 	public void setServiceType(Integer serviceType) {
 		this.serviceType = serviceType;
+	}
+	public Integer getDeleteFlag() {
+		return deleteFlag;
+	}
+	public void setDeleteFlag(Integer deleteFlag) {
+		this.deleteFlag = deleteFlag;
 	}
 }

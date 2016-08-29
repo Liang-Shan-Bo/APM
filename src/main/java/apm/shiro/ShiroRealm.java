@@ -1,5 +1,9 @@
 package apm.shiro;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -15,6 +19,10 @@ import org.springframework.stereotype.Component;
 
 import apm.entity.user.User;
 
+/**
+ * @author songyekun
+ *
+ */
 @Component
 public class ShiroRealm extends AuthorizingRealm {
 
@@ -33,13 +41,7 @@ public class ShiroRealm extends AuthorizingRealm {
 			// 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			// 用户的角色集合
-			info.addRole("user");
-//			info.setRoles(user.getRoleList());
-			// 用户的角色对应的所有权限，如果只使用角色定义访问权限，下面的四行可以不要
-			// List<Role> roleList = user.getRoleList();
-			// for (Role role : roleList) {
-			// info.addStringPermissions(role.getPermissionsName());
-			// }
+			info.setRoles(getRoles(loginName));
 			return info;
 		}
 		return null;
@@ -62,11 +64,30 @@ public class ShiroRealm extends AuthorizingRealm {
 		return null;
 	}
 
+	/**
+	 * 获取用户
+	 * 
+	 * @param loginName
+	 * @return User
+	 */
 	private User getUserByName(String loginName) {
 		String sql = "select * from apm_user where login_name=?";
 		User user = (User) jdbcTemplate.queryForObject(sql, new Object[]{loginName}, new BeanPropertyRowMapper<User>(
 				User.class));
 		return user;
+	}
+
+	/**
+	 * 获取角色列表
+	 * 
+	 * @param loginName
+	 * @return Set<String>
+	 */
+	private Set<String> getRoles(String loginName) {
+		String sql = "select r.role_name from apm_user u,apm_role r,apm_user_role ur where u.login_name=? and ur.user_id =u.id and ur.role_id = r.id";
+		List<String> roles = (List<String>) jdbcTemplate.queryForList(sql, new Object[]{loginName},
+				java.lang.String.class);
+		return new HashSet<String>(roles);
 	}
 
 	public JdbcTemplate getJdbcTemplate() {

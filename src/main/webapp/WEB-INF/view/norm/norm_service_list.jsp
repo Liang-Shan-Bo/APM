@@ -95,12 +95,14 @@
 												</td>
 												<td>
 													<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-														<c:if test="${norm.id != 1}">
+														<shiro:hasRole name="admin"> 
 															<a class="green" href="updateServiceNorm?id=${norm.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
-															<c:if test="${norm.used == false}">
-																<a class="red" href="#" onclick="deleteService('${norm.id}');" title="删除"> <i class="icon-trash bigger-130"></i></a>
-															</c:if> 
-														</c:if>
+															<c:if test="${norm.deleteFlag == 1}">
+																<c:if test="${norm.used == false}">
+																	<a class="red" href="#" onclick="deleteService('${norm.id}');" title="删除"> <i class="icon-trash bigger-130"></i></a>
+																</c:if> 
+															</c:if>
+														</shiro:hasRole>
 													</div>
 												</td>
 											</tr>

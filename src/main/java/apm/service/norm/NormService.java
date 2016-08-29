@@ -115,5 +115,14 @@ public class NormService {
 			return false;
 		}
 	}
+	
+	/**
+	 * 根据策略获取系统报警指标
+	 * 
+	 * @return int
+	 */
+	public Integer getNormByNormType(int type) {
+		return normDao.getNormByNormType(type);
+	}
 
 }

@@ -24,6 +24,7 @@
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
 <script src="style/assets/js/ace-extra.min.js"></script>
+<script src="style/assets/js/bootbox.min.js"></script>
 </head>
 
 <body>
@@ -91,13 +92,49 @@
 										<input type="text" id="servicePort" class="col-xs-10 col-sm-4" name="servicePort"/>
 									</div>
 								</div>
-		
+								
 								<div class="space-4"></div>
 								
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="monitorPort"> 监控端口号 </label>
 									<div class="col-sm-9">
 										<input type="text" id="monitorPort" class="col-xs-10 col-sm-4" name="monitorPort"/>
+									</div>
+								</div>
+								
+								<div class="space-4"></div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="serviceUserName"> 登录系统用户名 </label>
+									<div class="col-sm-9">
+										<input type="text" id="serviceUserName" class="col-xs-10 col-sm-4" name="serviceUserName"/>
+									</div>
+								</div>
+								
+								<div class="space-4"></div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="servicePassword"> 登录系统口令 </label>
+									<div class="col-sm-9">
+										<input type="text" id="servicePassword" class="col-xs-10 col-sm-4" name="servicePassword"/>
+									</div>
+								</div>
+								
+								<div class="space-4"></div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="startupPath"> 启动脚本路径 </label>
+									<div class="col-sm-9">
+										<input type="text" id="startupPath" class="col-xs-10 col-sm-4" name="startupPath"/>
+									</div>
+								</div>
+								
+								<div class="space-4"></div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="shutdownPath"> 关闭脚本路径 </label>
+									<div class="col-sm-9">
+										<input type="text" id="shutdownPath" class="col-xs-10 col-sm-4" name="shutdownPath"/>
 									</div>
 								</div>
 								
@@ -165,17 +202,26 @@
 							$("#createForm").submit();
 							break;
 						case 2:
-							alert("服务端口无法连接");
+							bootbox.alert({  
+					            buttons: { ok: { label: '确认' } },  
+					            message: '服务端口无法连接',  
+					        });
 							break;
 						case 3:
-							alert("监控端口无法连接");
+							bootbox.alert({  
+					            buttons: { ok: { label: '确认' } },  
+					            message: '监控端口无法连接',  
+					        });
 							break;
 						default:
 							break;
 						}
 					},
 					error : function(data){
-						alert("连接失败");
+						bootbox.alert({  
+				            buttons: { ok: { label: '确认' } },  
+				            message: '连接失败',  
+				        });
 					},
 				});
 			}

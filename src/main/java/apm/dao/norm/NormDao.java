@@ -27,7 +27,7 @@ public class NormDao {
 	 * 
 	 * @return int
 	 */
-	public int getNormCount() {
+	public Integer getNormCount() {
 		String sql = "select count(*) from apm_norm where service_type = 1";
 		return jdbcTemplate.queryForObject(sql, Integer.class);
 	}
@@ -99,8 +99,9 @@ public class NormDao {
 						"norm_normal," +
 						"norm_warning," +
 						"norm_danger," +
-						"service_type" +
-					") values(APM_NORM_SEQ.Nextval,?,?,?,?,?,?)";
+						"service_type," +
+						"delete_falg" +
+					") values(APM_NORM_SEQ.Nextval,?,?,?,?,?,?,1)";
 		jdbcTemplate.update(sql,
 				new Object[]{normEntity.getNormName(), normEntity.getNormType(), normEntity.getNormNormal(),
 						normEntity.getNormWarning(), normEntity.getNormDanger(), Constants.SERVICE_NORM_TYPE});
@@ -136,7 +137,7 @@ public class NormDao {
 	 * 
 	 * @return int
 	 */
-	public int checkName(String normName) {
+	public Integer checkName(String normName) {
 		String sql = "select count(*) from apm_norm where norm_name = ?";
 		return jdbcTemplate.queryForObject(sql,
 				new Object[]{normName}, Integer.class);
@@ -147,9 +148,32 @@ public class NormDao {
 	 * 
 	 * @return int
 	 */
-	public int getServiceCount(int id) {
+	public Integer getServiceCount(int id) {
 		String sql = "select count(*) from apm_service_info where norm_id = ?";
 		return jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
 	}
 	
+	/**
+	 * 根据策略获取系统报警指标
+	 * 
+	 * @return int
+	 */
+	public Integer getNormByNormType(int type) {
+		String sql = "select (case" +
+						"when (select t.alarm_policy_level " +
+						"from apm_alarm_policy t " +
+						"where t.alarm_policy_type = 2) = 1 then " +
+						"norm_normal " +
+						"when (select t.alarm_policy_level " +
+						"from apm_alarm_policy t " +
+						"where t.alarm_policy_type = 2) = 2 then " +
+						"norm_warning " +
+						"else " +
+						"norm_danger " +
+						"end) " +
+						"from apm_norm " +
+						"where norm_type = ? " +
+						"and service_type = 2";
+		return jdbcTemplate.queryForObject(sql, new Object[]{type}, Integer.class);
+	}
 }

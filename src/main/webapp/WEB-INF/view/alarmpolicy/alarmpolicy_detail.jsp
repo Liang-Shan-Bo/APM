@@ -18,23 +18,11 @@
 <link rel="stylesheet" type="text/css" href="style/assets/css/ace-skins.min.css" />
 <!-- ace settings handler -->
 <script src="js/jquery.min.js"></script>
-<script src="js/bootstrap-paginator.js"></script>
 <script src="style/assets/js/bootstrap.min.js"></script>
 <script src="style/assets/js/jquery.validate.min.js"></script>
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
 <script src="style/assets/js/ace-extra.min.js"></script>
-<script src="style/assets/js/fuelux/fuelux.spinner.min.js"></script>
-<script src="style/assets/js/bootbox.min.js"></script>
-<style>
-.time-font {
-	font-size: 25px;
-	height: 20px;
-	width: 10px;
-	margin-left: 3px;
-	margin-top: -36px;
-}
-</style>
 </head>
 
 <body>
@@ -78,12 +66,6 @@
 					<div class="row">
 						<div class="col-xs-12">
 							<form id="updateForm" class="form-horizontal" role="form" action="<%=path%>/updateAlarmPolicy" method="post">
-								<input type="hidden" id="messageStartTime" value="${alarmPolicyEntity.messageStartTime}"/>
-								<input type="hidden" id="messageEndTime" value="${alarmPolicyEntity.messageEndTime}"/>
-								<input type="hidden" id="emailStartTime" value="${alarmPolicyEntity.emailStartTime}"/>
-								<input type="hidden" id="emailEndTime" value="${alarmPolicyEntity.emailEndTime}"/>
-								<input type="hidden" id="phoneStartTime" value="${alarmPolicyEntity.phoneStartTime}"/>
-								<input type="hidden" id="phoneEndTime" value="${alarmPolicyEntity.phoneEndTime}"/>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"> 策略名称 </label>
 									<label class="col-xs-2"> ${alarmPolicyEntity.alarmPolicyName}</label>
@@ -104,8 +86,8 @@
 										<div class="space-4"></div>
 										
 										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right"> 发送站内信时间范围</label>
-											<label id="messageTime" class="col-xs-2"></label>
+											<label class="col-sm-3 control-label no-padding-right"> 是否发送站内信</label>
+											<label id="messageTime" class="col-xs-2">发送</label>
 										</div>
 									</c:if>
 									
@@ -113,8 +95,8 @@
 										<div class="space-4"></div>
 										
 										<div class="form-group">
-											<label class="col-sm-3 control-label no-padding-right"> 发送邮件时间范围</label>
-											<label id="emailTime" class="col-xs-2"></label>
+											<label class="col-sm-3 control-label no-padding-right"> 是否发送邮件</label>
+											<label id="emailTime" class="col-xs-2">发送</label>
 										</div>
 									</c:if>
 									
@@ -122,8 +104,8 @@
 										<div class="space-4"></div>
 										
 										<div class="form-group" >
-											<label class="col-sm-3 control-label no-padding-right"> 发送短信时间范围</label>
-											<label id="phoneTime" class="col-xs-2"></label>
+											<label class="col-sm-3 control-label no-padding-right"> 是否发送短信</label>
+											<label id="phoneTime" class="col-xs-2">发送</label>
 										</div>
 									</c:if>
 									
@@ -136,6 +118,17 @@
 											<c:if test="${alarmPolicyEntity.alarmPolicyLevel == 2}">警告</c:if>
 											<c:if test="${alarmPolicyEntity.alarmPolicyLevel == 3}">过高</c:if>
 										</label>
+									</div>
+									
+									<div class="space-4"></div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="users">报警角色</label>
+										<select class="class="col-xs-2" id="users" multiple="multiple" style="margin-left:12px;width:200px;height:155px;">
+											<c:forEach items="${userList}" var="user">
+												<option value="${user.id}">${user.loginName}</option>
+											</c:forEach>
+										</select>
 									</div>
 								</c:if>
 								
@@ -158,25 +151,6 @@
 			class="icon-double-angle-up icon-only bigger-110"></i>
 		</a>
 	</div>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			var ms = $("#messageStartTime").val().split(":");
-			var me = $("#messageEndTime").val().split(":");
-			var es = $("#emailStartTime").val().split(":");
-			var ee = $("#emailEndTime").val().split(":");
-			var ps = $("#phoneStartTime").val().split(":");
-			var pe = $("#phoneEndTime").val().split(":");
-			var mst = ms[0] + "时" + ms[1] + "分" + ms[2] + "秒";
-			var mse = me[0] + "时" + me[1] + "分" + me[2] + "秒";
-			var est = es[0] + "时" + es[1] + "分" + es[2] + "秒";
-			var ese = ee[0] + "时" + ee[1] + "分" + ee[2] + "秒";
-			var pst = ps[0] + "时" + ps[1] + "分" + ps[2] + "秒";
-			var pse = pe[0] + "时" + pe[1] + "分" + pe[2] + "秒";
-			$("#messageTime").text(mst + " 至 " + mse);
-			$("#emailTime").text(est + " 至 " + ese);
-			$("#phoneTime").text(pst + " 至 " + pse);
-		});
-	</script>
 </body>
 </html>
 

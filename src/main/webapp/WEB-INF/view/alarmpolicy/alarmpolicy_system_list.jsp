@@ -18,7 +18,6 @@
 <link rel="stylesheet" type="text/css" href="style/assets/css/ace-skins.min.css" />
 <!-- ace settings handler -->
 <script src="js/jquery.min.js"></script>
-<script src="js/bootstrap-paginator.js"></script>
 <script src="style/assets/js/bootstrap.min.js"></script>
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
@@ -110,7 +109,9 @@
 												<td>
 													<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
 														<a class="blue" href="detailAlarmPolicy?id=${alarmPolicy.id}" title="查看"> <i class="icon-zoom-in bigger-130"></i></a> 
-														<a class="green" href="updateSystemAlarmPolicy?id=${alarmPolicy.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
+														<shiro:hasRole name="admin">
+															<a class="green" href="updateSystemAlarmPolicy?id=${alarmPolicy.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
+													    </shiro:hasRole>
 													</div>
 												</td>
 											</tr>
@@ -140,65 +141,6 @@
 				}
 			});
 		}
-	</script>
-	<script type="text/javascript">
-		var element = $('#paginator');
-		var options = {
-			bootstrapMajorVersion : 3,
-			size : 'small',
-			itemTexts : function(type, page, current) {
-				switch (type) {
-				case "first":
-					return "首页";
-				case "prev":
-					return "上一页";
-				case "next":
-					return "下一页 ";
-				case "last":
-					return "末页";
-				case "page":
-					return page;
-				}
-			},
-			tooltipTitles : function(type, page, current) {
-				switch (type) {
-				case "first":
-					return "首页";
-				case "prev":
-					return "上一页";
-				case "next":
-					return "下一页";
-				case "last":
-					return "末页";
-				case "page":
-					return "第" + page + "页";
-				}
-			},
-			currentPage : "${page.currentPage}",
-			numberOfPages : 3,
-			totalPages : "${page.totalPage}"
-		}
-
-		element.bootstrapPaginator(options);
-
-		var cp = options.currentPage;
-		var tp = options.totalPages;
-		$("#paginator a").click(function() {
-			var page = $(this).text().trim();
-			if (page == "下一页") {
-				cp++;
-			} else if (page == "上一页") {
-				cp--;
-			} else if (page == "首页") {
-				cp = 1;
-			} else if (page == "末页") {
-				cp = tp;
-			} else {
-				cp = page;
-			}
-			$("#currentPage").val(cp);
-			$("#queryForm").submit();
-		});
 	</script>
 </body>
 </html>

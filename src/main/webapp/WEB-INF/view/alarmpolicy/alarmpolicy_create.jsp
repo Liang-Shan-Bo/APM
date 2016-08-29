@@ -12,29 +12,20 @@
 <!-- basic styles -->
 <link rel="stylesheet" type="text/css" href="style/assets/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="style/assets/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="style/assets/css/bootstrap-duallistbox.min.css" />
 <!-- ace styles -->
 <link rel="stylesheet" type="text/css" href="style/assets/css/ace.min.css" />
 <link rel="stylesheet" type="text/css" href="style/assets/css/ace-rtl.min.css" />
 <link rel="stylesheet" type="text/css" href="style/assets/css/ace-skins.min.css" />
 <!-- ace settings handler -->
 <script src="js/jquery.min.js"></script>
-<script src="js/bootstrap-paginator.js"></script>
 <script src="style/assets/js/bootstrap.min.js"></script>
+<script src="style/assets/js/jquery.bootstrap-duallistbox.min.js"></script>
 <script src="style/assets/js/jquery.validate.min.js"></script>
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
 <script src="style/assets/js/ace-extra.min.js"></script>
-<script src="style/assets/js/fuelux/fuelux.spinner.min.js"></script>
 <script src="style/assets/js/bootbox.min.js"></script>
-<style>
-.time-font {
-	font-size: 25px;
-	height: 20px;
-	width: 10px;
-	margin-left: 3px;
-	margin-top: -36px;
-}
-</style>
 </head>
 
 <body>
@@ -78,12 +69,6 @@
 					<div class="row">
 						<div class="col-xs-12">
 							<form id="createForm" class="form-horizontal" role="form" action="<%=path%>/createAlarmPolicy" method="post">
-								<input type="hidden" id="messageStartTime" name="messageStartTime"/>
-								<input type="hidden" id="messageEndTime" name="messageEndTime"/>
-								<input type="hidden" id="emailStartTime" name="emailStartTime"/>
-								<input type="hidden" id="emailEndTime" name="emailEndTime"/>
-								<input type="hidden" id="phoneStartTime" name="phoneStartTime"/>
-								<input type="hidden" id="phoneEndTime" name="phoneEndTime"/>
 								<input type="hidden" id="sendMessage" name="sendMessage"/>
 								<input type="hidden" id="sendEmail" name="sendEmail"/>
 								<input type="hidden" id="sendPhone" name="sendPhone"/>
@@ -121,25 +106,6 @@
 									
 									<div class="space-4"></div>
 									
-									<div class="form-group" id="messageTime" hidden="hidden">
-										<label class="col-sm-3 control-label no-padding-right"> 发送站内信时间范围</label>
-										<div class="col-sm-9">
-											<input type="text" class="input-mini" id="msgBeginHour"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="msgBeginMin"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="msgBeginSec"/>
-											<label class="time-font">-</label>
-											<input type="text" class="input-mini" id="msgEndHour"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="msgEndMin"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="msgEndSec"/>
-										</div>
-									</div>
-			
-									<div class="space-4"></div>
-									
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="email"> 是否发送邮件</label>
 										<div class="col-sm-9">
@@ -147,25 +113,6 @@
 												<input class="ace ace-checkbox-2" type="checkbox" id="email">
 												<span class="lbl"> </span>
 											</label>
-										</div>
-									</div>
-									
-									<div class="space-4"></div>
-									
-									<div class="form-group" id="emailTime" hidden="hidden">
-										<label class="col-sm-3 control-label no-padding-right"> 发送邮件时间范围</label>
-										<div class="col-sm-9">
-											<input type="text" class="input-mini" id="emlBeginHour"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="emlBeginMin"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="emlBeginSec"/>
-											<label class="time-font">-</label>
-											<input type="text" class="input-mini" id="emlEndHour"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="emlEndMin"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="emlEndSec"/>
 										</div>
 									</div>
 									
@@ -183,25 +130,6 @@
 									
 									<div class="space-4"></div>
 									
-									<div class="form-group" id="phoneTime" hidden="hidden">
-										<label class="col-sm-3 control-label no-padding-right"> 发送短信时间范围</label>
-										<div class="col-sm-9">
-											<input type="text" class="input-mini" id="phnBeginHour"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="phnBeginMin"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="phnBeginSec"/>
-											<label class="time-font">-</label>
-											<input type="text" class="input-mini" id="phnEndHour"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="phnEndMin"/>
-											<label class="time-font">:</label>
-											<input type="text" class="input-mini" id="phnEndSec"/>
-										</div>
-									</div>
-									
-									<div class="space-4"></div>
-									
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="alarmPolicyLevel"> 达到报警级别</label>
 										<div class="col-sm-9">
@@ -210,6 +138,21 @@
 												<option value="2">警告</option>
 												<option value="3">过高</option>
 											</select> 
+										</div>
+									</div>
+									
+									<div class="space-4"></div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="duallist">报警用户</label>
+
+										<div class="col-sm-8" style="margin-top: -17px;">
+											<select multiple="multiple" name="users" id="duallist">
+												<c:forEach items="${userList}" var="user">
+													<option value="${user.id}">${user.loginName}</option>
+												</c:forEach>
+											</select>
+											<div class="hr hr-16 hr-dotted"></div>
 										</div>
 									</div>
 								</div>
@@ -234,32 +177,17 @@
 			class="icon-double-angle-up icon-only bigger-110"></i>
 		</a>
 	</div>
-	<!-- 引用设置时间段JS -->
-	<script src="js/apm.time.js"></script>
 	<script type="text/javascript">
+		var dualListbox = $('select[name="users"]').bootstrapDualListbox({showFilterInputs: false,infoTextEmpty:'空',infoText:''});
+		
 		$(document).ready(function() {
 			sendFlagChange();
-			sendChange("message");
-			sendChange("email");
-			sendChange("phone");
 		});
 
 		$("#sendFlag").change(function() {
 			sendFlagChange();
 		});
 		
-		$("#message").click(function() {
-			sendChange("message");
-		});
-		
-		$("#email").click(function() {
-			sendChange("email");
-		});
-		
-		$("#phone").click(function() {
-			sendChange("phone");
-		});
-
 		// 是否报警
 		function sendFlagChange() {
 			if ($("#sendFlag").val() == 0) {
@@ -268,26 +196,32 @@
 				$("#send").show();
 			}
 		}
-		
-		// 是否发送
-		function sendChange(id) {
-			if (!$("#" + id).prop('checked')) {
-				$("#" + id + "Time").hide();
-			} else {
-				$("#" + id + "Time").show();
-			}
-		}
 
 		// 点击提交
 		$("#submitBtn").click(function() {
 			if ($("#sendFlag").val() == 1) {
 				if (!$("#message").prop('checked') && !$("#email").prop('checked') && !$("#phone").prop('checked')) {
-					bootbox.setDefaults("locale", "zh_CN");
-					bootbox.alert("请至少选择一种发送方式", function() {
-					});
+					bootbox.alert({  
+			            buttons: { ok: { label: '确认' } },  
+			            message: '请至少选择一种发送方式',  
+			        });
 					return;
 				} else {
-					setSendValue();
+					if ($("#message").prop('checked')) {
+						$("#sendMessage").val(1);
+					}else{
+						$("#sendMessage").val(0);
+					}
+					if ($("#email").prop('checked')) {
+						$("#sendEmail").val(1);
+					}else{
+						$("#sendEmail").val(0);
+					}
+					if ($("#phone").prop('checked')) {
+						$("#sendPhone").val(1);
+					}else{
+						$("#sendPhone").val(0);
+					}
 				}
 			}
 			$("#createForm").submit();

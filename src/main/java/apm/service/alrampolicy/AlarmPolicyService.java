@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import apm.dao.alrampolicy.AlarmPolicyDao;
 import apm.entity.alrampolicy.AlarmPolicyEntity;
@@ -62,8 +63,11 @@ public class AlarmPolicyService {
 	 * 添加策略
 	 * 
 	 */
+	@Transactional
 	public void createAlarmPolicy(AlarmPolicyEntity alarmPolicyEntity) {
 		alarmPolicyDao.createAlarmPolicy(alarmPolicyEntity);
+		int id = alarmPolicyDao.getAlarmPolicyByName(alarmPolicyEntity.getAlarmPolicyName());
+		alarmPolicyDao.createAlarmPolicyUser(id, alarmPolicyEntity.getUsers());
 	}
 	
 	/**
@@ -72,14 +76,19 @@ public class AlarmPolicyService {
 	 */
 	public void updateAlarmPolicy(AlarmPolicyEntity alarmPolicyEntity) {
 		alarmPolicyDao.updateAlarmPolicy(alarmPolicyEntity);
+		int id = alarmPolicyEntity.getId();
+		alarmPolicyDao.deleteAlarmPolicyUser(id);
+		alarmPolicyDao.createAlarmPolicyUser(id, alarmPolicyEntity.getUsers());
 	}
 	
 	/**
 	 * 删除策略
 	 * 
 	 */
+	@Transactional
 	public void deleteAlarmPolicy(int id) {
 		alarmPolicyDao.deleteAlarmPolicy(id);
+		alarmPolicyDao.deleteAlarmPolicyUser(id);
 	}
 
 

@@ -18,24 +18,16 @@ public class AlarmPolicyEntity {
 	private Integer sendEmail;
 	// 是否发送短信标识(0:否;1:是)
 	private Integer sendPhone;
-	// 发送站内信起始区间
-	private String messageStartTime;
-	// 发送站内信结束区间
-	private String messageEndTime;
-	// 发送邮件起始区间
-	private String emailStartTime;
-	// 发送邮件结束区间
-	private String emailEndTime;
-	// 发送短信起始区间
-	private String phoneStartTime;
-	// 发送短信结束区间
-	private String phoneEndTime;
 	// 报警级别(1：一般;2：警告;3：过高)
 	private Integer alarmPolicyLevel;
 	// 报警策略类型(1:服务策略;2:系统策略)
 	private Integer alarmPolicyType;
 	// 是否使用
 	private boolean used;
+	// 角色列表
+	private int[] users;
+	// 删除标识(0:不可删除;1:可删除)
+	private Integer deleteFlag;
 
 	public Integer getId() {
 		return id;
@@ -73,42 +65,6 @@ public class AlarmPolicyEntity {
 	public void setSendPhone(Integer sendPhone) {
 		this.sendPhone = sendPhone;
 	}
-	public String getMessageStartTime() {
-		return messageStartTime;
-	}
-	public void setMessageStartTime(String messageStartTime) {
-		this.messageStartTime = messageStartTime;
-	}
-	public String getMessageEndTime() {
-		return messageEndTime;
-	}
-	public void setMessageEndTime(String messageEndTime) {
-		this.messageEndTime = messageEndTime;
-	}
-	public String getEmailStartTime() {
-		return emailStartTime;
-	}
-	public void setEmailStartTime(String emailStartTime) {
-		this.emailStartTime = emailStartTime;
-	}
-	public String getEmailEndTime() {
-		return emailEndTime;
-	}
-	public void setEmailEndTime(String emailEndTime) {
-		this.emailEndTime = emailEndTime;
-	}
-	public String getPhoneStartTime() {
-		return phoneStartTime;
-	}
-	public void setPhoneStartTime(String phoneStartTime) {
-		this.phoneStartTime = phoneStartTime;
-	}
-	public String getPhoneEndTime() {
-		return phoneEndTime;
-	}
-	public void setPhoneEndTime(String phoneEndTime) {
-		this.phoneEndTime = phoneEndTime;
-	}
 	public Integer getAlarmPolicyLevel() {
 		return alarmPolicyLevel;
 	}
@@ -126,5 +82,17 @@ public class AlarmPolicyEntity {
 	}
 	public void setAlarmPolicyType(Integer alarmPolicyType) {
 		this.alarmPolicyType = alarmPolicyType;
+	}
+	public int[] getUsers() {
+		return users;
+	}
+	public void setUsers(int[] users) {
+		this.users = users;
+	}
+	public Integer getDeleteFlag() {
+		return deleteFlag;
+	}
+	public void setDeleteFlag(Integer deleteFlag) {
+		this.deleteFlag = deleteFlag;
 	}
 }

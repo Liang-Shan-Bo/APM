@@ -6,6 +6,7 @@ import java.lang.management.MemoryMXBean;
 import java.lang.management.OperatingSystemMXBean;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import apm.service.norm.NormService;
 import apm.service.service.ServiceService;
 import apm.util.Constants;
 import apm.util.Page;
+import apm.util.SystemUtil;
 
 /**
  * @author 服务监控控制层
@@ -45,7 +47,7 @@ public class ServiceController {
 
 	@Resource
 	private NormService normService;
-	
+
 	@Resource
 	private AlarmPolicyService alarmPolicyService;
 
@@ -57,7 +59,7 @@ public class ServiceController {
 	@RequestMapping(value = "/serviceList", method = RequestMethod.GET)
 	public String serviceList(Model model, Page<ServiceEntity> page) {
 		page = serviceService.getServiceList(page);
-		page.setResultList(setServieStatus(page.getResultList()));;
+		page.setResultList(setServiceStatus(page.getResultList()));
 		model.addAttribute("page", page);
 		return "service/service_list";
 	}
@@ -84,10 +86,10 @@ public class ServiceController {
 	 */
 	@RequestMapping(value = "/createService", method = RequestMethod.GET)
 	public String createPage(Model model) {
-		//获取指标列表
+		// 获取指标列表
 		List<NormEntity> normList = normService.getServiceNormListAll();
 		model.addAttribute("normList", normList);
-		//获取策略列表
+		// 获取策略列表
 		List<AlarmPolicyEntity> alarmPolicyList = alarmPolicyService.getServiceAlarmPolicyListAll();
 		model.addAttribute("alarmPolicyList", alarmPolicyList);
 		return "service/service_create";
@@ -114,10 +116,10 @@ public class ServiceController {
 	public String updatePage(Model model, @RequestParam int id) {
 		ServiceEntity serviceEntity = serviceService.getServiceById(id);
 		model.addAttribute("serviceEntity", serviceEntity);
-		//获取指标列表
+		// 获取指标列表
 		List<NormEntity> normList = normService.getServiceNormListAll();
 		model.addAttribute("normList", normList);
-		//获取策略列表
+		// 获取策略列表
 		List<AlarmPolicyEntity> alarmPolicyList = alarmPolicyService.getServiceAlarmPolicyListAll();
 		model.addAttribute("alarmPolicyList", alarmPolicyList);
 		return "service/service_update";
@@ -196,7 +198,7 @@ public class ServiceController {
 	 * 
 	 * @return String
 	 */
-	private List<ServiceEntity> setServieStatus(List<ServiceEntity> list) {
+	private List<ServiceEntity> setServiceStatus(List<ServiceEntity> list) {
 		for (ServiceEntity serviceEntity : list) {
 			int port = Integer.parseInt(serviceEntity.getServicePort());
 			int jmxport = Integer.parseInt(serviceEntity.getMonitorPort());
@@ -228,7 +230,7 @@ public class ServiceController {
 						serviceEntity.setLoad(Constants.SERVICE_LOAD_WARNING);
 					} else if (memTotal >= normEntity.getNormNormal() && memTotal < normEntity.getNormWarning()) {
 						serviceEntity.setLoad(Constants.SERVICE_LOAD_NORMAL);
-					}else {
+					} else {
 						serviceEntity.setLoad(Constants.SERVICE_LOAD_FAVORABLE);
 					}
 				} catch (Exception e) {
@@ -261,7 +263,6 @@ public class ServiceController {
 			JMXServiceURL ServiceURL = new JMXServiceURL(serviceUrl);
 			jmxConnector = JMXConnectorFactory.connect(ServiceURL);
 			MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
-
 			// 获取系统信息
 			OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.newPlatformMXBeanProxy(
 					mBeanServerConnection, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
@@ -308,6 +309,60 @@ public class ServiceController {
 	@ResponseBody
 	private boolean checkJmxPort(ServiceEntity serviceEntity) {
 		return serviceService.checkJmxPort(serviceEntity);
+	}
+
+	/**
+	 * 开启服务
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/startup", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Integer> startup(int id) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		ServiceEntity serviceEntity = serviceService.getServiceById(id);
+		int result = SystemUtil.shell(serviceEntity.getServiceUserName(), serviceEntity.getServicePassword(),
+				serviceEntity.getServiceAddress(), serviceEntity.getStartupPath());
+		map.put("result", result);
+		return map;
+	}
+
+	/**
+	 * 关闭服务
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/shutdown", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Integer> shutdown(int id) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		ServiceEntity serviceEntity = serviceService.getServiceById(id);
+		int result = SystemUtil.shell(serviceEntity.getServiceUserName(), serviceEntity.getServicePassword(),
+				serviceEntity.getServiceAddress(), serviceEntity.getShutdownPath());
+		map.put("result", result);
+		return map;
+	}
+	
+	/**
+	 * 获取当前服务状态
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/getServiceStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getServiceStatus(Page<ServiceEntity> page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		page = serviceService.getServiceList(page);
+		List<ServiceEntity> servicelist = setServiceStatus(page.getResultList());
+//		List<Integer> list = new ArrayList<Integer>();
+//		for (ServiceEntity serviceEntity : servicelist) {
+//			list.add(serviceEntity.getStatus());
+//		}
+		map.put("list", servicelist);
+		return map;
 	}
 
 }

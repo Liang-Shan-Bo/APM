@@ -90,11 +90,11 @@
 												<td>${service.serviceName}</td>
 												<td>${service.serviceAddress}</td>
 												<td>${service.servicePort}</td>
-												<td>
-													<c:if test="${service.status == 0}">关闭</c:if>
-													<c:if test="${service.status != 0}">开启</c:if>
+												<td id="status${service.id}">
+													<c:if test="${service.status == 0}"><span class="label label-sm label-danger">关闭</span></c:if>
+													<c:if test="${service.status != 0}"><span class="label label-sm label-success">开启</span></c:if>
 												</td>
-												<td>
+												<td id="load${service.id}">
 													<c:if test="${service.load == 0}"><span class="label label-sm label-inverse">无</span></c:if>
 													<c:if test="${service.load == 1}"><span class="label label-sm label-success">良好</span></c:if>
 													<c:if test="${service.load == 2}"><span class="label label-sm label-success">正常</span></c:if>
@@ -108,10 +108,18 @@
 														<c:if test="${service.status != 0}">
 															<a class="blue" href="serviceDetail?id=${service.id}" title="查看"> <i class="icon-zoom-in bigger-130"></i></a> 
 														</c:if>
-														<a class="green" href="updateService?id=${service.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
-														<c:if test="${service.id != 1}">
-															<a class="red" href="#" onclick="deleteService('${service.id}');" title="删除" > <i class="icon-trash bigger-130"></i></a>
-														</c:if>
+													    <shiro:hasRole name="admin">  
+													    	<a class="green" href="updateService?id=${service.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
+															<c:if test="${service.deleteFlag == 1}">
+														    	<a class="red" href="#" onclick="deleteService('${service.id}');" title="删除" > <i class="icon-trash bigger-130"></i></a>
+																<c:if test="${service.status == 0}">
+														    		<a id="switch${service.id}" class="green" href="#" onclick="startup('${service.id}');" title="开启"> <i class="icon-circle-blank bigger-130"></i></a>
+														    	</c:if>
+														    	<c:if test="${service.status != 0}">
+														    		<a id="switch${service.id}" class="red" href="#" onclick="shutdown('${service.id}');" title="关闭"> <i class="icon-ban-circle bigger-130"></i></a>
+														    	</c:if>
+															</c:if>
+													    </shiro:hasRole> 
 													</div>
 												</td>
 											</tr>
@@ -132,15 +140,122 @@
 		</a>
 	</div>
 	<script type="text/javascript">
+		bootbox.setDefaults("locale","zh_CN");  
 		// 删除服务
 		function deleteService(id) {
-			bootbox.setDefaults("locale","zh_CN");  
 			bootbox.confirm("是否确认删除？", function(re) {
 				if (re) {
 					location.href = "deleteService?id=" + id;
 				}
 			});
 		}
+		// 开启服务
+		function startup(id) {
+			bootbox.confirm("是否开启该服务？", function(re) {
+				if (re) {
+					$.ajax({
+						url : "<%=path%>/startup",
+						method : 'post',
+						async: false,
+						dataType: "json",
+						data: { id : id },
+						success : function(data){
+							if (data.result != 0) {
+								bootbox.alert({  
+						            buttons: { ok: { label: '确认' } },  
+						            message: '请确认服务参数是否正确',  
+						        });
+							}
+						},
+						error : function(data){
+							bootbox.alert({  
+					            buttons: { ok: { label: '确认' } },  
+					            message: '发送请求失败',  
+					        });
+						}
+					});
+				}
+			});
+		}
+		// 关闭服务
+		function shutdown(id) {
+			bootbox.confirm("是否关闭该服务？", function(re) {
+				if (re) {
+					$.ajax({
+						url : "<%=path%>/shutdown",
+						method : 'post',
+						async: false,
+						dataType: "json",
+						data: { id : id },
+						success : function(data){
+							if (data.result != 0) {
+								bootbox.alert({  
+						            buttons: { ok: { label: '确认' } },  
+						            message: '请确认服务参数是否正确',  
+						        });
+							}
+						},
+						error : function(data){
+							bootbox.alert({  
+					            buttons: { ok: { label: '确认' } },  
+					            message: '发送请求失败',  
+					        });
+						}
+					});
+				}
+			});
+		}
+		//定时刷新服务状态
+		var serviceInterval = setInterval(function() {
+			$.ajax({
+				url : "<%=path%>/getServiceStatus",
+				method : 'post',
+				async: false,
+				dataType: "json",
+				data: { currentPage : options.currentPage },
+				success : function(data){
+					var list = data.list;
+					for (var i = 0; i < list.length; i++) {
+						var status = $('#status' + list[i].id);
+						var load = $('#load' + list[i].id);
+						var switchFlag = $('#switch' + list[i].id);
+						if (list[i].load == 0) {
+							status.html("<span class=\"label label-sm label-danger\">关闭</span>");
+							load.html("<span class=\"label label-sm label-inverse\">无</span>");
+							switchFlag.html("<i class=\"icon-circle-blank bigger-130\"></i>");
+							switchFlag.attr("class", "green"); 
+							switchFlag.attr("title", "开启");
+							switchFlag.attr("onclick", "startup('" + list[i].id + "');");
+						}else{
+							status.html("<span class=\"label label-sm label-success\">开启</span>");
+							switchFlag.html("<i class=\"icon-ban-circle bigger-130\"></i>");
+							switchFlag.attr("class", "red"); 
+							switchFlag.attr("title", "关闭");
+							switchFlag.attr("onclick", "shutdown('" + list[i].id + "');");
+							switch (list[i].load) {
+							case 1:
+								load.html("<span class=\"label label-sm label-success\">良好</span>");
+								break;
+							case 2:
+								load.html("<span class=\"label label-sm label-success\">正常</span>");
+								break;
+							case 3:
+								load.html("<span class=\"label label-sm label-warning\">警告</span>");
+								break;
+							case 4:
+								load.html("<span class=\"label label-sm label-danger\">过高</span>");
+								break;
+							default:
+								break;
+							}
+						}
+					}
+				},
+				error : function(data) {
+					clearInterval(serviceInterval);
+				}
+			});
+		}, 5000);
 	</script>
 	<script type="text/javascript">
 		var element = $('#paginator');

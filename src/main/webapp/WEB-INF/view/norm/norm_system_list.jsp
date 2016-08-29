@@ -18,7 +18,7 @@
 <link rel="stylesheet" type="text/css" href="style/assets/css/ace-skins.min.css" />
 <!-- ace settings handler -->
 <script src="js/jquery.min.js"></script>
-<script src="js/bootstrap-paginator.js"></script>
+<script src="style/assets/js/bootstrap.min.js"></script>
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
 <script src="style/assets/js/ace-extra.min.js"></script>
@@ -96,7 +96,9 @@
 												</td>
 												<td>
 													<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-														<a class="green" href="updateSystemNorm?id=${norm.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
+														<shiro:hasRole name="admin"> 
+															<a class="green" href="updateSystemNorm?id=${norm.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
+												   		</shiro:hasRole>
 													</div>
 												</td>
 											</tr>

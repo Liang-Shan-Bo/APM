@@ -116,12 +116,14 @@
 												<td>
 													<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
 														<a class="blue" href="detailAlarmPolicy?id=${alarmPolicy.id}" title="查看"> <i class="icon-zoom-in bigger-130"></i></a> 
-														<c:if test="${alarmPolicy.id != 1}">
+														<shiro:hasRole name="admin">
 															<a class="green" href="updateServiceAlarmPolicy?id=${alarmPolicy.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
-															<c:if test="${alarmPolicy.used == false}">
-																<a class="red" href="#" onclick="deletePolicy('${alarmPolicy.id}');" title="删除"> <i class="icon-trash bigger-130"></i></a>
-															</c:if> 
-														</c:if>
+															<c:if test="${alarmPolicy.deleteFlag == 1}">
+																<c:if test="${alarmPolicy.used == false}">
+																	<a class="red" href="#" onclick="deletePolicy('${alarmPolicy.id}');" title="删除"> <i class="icon-trash bigger-130"></i></a> 
+																</c:if> 
+															</c:if>
+														</shiro:hasRole>
 													</div>
 												</td>
 											</tr>

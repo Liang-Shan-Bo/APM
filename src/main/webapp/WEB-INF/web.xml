@@ -20,19 +20,6 @@
     </context-param>
     <!-- Log4J Configuration -->
     
-  	<!-- Context Listener -->
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-	<!-- 系统信息队列监听 -->
-	<listener>  
-	    <listener-class>apm.listener.SystemListener</listener-class>  
-	</listener>
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/applicationContext*</param-value>
-	</context-param>
-	
 	<!-- Character Encoding Filter -->
 	<filter>
 		<filter-name>Set Character Encoding</filter-name>
@@ -104,8 +91,25 @@
 		<servlet-name>apm-server</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
 	<!-- Spring MVC Dispatcher Servlet Config -->
+	
+  	<!-- Context Listener -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- 系统信息队列监听 -->
+	<listener>  
+	    <listener-class>apm.listener.SystemListener</listener-class>
+	</listener>
+	<listener>  
+	    <listener-class>apm.listener.SystemAlarmListener</listener-class>  
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext*</param-value>
+	</context-param>
+	<!-- Context Listener -->
+	
 	<welcome-file-list>
   		<welcome-file>/WEB-INF/view/login/login.jsp</welcome-file>
   	</welcome-file-list>

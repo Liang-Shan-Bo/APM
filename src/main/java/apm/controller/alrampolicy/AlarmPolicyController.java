@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import apm.entity.alrampolicy.AlarmPolicyEntity;
+import apm.entity.user.User;
 import apm.service.alrampolicy.AlarmPolicyService;
+import apm.service.user.UserService;
 import apm.util.Constants;
 import apm.util.Page;
 
@@ -25,6 +27,9 @@ public class AlarmPolicyController {
 
 	@Resource
 	private AlarmPolicyService alarmPolicyService;
+	
+	@Resource
+	private UserService userService;
 
 	/**
 	 * 服务策略列表页面
@@ -57,7 +62,9 @@ public class AlarmPolicyController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/createAlarmPolicy", method = RequestMethod.GET)
-	public String createPage() {
+	public String createPage(Model model) {
+		List<User> userList = userService.getAll();
+		model.addAttribute("userList", userList);
 		return "alarmpolicy/alarmpolicy_create";
 	}
 
@@ -81,6 +88,10 @@ public class AlarmPolicyController {
 	public String updateServicePage(Model model, @RequestParam int id) {
 		AlarmPolicyEntity alarmPolicyEntity = alarmPolicyService.getAlarmPolicyById(id);
 		model.addAttribute("alarmPolicyEntity", alarmPolicyEntity);
+		List<User> userList = userService.getUserByPolicyId(id);
+		model.addAttribute("userList", userList);
+		List<User> otherList = userService.getOtherUser(id);
+		model.addAttribute("otherList", otherList);
 		return "alarmpolicy/alarmpolicy_service_update";
 	}
 
@@ -93,6 +104,10 @@ public class AlarmPolicyController {
 	public String updateSystemPage(Model model, @RequestParam int id) {
 		AlarmPolicyEntity alarmPolicyEntity = alarmPolicyService.getAlarmPolicyById(id);
 		model.addAttribute("alarmPolicyEntity", alarmPolicyEntity);
+		List<User> userList = userService.getUserByPolicyId(id);
+		model.addAttribute("userList", userList);
+		List<User> otherList = userService.getOtherUser(id);
+		model.addAttribute("otherList", otherList);
 		return "alarmpolicy/alarmpolicy_system_update";
 	}
 
@@ -121,6 +136,8 @@ public class AlarmPolicyController {
 	public String detailAlarmPolicy(Model model, @RequestParam int id) {
 		AlarmPolicyEntity alarmPolicyEntity = alarmPolicyService.getAlarmPolicyById(id);
 		model.addAttribute("alarmPolicyEntity", alarmPolicyEntity);
+		List<User> userList = userService.getUserByPolicyId(id);
+		model.addAttribute("userList", userList);
 		return "alarmpolicy/alarmpolicy_detail";
 	}
 
@@ -158,9 +175,7 @@ public class AlarmPolicyController {
 			} else {
 				alarmPolicyEntity.setUsed(false);
 			}
-
 		}
 		return list;
 	}
-
 }

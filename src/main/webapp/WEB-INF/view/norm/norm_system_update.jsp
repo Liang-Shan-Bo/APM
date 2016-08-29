@@ -69,8 +69,9 @@
 							<form id="updateForm" class="form-horizontal" role="form" action="<%=path%>/updateNorm" method="post">
 								<input type="hidden" id="id" name="id" value="${normEntity.id}"/>
 								<input type="hidden" id="serviceType" name="serviceType" value="${normEntity.serviceType}"/>
+								<input type="hidden" id="normName" name="normName" value="${normEntity.normName}"/>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="normName"> 指标名称 </label>
+									<label class="col-sm-3 control-label no-padding-right"> 指标名称 </label>
 									<label class="col-xs-2"> ${normEntity.normName}</label>
 								</div>
 		
