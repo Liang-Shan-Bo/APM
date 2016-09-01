@@ -3,6 +3,7 @@
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
 	String url = PropertiesUtil.getValue("ws", "service.url"); 
+	String interval = PropertiesUtil.getValue("ws", "service.interval"); 
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +23,7 @@
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
 <script src="style/assets/js/ace-extra.min.js"></script>
+<script src="style/echarts/echarts.js"></script>
 </head>
 
 <body>
@@ -61,7 +63,7 @@
 					<!-- 服务详细信息 -->
 					<div class="row">
 						<div class="col-xs-12">
-							<!-- 操作系统信息 -->
+							<!-- 即时监控 -->
 							<input type="hidden" id="serviceUrl" value="${serviceUrl}">
 							<div id="accordionCpu" class="accordion-style1 panel-group">
 								<div class="panel panel-default">
@@ -69,18 +71,50 @@
 										<h4 class="panel-title">
 											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionCpu" href="#collapseCpu"> 
 											<i class="icon-angle-down bigger-110" data-icon-hide="icon-angle-down" data-icon-show="icon-angle-right"></i>
-												&nbsp;操作系统信息
+												&nbsp;即时监控
 											</a>
 										</h4>
 									</div>
 									<div class="panel-collapse collapse in" id="collapseCpu">
-										<div class="profile-info-row">
-											<div class="profile-info-name"> CPU占用百分比 </div>
+<!-- 										<div class="profile-info-row"> -->
+<!-- 											<div class="profile-info-name"> CPU占用百分比 </div> -->
 
-											<div class="profile-info-value">
-												<span class="editable" id="cpuPercentage">&nbsp;</span>
-											</div>
-										</div>
+<!-- 											<div class="profile-info-value"> -->
+<!-- 												<span class="editable" id="cpuPercentage">0.00%</span> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 										<div class="profile-info-row"> -->
+<!-- 											<div class="profile-info-name"> 已使用内存量 </div> -->
+<!-- 											<div class="profile-info-value"> -->
+<!-- 												<span class="editable" id="memoryUsed">0.0MB</span> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 										<div class="profile-info-row"> -->
+<!-- 											<div class="profile-info-name"> 可使用内存量 </div> -->
+
+<!-- 											<div class="profile-info-value"> -->
+<!-- 												<span class="editable" id="memoryCommitted">0.0MB</span> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+										
+										<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+										<div id="cpu" style="width: 400px;height:300px;padding: 0px 20px 0px;float:left;margin-left:150px;"></div>
+										<div id="mem" style="width: 400px;height:300px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
+									</div>
+								</div>
+							</div><!-- 即时监控 -->
+							<!-- 系统信息 -->
+							<div id="accordionMem" class="accordion-style1 panel-group">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionMem" href="#collapseMem"> 
+											<i class="icon-angle-down bigger-110" data-icon-hide="icon-angle-down" data-icon-show="icon-angle-right"></i>
+												&nbsp;系统信息
+											</a>
+										</h4>
+									</div>
+									<div class="panel-collapse collapse in" id="collapseMem">
 										<div class="profile-info-row">
 											<div class="profile-info-name"> 可用处理器数 </div>
 											<div class="profile-info-value">
@@ -107,35 +141,7 @@
 										</div>
 									</div>
 								</div>
-							</div><!-- 操作系统信息 -->
-							<!-- 内存信息 -->
-							<div id="accordionMem" class="accordion-style1 panel-group">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4 class="panel-title">
-											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionMem" href="#collapseMem"> 
-											<i class="icon-angle-down bigger-110" data-icon-hide="icon-angle-down" data-icon-show="icon-angle-right"></i>
-												&nbsp;内存信息
-											</a>
-										</h4>
-									</div>
-									<div class="panel-collapse collapse in" id="collapseMem">
-										<div class="profile-info-row">
-											<div class="profile-info-name"> 已使用内存量 </div>
-											<div class="profile-info-value">
-												<span class="editable" id="memoryUsed">&nbsp;</span>
-											</div>
-										</div>
-										<div class="profile-info-row">
-											<div class="profile-info-name"> 可使用内存量 </div>
-
-											<div class="profile-info-value">
-												<span class="editable" id="memoryCommitted">&nbsp;</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div><!-- 内存信息 -->
+							</div><!-- 系统信息 -->
 							<!-- 线程信息 -->
 							<div id="accordionPro" class="accordion-style1 panel-group">
 								<div class="panel panel-default">
@@ -265,12 +271,12 @@
 		//接收到消息的回调方法
 		websocket.onmessage = function(event) {
 			var json = JSON.parse(event.data);
-			var cpuPer = (json[0].cpuPercentage * 100).toFixed(2) + "%";
-			var memUsed = (json[0].memoryUsed / 1024 / 1024).toFixed(1) + "MB";
-			var memCommitted = (json[0].memoryCommitted / 1024 / 1024).toFixed(1) + "MB";
-			$("#cpuPercentage").text(cpuPer);
-			$("#memoryUsed").text(memUsed);
-			$("#memoryCommitted").text(memCommitted);
+			cpuPer = (json[0].cpuPercentage * 100).toFixed(2);
+			memUsed = (json[0].memoryUsed / 1024 / 1024).toFixed(1);
+			memCommitted = (json[0].memoryCommitted / 1024 / 1024).toFixed(1);
+			$("#cpuPercentage").text(cpuPer + "%");
+			$("#memoryUsed").text(memUsed + "MB");
+			$("#memoryCommitted").text(memCommitted + "MB");
 			$("#threadCount").text(json[0].threadCount);
 			$("#daemonThreadCount").text(json[0].daemonThreadCount);
 			$("#peakThreadCount").text(json[0].peakThreadCount);
@@ -279,6 +285,8 @@
 			$("#unloadedClassCount").text(json[0].unloadedClassCount);
 			$("#startTime").text(json[0].startTime);
 			$("#spanTime").text(json[0].spanTime);
+			cpuGauge();
+			memGauge();
 		}
 
 		//连接关闭的回调方法
@@ -299,6 +307,83 @@
 		function send() {
 			websocket.send($("#serviceUrl").val());
 		}
+	</script>
+	<script type="text/javascript">
+		var cpuPer = 0;
+		var memUsed = 0;
+		var memCommitted = 0;
+		// CPU仪表盘
+		var cpuChart = echarts.init(document.getElementById('cpu'));
+		cpuOption = {
+			tooltip : {
+				formatter : "{a} <br/>{b} : {c}%"
+			},
+			series : [ {
+				name : 'CPU使用率',
+				type : 'gauge',
+				radius : 120,
+				axisLine : { lineStyle : { width : 10 } },
+				splitLine : { length : 15 },
+				detail : {
+					formatter : '{value}%',
+					textStyle : {
+						fontSize : 15
+					}
+				},
+				data : [ {
+					value : 0,
+					name : '已使用CPU'
+				} ]
+			} ]
+		};
+		
+		cpuChart.setOption(cpuOption,true);
+		
+		// 刷新图表
+		function cpuGauge(){
+			cpuOption.series[0].data[0].value = cpuPer;
+			// 使用刚指定的配置项和数据显示图表。
+			cpuChart.setOption(cpuOption,true);
+		}
+		
+	</script>
+	<script type="text/javascript">
+		// 内存仪表盘
+		var memChart = echarts.init(document.getElementById('mem'));
+		memOption = {
+			tooltip : {
+				formatter : "{a} <br/>{b} : {c}MB"
+			},
+			series : [ {
+				name : '当前使用内存',
+				type : 'gauge',
+				radius : 120,
+				max : 512,
+				axisLine : { lineStyle : { width : 10 } },
+				splitLine : { length : 15 },
+				axisLabel : { formatter: function (value) { return parseInt(value); } },
+				detail : {
+					formatter : '{value}MB',
+					textStyle : {
+						fontSize : 15
+					}
+				},
+				data : [ {
+					value : 0,
+					name : '已使用内存'
+				} ]
+			} ]
+		};
+		memChart.setOption(memOption);
+
+		// 刷新图表
+		function memGauge(){
+			memOption.series[0].data[0].value = memUsed;
+			memOption.series[0].max = memCommitted;
+			// 使用刚指定的配置项和数据显示图表
+			memChart.setOption(memOption,true);
+		}
+		
 	</script>
 </body>
 </html>

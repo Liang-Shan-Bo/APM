@@ -6,7 +6,6 @@ import java.lang.management.MemoryMXBean;
 import java.lang.management.OperatingSystemMXBean;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,8 +71,7 @@ public class ServiceController {
 	@RequestMapping(value = "/serviceDetail", method = RequestMethod.GET)
 	public String serviceDetail(Model model, @RequestParam int id) {
 		ServiceEntity serviceEntity = serviceService.getServiceById(id);
-		String serviceUrl = "service:jmx:rmi:///jndi/rmi://" + serviceEntity.getServiceAddress() + ":"
-				+ serviceEntity.getMonitorPort() + "/jmxrmi";
+		String serviceUrl = SystemUtil.getJmxUrl(serviceEntity.getServiceAddress(), serviceEntity.getMonitorPort());
 		model.addAttribute("serviceEntity", serviceEntity);
 		model.addAttribute("serviceUrl", serviceUrl);
 		return "service/service_detail";
@@ -168,11 +166,11 @@ public class ServiceController {
 	 * 
 	 * @return int(0：连接正常;1:IP地址无法连接;2:服务端口无法连接;3:监控端口无法连接)
 	 */
-	private static int ServieConnect(String Address, int port, int jmxPort) {
+	private static int ServieConnect(String address, int port, int jmxPort) {
 		// 测试端口是否已启用
 		Socket socket = new Socket();
 		try {
-			socket.connect(new InetSocketAddress(Address, port));
+			socket.connect(new InetSocketAddress(address, port));
 		} catch (IOException e) {
 			return Constants.PORT_LINK_REEOR;
 		} finally {
@@ -183,7 +181,7 @@ public class ServiceController {
 			}
 		}
 		// 连接监控服务
-		String serviceUrl = "service:jmx:rmi:///jndi/rmi://" + Address + ":" + jmxPort + "/jmxrmi";
+		String serviceUrl = SystemUtil.getJmxUrl(address, jmxPort+"");
 		try {
 			JMXServiceURL ServiceURL = new JMXServiceURL(serviceUrl);
 			JMXConnectorFactory.connect(ServiceURL);
@@ -208,8 +206,7 @@ public class ServiceController {
 				serviceEntity.setLoad(Constants.SERVICE_LOAD_NONE);
 			} else {
 				serviceEntity.setStatus(Constants.SERVICE_STATUS_OPEN);
-				String serviceUrl = "service:jmx:rmi:///jndi/rmi://" + serviceEntity.getServiceAddress() + ":"
-						+ serviceEntity.getMonitorPort() + "/jmxrmi";
+				String serviceUrl = SystemUtil.getJmxUrl(serviceEntity.getServiceAddress(), serviceEntity.getMonitorPort());
 				JMXConnector jmxConnector = null;
 
 				try {
@@ -255,8 +252,7 @@ public class ServiceController {
 	 * @return ServiceEntity
 	 */
 	private static ServiceEntity setServieInfo(ServiceEntity serviceEntity) {
-		String serviceUrl = "service:jmx:rmi:///jndi/rmi://" + serviceEntity.getServiceAddress() + ":"
-				+ serviceEntity.getMonitorPort() + "/jmxrmi";
+		String serviceUrl = SystemUtil.getJmxUrl(serviceEntity.getServiceAddress(), serviceEntity.getMonitorPort());
 		JMXConnector jmxConnector = null;
 		try {
 			// 连接监控服务
@@ -344,7 +340,7 @@ public class ServiceController {
 		map.put("result", result);
 		return map;
 	}
-	
+
 	/**
 	 * 获取当前服务状态
 	 * 
@@ -357,10 +353,6 @@ public class ServiceController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		page = serviceService.getServiceList(page);
 		List<ServiceEntity> servicelist = setServiceStatus(page.getResultList());
-//		List<Integer> list = new ArrayList<Integer>();
-//		for (ServiceEntity serviceEntity : servicelist) {
-//			list.add(serviceEntity.getStatus());
-//		}
 		map.put("list", servicelist);
 		return map;
 	}

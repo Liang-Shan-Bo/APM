@@ -3,7 +3,6 @@
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
 	String url = PropertiesUtil.getValue("ws", "websocket.url"); 
-	String interval = PropertiesUtil.getValue("ws", "websocket.interval"); 
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -166,7 +165,8 @@
 					});
 				}
 			}
-			
+			// 更新图表
+			fresh();
 		}
 
 		//连接关闭的回调方法
@@ -235,8 +235,9 @@
 			},
 			series : []
 		};
-		//定时刷新图表
-		var sysInterval = setInterval(function() {
+		
+		//刷新图表
+		function fresh() {
 			var cpuSeries = [];
 			var diskSeries = [];
 			for (var i = 0; i < cpuCount; i++) {
@@ -271,7 +272,7 @@
 			diskChart.setOption({
 				series : diskSeries
 			});
-		},<%=interval%>);
+		}
 
 		// 使用刚指定的配置项和数据显示图表。
 		cpuChart.setOption(cpuOption);
@@ -282,7 +283,7 @@
 		var memData = [];
 		memOption = {
 			title : {
-				text : '内存使用率'
+				text : '内存使用量'
 			},
 			legend : {
 				data : ['内存']

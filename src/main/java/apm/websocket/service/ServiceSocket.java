@@ -29,12 +29,13 @@ import javax.websocket.server.ServerEndpoint;
 
 import apm.entity.service.ServiceEntity;
 import apm.util.DateUtil;
+import apm.util.PropertiesUtil;
 
 @ServerEndpoint(value = "/serviceSocket", encoders = {ServiceEncoder.class})
 public class ServiceSocket {
 
 	// 推送消息时间间隔(ms)
-	private final static int SERVICE_INTERVAL = 5000;
+	private final static int SERVICE_INTERVAL = Integer.parseInt(PropertiesUtil.getValue("ws", "service.interval"));
 	// JMX地址
 	private static String service_url = null;
 	// concurrent包的线程安全Set，用来存放每个客户端对应的WebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
@@ -56,6 +57,13 @@ public class ServiceSocket {
 	public void onOpen(Session session) {
 		this.session = session;
 		webSocketSet.add(this);
+		try {
+			sendMessage(session);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (EncodeException e) {
+			e.printStackTrace();
+		}
 		// 启动定时任务
 		timer = new Timer(true);
 		timer.schedule(task, 0, SERVICE_INTERVAL);
@@ -93,7 +101,6 @@ public class ServiceSocket {
 	 */
 	@OnError
 	public void onError(Session session, Throwable error) {
-		System.out.println("发生错误");
 		error.printStackTrace();
 	}
 
@@ -109,7 +116,7 @@ public class ServiceSocket {
 			ServiceEntity info = getServiceInfo();
 			if (session.isOpen()) {
 				session.getBasicRemote().sendObject(info);
-				interval = 5000;
+				interval = SERVICE_INTERVAL;
 			}
 		}
 	}

@@ -39,4 +39,8 @@ public class SystemUtil {
 		}
 		return 0;
 	}
+
+	public static String getJmxUrl(String address, String port) {
+		return "service:jmx:rmi:///jndi/rmi://" + address + ":" + port + "/jmxrmi";
+	}
 }

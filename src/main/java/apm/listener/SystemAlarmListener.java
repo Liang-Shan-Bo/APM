@@ -45,24 +45,28 @@ public class SystemAlarmListener implements ServletContextListener {
 			if (SystemListener.sysInfoList.size() > 0) {
 				SystemInfo info = SystemListener.sysInfoList.get(SystemListener.sysInfoList.size() - 1);
 				double cpu = checkCpu(info);
-				if (cpu >= getNormByNormType(Constants.SYSTEM_NORM_CPU)) {
+				int cpuNorm = getNormByNormType(Constants.SYSTEM_NORM_CPU);
+				if (cpu >= cpuNorm) {
 					System.out.println("cpu:" + cpu + "%");
-					systemLog(cpu, Constants.SYSTEM_NORM_CPU, "system");
+					systemLog(cpu, Constants.SYSTEM_NORM_CPU, "system", cpuNorm);
 				}
 				double mem = checkMem(info);
-				if (mem >= getNormByNormType(Constants.SYSTEM_NORM_MEM)) {
+				int memNorm = getNormByNormType(Constants.SYSTEM_NORM_MEM);
+				if (mem >= memNorm) {
 					System.out.println("mem:" + mem + "M");
-					systemLog(mem, Constants.SYSTEM_NORM_MEM, "system");
+					systemLog(mem, Constants.SYSTEM_NORM_MEM, "system", memNorm);
 				}
 				double disk = checkDisk(info);
-				if (disk >= getNormByNormType(Constants.SYSTEM_NORM_DIS)) {
+				int diskNorm = getNormByNormType(Constants.SYSTEM_NORM_DIS);
+				if (disk >= diskNorm) {
 					System.out.println("disk:" + disk + "%");
-					systemLog(disk, Constants.SYSTEM_NORM_DIS, "system");
+					systemLog(disk, Constants.SYSTEM_NORM_DIS, "system", diskNorm);
 				}
 				double net = checkNet(info);
-				if (net >= getNormByNormType(Constants.SYSTEM_NORM_NET)) {
+				int netNorm = getNormByNormType(Constants.SYSTEM_NORM_NET);
+				if (net >= netNorm) {
 					System.out.println("net:" + net + "K");
-					systemLog(net, Constants.SYSTEM_NORM_NET, "system");
+					systemLog(net, Constants.SYSTEM_NORM_NET, "system", netNorm);
 				}
 				alarm();
 			}
@@ -130,25 +134,25 @@ public class SystemAlarmListener implements ServletContextListener {
 	 * @param type
 	 * @param systemName
 	 */
-	private void systemLog(double value, int type, String systemName) {
+	private void systemLog(double value, int type, String systemName, int norm) {
 		String desc = "";
 		switch (type) {
 			case 1 :
-				desc = systemName + "：CPU" + "负载超标，当前" + value + "%";
+				desc = systemName + "：CPU" + "负载超标,当前指标：" + norm + "%,当前负载：" + value + "%";
 				break;
 			case 2 :
-				desc = systemName + "：内存" + "负载超标，当前" + value + "M";
+				desc = systemName + "：内存" + "负载超标,当前指标：" + norm + "MB,当前负载：" + value + "MB";
 				break;
 			case 3 :
-				desc = systemName + "：磁盘" + "负载超标，当前" + value + "%";
+				desc = systemName + "：磁盘" + "负载超标,当前指标：" + norm + "%,当前负载：" + value + "%";
 				break;
 			case 4 :
-				desc = systemName + "：网络" + "负载超标，当前" + value + "K";
+				desc = systemName + "：网络" + "负载超标,当前指标：" + norm + "KB,当前负载：" + value + "KB";
 				break;
 		}
 		insertSystemLog(value, type, systemName, desc);
 	}
-	
+
 	/**
 	 * 向用户报警
 	 * 
@@ -165,21 +169,10 @@ public class SystemAlarmListener implements ServletContextListener {
 	 * @return
 	 */
 	private Integer getNormByNormType(int type) {
-		String sql = "select (case " + 
-						"when (select t.alarm_policy_level " + 
-						"from apm_alarm_policy t " + 
-						"where t.alarm_policy_type = 2) = 1 then " + 
-						"norm_normal " + 
-						"when (select t.alarm_policy_level " +
-						"from apm_alarm_policy t " + 
-						"where t.alarm_policy_type = 2) = 2 then " + 
-						"norm_warning " + 
-						"else " +
-						"norm_danger " + 
-						"end) " + 
-						"from apm_norm " + 
-						"where norm_type = ? " + 
-						"and service_type = 2";
+		String sql = "select (case " + "when (select t.alarm_policy_level " + "from apm_alarm_policy t "
+				+ "where t.alarm_policy_type = 2) = 1 then " + "norm_normal " + "when (select t.alarm_policy_level "
+				+ "from apm_alarm_policy t " + "where t.alarm_policy_type = 2) = 2 then " + "norm_warning " + "else "
+				+ "norm_danger " + "end) " + "from apm_norm " + "where norm_type = ? " + "and service_type = 2";
 		return jdbcTemplate.queryForObject(sql, new Object[]{type}, Integer.class);
 	}
 
@@ -189,17 +182,11 @@ public class SystemAlarmListener implements ServletContextListener {
 	 * @param type
 	 */
 	private void insertSystemLog(double value, int type, String systemName, String desc) {
-		String sql = "insert into apm_alarm_log(" +
-						"id," +
-						"alarm_value," +
-						"alarm_time," +
-						"alarm_type," +
-						"alarm_system_name," +
-						"alarm_desc" +
-						") values(APM_ALARM_LOG_SEQ.Nextval,?, SYSDATE,?,?,?)";
+		String sql = "insert into apm_alarm_log(" + "id," + "alarm_value," + "alarm_time," + "alarm_type,"
+				+ "alarm_system_name," + "alarm_desc" + ") values(APM_ALARM_LOG_SEQ.Nextval,?, SYSDATE,?,?,?)";
 		jdbcTemplate.update(sql, new Object[]{value, type, systemName, desc});
 	}
-	
+
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 
