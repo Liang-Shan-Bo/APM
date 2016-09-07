@@ -36,6 +36,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 				/style/**=anon
 				<!-- 设置不拦截websocket请求，防止ws协议路径被重定位 -->
 				/*Socket/**=anon
+				/register/**=anon
 				<!-- 只有admin橘色才有增删改权限 -->
 				/update*/**=roles[super,admin]
 				/delete*/**=roles[super,admin]

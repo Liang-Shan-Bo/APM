@@ -66,10 +66,7 @@ public class SystemController {
 		}
 		return "ec";
 	}
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(Model model) {
-		return "index";
-	}
+	
 	@RequestMapping(value = "/show1", method = RequestMethod.GET)
 	public String show1(Model model) {
 		return "test1";

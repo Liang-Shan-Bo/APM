@@ -169,10 +169,21 @@ public class SystemAlarmListener implements ServletContextListener {
 	 * @return
 	 */
 	private Integer getNormByNormType(int type) {
-		String sql = "select (case " + "when (select t.alarm_policy_level " + "from apm_alarm_policy t "
-				+ "where t.alarm_policy_type = 2) = 1 then " + "norm_normal " + "when (select t.alarm_policy_level "
-				+ "from apm_alarm_policy t " + "where t.alarm_policy_type = 2) = 2 then " + "norm_warning " + "else "
-				+ "norm_danger " + "end) " + "from apm_norm " + "where norm_type = ? " + "and service_type = 2";
+		String sql = "select (case " + 
+						"when (select t.alarm_policy_level " + 
+						"from apm_alarm_policy t " + 
+						"where t.alarm_policy_type = 2) = 1 then " + 
+						"norm_normal " + 
+						"when (select t.alarm_policy_level " + 
+						"from apm_alarm_policy t " + 
+						"where t.alarm_policy_type = 2) = 2 then " + 
+						"norm_warning " + 
+						"else " + 
+						"norm_danger " + 
+						"end) " + 
+						"from apm_norm " + 
+						"where norm_type = ? " + 
+						"and service_type = 2";
 		return jdbcTemplate.queryForObject(sql, new Object[]{type}, Integer.class);
 	}
 
@@ -182,8 +193,14 @@ public class SystemAlarmListener implements ServletContextListener {
 	 * @param type
 	 */
 	private void insertSystemLog(double value, int type, String systemName, String desc) {
-		String sql = "insert into apm_alarm_log(" + "id," + "alarm_value," + "alarm_time," + "alarm_type,"
-				+ "alarm_system_name," + "alarm_desc" + ") values(APM_ALARM_LOG_SEQ.Nextval,?, SYSDATE,?,?,?)";
+		String sql = "insert into apm_alarm_log(" + 
+						"id," + 
+						"alarm_value," + 
+						"alarm_time," + 
+						"alarm_type," + 
+						"alarm_system_name," + 
+						"alarm_desc" + 
+						") values(APM_ALARM_LOG_SEQ.Nextval,?, SYSDATE,?,?,?)";
 		jdbcTemplate.update(sql, new Object[]{value, type, systemName, desc});
 	}
 

@@ -54,14 +54,14 @@
 					</a>
 					<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 						<li>
-							<a href="#"> <i class="icon-cog"></i> 设置 </a>
+							<a href="<%=path%>/userOption"> <i class="icon-cog"></i> 设置 </a>
 						</li>
 						<li>
-							<a href="#"> <i class="icon-user"></i> 个人资料 </a>
+							<a href="<%=path%>/userDetail"> <i class="icon-user"></i> 个人资料 </a>
 						</li>
 						<li class="divider"></li>
 						<li>
-							<a href="#"> <i class="icon-off"></i> 退出 </a>
+							<a href="<%=path%>/logout"> <i class="icon-off"></i> 退出 </a>
 						</li>
 					</ul>
 				</li>

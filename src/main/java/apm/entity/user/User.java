@@ -23,11 +23,11 @@ public class User {
 	// 创建时间
 	private Date createTime;
 	// 创建人
-	private Date createUser;
+	private String createUser;
 	// 修改时间
 	private Date updateTime;
 	// 修改
-	private Date updateUser;
+	private String updateUser;
 
 	public Integer getId() {
 		return id;
@@ -71,10 +71,10 @@ public class User {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public Date getCreateUser() {
+	public String getCreateUser() {
 		return createUser;
 	}
-	public void setCreateUser(Date createUser) {
+	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
 	}
 	public Date getUpdateTime() {
@@ -83,11 +83,10 @@ public class User {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-	public Date getUpdateUser() {
+	public String getUpdateUser() {
 		return updateUser;
 	}
-	public void setUpdateUser(Date updateUser) {
+	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
-
 }

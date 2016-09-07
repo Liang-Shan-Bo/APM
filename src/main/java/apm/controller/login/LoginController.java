@@ -1,12 +1,12 @@
 package apm.controller.login;
 
-
 import javax.annotation.Resource;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,6 +37,17 @@ public class LoginController {
 	}
 
 	/**
+	 * 返回首页
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index(Model model) {
+		return "index";
+	}
+
+	/**
 	 * 登录
 	 * 
 	 * @return String
@@ -57,7 +68,16 @@ public class LoginController {
 		}
 	}
 
-	public String login() {
-		return "index";
+	/**
+	 * 登出
+	 * 
+	 * @return String
+	 */
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+		// 使用权限工具进行用户登出
+		SecurityUtils.getSubject().logout();
+		return "redirect:/login";
 	}
+
 }

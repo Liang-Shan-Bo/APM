@@ -54,4 +54,12 @@ public class UserService {
 	public User getUserByName(String loginName) {
 		return userDao.getUserByName(loginName);
 	}
+	
+	/**
+	 * 新增用户
+	 * 
+	 */
+	public void createUser(User user) {
+		userDao.createUser(user);
+	}
 }

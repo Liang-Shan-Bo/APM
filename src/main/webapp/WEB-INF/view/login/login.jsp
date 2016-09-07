@@ -8,6 +8,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
 <title>监控系统</title>
 <!-- basic styles -->
 <link rel="stylesheet" type="text/css" href="style/assets/css/bootstrap.min.css" />
@@ -20,10 +23,10 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap-paginator.js"></script>
 <script src="style/assets/js/bootstrap.min.js"></script>
+<script src="style/assets/js/jquery.validate.min.js"></script>
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
 <script src="style/assets/js/ace-extra.min.js"></script>
-<script src="style/assets/js/bootbox.min.js"></script>
 </head>
 
 <body class="login-layout">
@@ -105,12 +108,12 @@
 									<div class="widget-main">
 										<h4 class="header red lighter bigger">
 											<i class="icon-key"></i>
-											Retrieve Password
+											找回密码
 										</h4>
 
 										<div class="space-6"></div>
 										<p>
-											Enter your email and to receive instructions
+											请输入您的绑定邮箱地址
 										</p>
 
 										<form>
@@ -125,7 +128,7 @@
 												<div class="clearfix">
 													<button type="button" class="width-35 pull-right btn btn-sm btn-danger">
 														<i class="icon-lightbulb"></i>
-														Send Me!
+														发送
 													</button>
 												</div>
 											</fieldset>
@@ -134,7 +137,7 @@
 
 									<div class="toolbar center">
 										<a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
-											Back to login
+											回到登录页面
 											<i class="icon-arrow-right"></i>
 										</a>
 									</div>
@@ -146,47 +149,47 @@
 									<div class="widget-main">
 										<h4 class="header green lighter bigger">
 											<i class="icon-group blue"></i>
-											New User Registration
+											注册新用户
 										</h4>
 
 										<div class="space-6"></div>
-										<p> Enter your details to begin: </p>
+										<p> 请填写正确信息: </p>
 
-										<form>
+										<form id="registerForm" action="<%=path%>/register" method="post">
+											<input type="password" style="display: none;">
 											<fieldset>
 												<label class="block clearfix">
 													<span class="block input-icon input-icon-right">
-														<input type="email" class="form-control" placeholder="Email" />
-														<i class="icon-envelope"></i>
-													</span>
-												</label>
-
-												<label class="block clearfix">
-													<span class="block input-icon input-icon-right">
-														<input type="text" class="form-control" placeholder="Username" />
+														<input type="text" class="form-control" id="loginName" name="loginName" placeholder="用户名" />
 														<i class="icon-user"></i>
 													</span>
 												</label>
 
 												<label class="block clearfix">
 													<span class="block input-icon input-icon-right">
-														<input type="password" class="form-control" placeholder="Password" />
+														<input type="password" class="form-control" id="password" name="password" placeholder="密码" />
 														<i class="icon-lock"></i>
 													</span>
 												</label>
 
 												<label class="block clearfix">
 													<span class="block input-icon input-icon-right">
-														<input type="password" class="form-control" placeholder="Repeat password" />
+														<input type="password" class="form-control" id="vPassword" placeholder="确认密码" />
 														<i class="icon-retweet"></i>
 													</span>
 												</label>
-
-												<label class="block">
-													<input type="checkbox" class="ace" />
-													<span class="lbl">
-														I accept the
-														<a href="#">User Agreement</a>
+												
+												<label class="block clearfix">
+													<span class="block input-icon input-icon-right">
+														<input type="text" class="form-control" id="email" name="email" placeholder="邮件地址"/>
+														<i class="icon-envelope"></i>
+													</span>
+												</label>
+												
+												<label class="block clearfix">
+													<span class="block input-icon input-icon-right">
+														<input type="text" class="form-control" id="phone" name="phone" placeholder="手机号码"/>
+														<i class="icon-phone-sign"></i>
 													</span>
 												</label>
 
@@ -195,11 +198,11 @@
 												<div class="clearfix">
 													<button type="reset" class="width-30 pull-left btn btn-sm">
 														<i class="icon-refresh"></i>
-														Reset
+														重置
 													</button>
 
-													<button type="button" class="width-65 pull-right btn btn-sm btn-success">
-														Register
+													<button type="submit" class="width-65 pull-right btn btn-sm btn-success">
+														注册
 														<i class="icon-arrow-right icon-on-right"></i>
 													</button>
 												</div>
@@ -210,7 +213,7 @@
 									<div class="toolbar center">
 										<a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
 											<i class="icon-arrow-left"></i>
-											Back to login
+											回到登录页面
 										</a>
 									</div>
 								</div><!-- /widget-body -->
@@ -224,9 +227,70 @@
 	
 	<script type="text/javascript">
 		function show_box(id) {
-		 jQuery('.widget-box.visible').removeClass('visible');
-		 jQuery('#'+id).addClass('visible');
+			jQuery('.widget-box.visible').removeClass('visible');
+			jQuery('#' + id).addClass('visible');
 		}
+		
+		// 校验表单
+		$("#registerForm").validate({
+			errorElement: 'div',
+			errorClass: 'help-block',
+			focusInvalid: false,
+			rules: {
+				loginName: {
+					required: true,
+					remote:{
+			               type:"get",
+			               url:"<%=path%>/checkPort",           
+			               data:{ id: function() { return $("#loginName").val(); } }
+			               } 
+				},
+				password: {
+					required: true
+				},
+				vPassword: {
+					required: true
+				},
+				email: {
+					required: true
+				},
+				phone: {
+					required: true
+				}
+			},
+	
+			messages: {
+				loginName: {
+					required: "请输入用户名",
+					remote: "该用户名已存在"
+				},
+				password: {
+					required: "请输入密码"
+				},
+				vPassword: {
+					required: "请输入确认密码"
+				},
+				email: {
+					required: "请输入邮件地址"
+				},
+				phone: {
+					required: "请输入手机号"
+				}
+			},
+	
+			invalidHandler: function (event, validator) { //display error alert on form submit   
+				$('.alert-danger', $('.login-form')).show();
+			},
+	
+			highlight: function (e) {
+				$(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+			},
+	
+			success: function (e) {
+				$(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+				$(e).remove();
+			}
+		});
 	</script>
 </body>
 </html>
