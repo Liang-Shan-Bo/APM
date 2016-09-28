@@ -322,8 +322,22 @@
 				name : 'CPU使用率',
 				type : 'gauge',
 				radius : 120,
-				axisLine : { lineStyle : { width : 10 } },
-				splitLine : { length : 15 },
+				axisLine : {
+					lineStyle : {
+						width : 3,
+						shadowColor : '#fff',
+						shadowBlur : 10
+					}
+				},
+				splitLine : {
+					length : 15,
+					lineStyle: {       
+	                    width:3,
+	                    color: 'auto',
+	                    shadowColor : '#fff',
+	                    shadowBlur: 10
+	                }
+				},
 				detail : {
 					formatter : '{value}%',
 					textStyle : {
@@ -332,7 +346,7 @@
 				},
 				data : [ {
 					value : 0,
-					name : '已使用CPU'
+					name : 'CPU'
 				} ]
 			} ]
 		};
@@ -359,9 +373,27 @@
 				type : 'gauge',
 				radius : 120,
 				max : 512,
-				axisLine : { lineStyle : { width : 10 } },
-				splitLine : { length : 15 },
-				axisLabel : { formatter: function (value) { return parseInt(value); } },
+				axisLine : {
+					lineStyle : {
+						width : 3,
+						shadowColor : '#fff',
+						shadowBlur : 10
+					}
+				},
+				splitLine : {
+					length : 15,
+					lineStyle: {       
+	                    width:3,
+	                    color: 'auto',
+	                    shadowColor : '#fff',
+	                    shadowBlur: 10
+	                }
+				},
+				axisLabel : {
+					formatter : function(value) {
+						return parseInt(value);
+					}
+				},
 				detail : {
 					formatter : '{value}MB',
 					textStyle : {
@@ -370,10 +402,11 @@
 				},
 				data : [ {
 					value : 0,
-					name : '已使用内存'
+					name : '内存'
 				} ]
 			} ]
 		};
+		
 		memChart.setOption(memOption);
 
 		// 刷新图表
@@ -383,7 +416,6 @@
 			// 使用刚指定的配置项和数据显示图表
 			memChart.setOption(memOption,true);
 		}
-		
 	</script>
 </body>
 </html>

@@ -14,8 +14,6 @@ public class User {
 	private String loginName;
 	// 密码
 	private String password;
-	// 姓名
-	private String userName;
 	// 手机号
 	private String phone;
 	// 邮箱地址
@@ -34,12 +32,6 @@ public class User {
 	}
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 	public String getPassword() {
 		return password;
