@@ -37,7 +37,7 @@ public class ServiceSocket {
 	// 推送消息时间间隔(ms)
 	private final static int SERVICE_INTERVAL = Integer.parseInt(PropertiesUtil.getValue("ws", "service.interval"));
 	// JMX地址
-	private static String service_url = null;
+	private static String serviceUrl = null;
 	// concurrent包的线程安全Set，用来存放每个客户端对应的WebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
 	private static CopyOnWriteArraySet<ServiceSocket> webSocketSet = new CopyOnWriteArraySet<ServiceSocket>();
 	// 与某个客户端的连接会话，需要通过它来给客户端发送数据
@@ -89,7 +89,7 @@ public class ServiceSocket {
 	 */
 	@OnMessage
 	public void onMessage(String message) {
-		service_url = message;
+		serviceUrl = message;
 		interval = 100;
 	}
 
@@ -112,7 +112,7 @@ public class ServiceSocket {
 	 * @throws EncodeException
 	 */
 	public void sendMessage(Session session) throws IOException, EncodeException {
-		if (session.isOpen() && service_url != null) {
+		if (session.isOpen() && serviceUrl != null) {
 			ServiceEntity info = getServiceInfo();
 			if (session.isOpen()) {
 				session.getBasicRemote().sendObject(info);
@@ -133,7 +133,7 @@ public class ServiceSocket {
 
 		try {
 			// 连接监控服务
-			JMXServiceURL ServiceURL = new JMXServiceURL(service_url);
+			JMXServiceURL ServiceURL = new JMXServiceURL(serviceUrl);
 			jmxConnector = JMXConnectorFactory.connect(ServiceURL);
 			MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
 

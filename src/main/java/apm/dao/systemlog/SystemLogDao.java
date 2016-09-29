@@ -8,10 +8,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import apm.entity.alrampolicy.AlarmPolicyEntity;
 import apm.entity.systemlog.SystemLogEntity;
 import apm.entity.systemlog.SystemLogPage;
-import apm.util.Page;
 
 /**
  * 报警策略DAO
@@ -33,8 +31,14 @@ public class SystemLogDao {
 		if (page.getAlarmSystemName() != null && !page.getAlarmSystemName().equals("")) {
 			sql += " and alarm_system_name like '%" + page.getAlarmSystemName() + "%'";
 		}
-		if (page.getAlarmType() != null) {
+		if (page.getAlarmType() != null && !page.getAlarmType().equals("")) {
 			sql += " and alarm_type = " + page.getAlarmType();
+		}
+		if (page.getAlarmStartTime() != null && !page.getAlarmStartTime().equals("")) {
+			sql += " and alarm_time >= to_date('"+ page.getAlarmStartTime() +"','yyyy-mm-dd')";
+		}
+		if (page.getAlarmEndTime() != null && !page.getAlarmEndTime().equals("")) {
+			sql += " and alarm_time < to_date('"+ page.getAlarmEndTime() +"','yyyy-mm-dd') + 1";
 		}
 		return jdbcTemplate.queryForObject(sql, Integer.class);
 	}
@@ -49,12 +53,17 @@ public class SystemLogDao {
 						 "SELECT A.*, ROWNUM RN FROM ( " + 
 							 "select * from apm_alarm_log " + 
 							 "where 1 = 1 ";  
-							
 		if (page.getAlarmSystemName() != null && !page.getAlarmSystemName().equals("")) {
 			sql += " and alarm_system_name like '%" + page.getAlarmSystemName() + "%'";
 		}
-		if (page.getAlarmType() != null) {
+		if (page.getAlarmType() != null && !page.getAlarmType().equals("")) {
 			sql += " and alarm_type = " + page.getAlarmType();
+		}
+		if (page.getAlarmStartTime() != null && !page.getAlarmStartTime().equals("")) {
+			sql += " and alarm_time >= to_date('"+ page.getAlarmStartTime() +"','yyyy-mm-dd')";
+		}
+		if (page.getAlarmEndTime() != null && !page.getAlarmEndTime().equals("")) {
+			sql += " and alarm_time < to_date('"+ page.getAlarmEndTime() +"','yyyy-mm-dd') + 1";
 		}
 		sql +=  "order by alarm_time desc ) A " + 
 				 "WHERE ROWNUM <= ? ) page " + 

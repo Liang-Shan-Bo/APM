@@ -181,7 +181,7 @@ public class ServiceController {
 			}
 		}
 		// 连接监控服务
-		String serviceUrl = SystemUtil.getJmxUrl(address, jmxPort+"");
+		String serviceUrl = SystemUtil.getJmxUrl(address, jmxPort + "");
 		try {
 			JMXServiceURL ServiceURL = new JMXServiceURL(serviceUrl);
 			JMXConnectorFactory.connect(ServiceURL);
@@ -206,7 +206,8 @@ public class ServiceController {
 				serviceEntity.setLoad(Constants.SERVICE_LOAD_NONE);
 			} else {
 				serviceEntity.setStatus(Constants.SERVICE_STATUS_OPEN);
-				String serviceUrl = SystemUtil.getJmxUrl(serviceEntity.getServiceAddress(), serviceEntity.getMonitorPort());
+				String serviceUrl = SystemUtil.getJmxUrl(serviceEntity.getServiceAddress(),
+						serviceEntity.getMonitorPort());
 				JMXConnector jmxConnector = null;
 
 				try {

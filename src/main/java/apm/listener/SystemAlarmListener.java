@@ -18,6 +18,10 @@ import apm.entity.system.SystemInfo;
 import apm.util.Constants;
 import apm.util.PropertiesUtil;
 
+/**
+ * @author 系统报警监控
+ *
+ */
 public class SystemAlarmListener implements ServletContextListener {
 
 	private JdbcTemplate jdbcTemplate;

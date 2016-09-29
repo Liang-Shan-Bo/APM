@@ -21,6 +21,10 @@ import apm.entity.system.DiskEntity;
 import apm.entity.system.SystemInfo;
 import apm.util.PropertiesUtil;
 
+/**
+ * @author 操作系统监控
+ *
+ */
 public class SystemListener implements ServletContextListener {
 
 	// 推送消息时间间隔(ms)

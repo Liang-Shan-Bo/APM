@@ -1,9 +1,5 @@
 package apm.entity.systemlog;
 
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import apm.util.Page;
 
 public class SystemLogPage extends Page<SystemLogEntity> {
@@ -13,11 +9,9 @@ public class SystemLogPage extends Page<SystemLogEntity> {
 	// 系统名称
 	private String alarmSystemName;
 	// 查询起始时间
-	@DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
-	private Date alarmStartTime;
+	private String alarmStartTime;
 	// 查询终止时间
-	@DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
-	private Date alarmEndTime;
+	private String alarmEndTime;
 	public Integer getAlarmType() {
 		return alarmType;
 	}
@@ -30,16 +24,16 @@ public class SystemLogPage extends Page<SystemLogEntity> {
 	public void setAlarmSystemName(String alarmSystemName) {
 		this.alarmSystemName = alarmSystemName;
 	}
-	public Date getAlarmStartTime() {
+	public String getAlarmStartTime() {
 		return alarmStartTime;
 	}
-	public void setAlarmStartTime(Date alarmStartTime) {
+	public void setAlarmStartTime(String alarmStartTime) {
 		this.alarmStartTime = alarmStartTime;
 	}
-	public Date getAlarmEndTime() {
+	public String getAlarmEndTime() {
 		return alarmEndTime;
 	}
-	public void setAlarmEndTime(Date alarmEndTime) {
+	public void setAlarmEndTime(String alarmEndTime) {
 		this.alarmEndTime = alarmEndTime;
 	}
 

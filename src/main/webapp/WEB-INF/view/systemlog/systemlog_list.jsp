@@ -16,6 +16,7 @@
 <link rel="stylesheet" type="text/css" href="style/assets/css/ace.min.css" />
 <link rel="stylesheet" type="text/css" href="style/assets/css/ace-rtl.min.css" />
 <link rel="stylesheet" type="text/css" href="style/assets/css/ace-skins.min.css" />
+<link rel="stylesheet" type="text/css" href="style/assets/css/bootstrap-datepicker.min.css" />
 <!-- ace settings handler -->
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap-paginator.js"></script>
@@ -24,6 +25,8 @@
 <script src="style/assets/js/ace.min.js"></script>
 <script src="style/assets/js/ace-extra.min.js"></script>
 <script src="style/assets/js/bootbox.min.js"></script>
+<script src="style/assets/js/date-time/bootstrap-datepicker.js"></script>
+<script src="style/assets/js/date-time/bootstrap-datepicker.zh-CN.min.js"></script>
 </head>
 
 <body>
@@ -66,11 +69,17 @@
 					<!-- 监控日志列表 -->
 					<form id="queryForm" class="form-inline checkForm" action="<%=path%>/systemLogList" method="get">
 						<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
-						查询时间：<input type="text" id="alarmStartTime" name="alarmStartTime" value="${page.alarmStartTime}">
-						至 <input type="text" id="alarmEndTime" name="alarmEndTime" value="${page.alarmEndTime}">
-						&nbsp;&nbsp;&nbsp;&nbsp;报警类型：<input type="text" id="alarmType" name="alarmType" value="${page.alarmType}">
-						&nbsp;&nbsp;&nbsp;&nbsp;系统名称：<input type="text" id="alarmSystemName" name="alarmSystemName" value="${page.alarmSystemName}">
-						&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-purple btn-sm">查询 <i class="icon-search icon-on-right bigger-110"></i></button>
+						<label>报警时间： </label>
+						<div style="display:inline-block;" class="form-group">
+							<div class="input-daterange input-group" style="width:360px;">
+								<input type="text" class="input-sm form-control datepicker" name="alarmStartTime" value="${page.alarmStartTime}">
+								<span class="input-group-addon"><i class="icon-calendar"></i></span>
+								<input type="text" class="input-sm form-control datepicker" name="alarmEndTime" value="${page.alarmEndTime}">
+							</div>
+						</div>
+						<label style="margin-left:20px;">报警类型： </label><input type="text" name="alarmType" value="${page.alarmType}">
+						<label style="margin-left:20px;">系统名称： </label><input type="text" name="alarmSystemName" value="${page.alarmSystemName}">
+						<label style="margin-left:20px;"></label><button type="submit" class="btn btn-purple btn-sm">查询 <i class="icon-search icon-on-right bigger-110"></i></button>
 					</form>
 					<div class="space-4"></div>
 					<div class="row">
@@ -116,6 +125,18 @@
 			class="icon-double-angle-up icon-only bigger-110"></i>
 		</a>
 	</div>
+	<script type="text/javascript">
+		$(function () {
+	        $(".datepicker").datepicker({
+	            language: "zh-CN",
+	            autoclose: true,//选中之后自动隐藏日期选择框
+	            todayHighlight: true,
+	            todayBtn: true,//今日按钮
+	            clearBtn: true,//今日按钮
+	            format: "yyyy-mm-dd"//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
+	        });
+	    });
+	</script>
 	<script type="text/javascript">
 		var element = $('#paginator');
 		var options = {
