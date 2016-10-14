@@ -5,14 +5,10 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import apm.dao.alrampolicy.AlarmPolicyDao;
 import apm.dao.systemlog.SystemLogDao;
-import apm.entity.alrampolicy.AlarmPolicyEntity;
-import apm.entity.systemlog.SystemLogEntity;
+import apm.entity.systemlog.AlarmStatiticsEntity;
 import apm.entity.systemlog.SystemLogPage;
-import apm.util.Page;
 
 /**
  * @author 报警策略事务管理
@@ -33,6 +29,15 @@ public class SystemLogService {
 		page.init();
 		page.setPage(systemLogDao.getSystemLogList(page), systemLogDao.getSystemLogCount(page));
 		return page;
+	}
+	
+	/**
+	 * 按时间段获取监控日志统计信息(1:本日；2：本月;3:本年；4：全部)
+	 * 
+	 * @return Map
+	 */
+	public List<AlarmStatiticsEntity> getLogStatistics(int dateFlag) {
+		return systemLogDao.getLogStatistics(dateFlag);
 	}
 
 }

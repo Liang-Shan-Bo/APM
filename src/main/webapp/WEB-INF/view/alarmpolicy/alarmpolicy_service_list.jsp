@@ -18,7 +18,7 @@
 <link rel="stylesheet" type="text/css" href="style/assets/css/ace-skins.min.css" />
 <!-- ace settings handler -->
 <script src="js/jquery.min.js"></script>
-<script src="js/bootstrap-paginator.js"></script>
+<script src="js/paginator.js"></script>
 <script src="style/assets/js/bootstrap.min.js"></script>
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
@@ -67,7 +67,9 @@
 					<form id="queryForm" class="form-inline checkForm" action="<%=path%>/serviceAlarmPolicyList" method="get">
 						<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
 					</form>
-					<a href="<%=path%>/createAlarmPolicy" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加服务策略</a>
+					<shiro:hasRole name="admin">
+						<a href="<%=path%>/createAlarmPolicy" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加服务策略</a>
+					</shiro:hasRole>
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="table-responsive">
@@ -110,8 +112,8 @@
 													<c:if test="${alarmPolicy.alarmPolicyLevel == 3}">过高</c:if>
 												</td>
 												<td>
-													<c:if test="${alarmPolicy.used == true}">已使用</c:if>
-													<c:if test="${alarmPolicy.used == false}">未使用</c:if>
+													<c:if test="${alarmPolicy.used == true}"><span class="label label-sm label-success">已使用</span></c:if>
+													<c:if test="${alarmPolicy.used == false}"><span class="label label-sm label-danger">未使用</span></c:if>
 												</td>
 												<td>
 													<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
@@ -130,8 +132,9 @@
 										</c:forEach>
 									</tbody>
 								</table>
-								<ul class="pagination no-margin" id="paginator" style="float:right;">
-								</ul>
+								<c:if test="${page.totalPage > 1}">
+									<%@ include file="../page.jsp"%>
+								</c:if>
 							</div>
 						</div>
 					</div>
@@ -153,65 +156,6 @@
 				}
 			});
 		}
-	</script>
-	<script type="text/javascript">
-		var element = $('#paginator');
-		var options = {
-			bootstrapMajorVersion : 3,
-			size : 'small',
-			itemTexts : function(type, page, current) {
-				switch (type) {
-				case "first":
-					return "首页";
-				case "prev":
-					return "上一页";
-				case "next":
-					return "下一页 ";
-				case "last":
-					return "末页";
-				case "page":
-					return page;
-				}
-			},
-			tooltipTitles : function(type, page, current) {
-				switch (type) {
-				case "first":
-					return "首页";
-				case "prev":
-					return "上一页";
-				case "next":
-					return "下一页";
-				case "last":
-					return "末页";
-				case "page":
-					return "第" + page + "页";
-				}
-			},
-			currentPage : "${page.currentPage}",
-			numberOfPages : 3,
-			totalPages : "${page.totalPage}"
-		}
-
-		element.bootstrapPaginator(options);
-
-		var cp = options.currentPage;
-		var tp = options.totalPages;
-		$("#paginator a").click(function() {
-			var page = $(this).text().trim();
-			if (page == "下一页") {
-				cp++;
-			} else if (page == "上一页") {
-				cp--;
-			} else if (page == "首页") {
-				cp = 1;
-			} else if (page == "末页") {
-				cp = tp;
-			} else {
-				cp = page;
-			}
-			$("#currentPage").val(cp);
-			$("#queryForm").submit();
-		});
 	</script>
 </body>
 </html>

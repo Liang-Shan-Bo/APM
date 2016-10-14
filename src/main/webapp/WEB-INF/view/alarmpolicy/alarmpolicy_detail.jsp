@@ -124,7 +124,7 @@
 									
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="users">报警角色</label>
-										<select class="class="col-xs-2" id="users" multiple="multiple" style="margin-left:12px;width:200px;height:155px;">
+										<select class="col-xs-2" id="users" multiple="multiple" style="margin-left:12px;width:200px;height:155px;">
 											<c:forEach items="${userList}" var="user">
 												<option value="${user.id}">${user.loginName}</option>
 											</c:forEach>

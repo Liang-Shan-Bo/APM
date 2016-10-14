@@ -1,5 +1,8 @@
 package apm.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author 常量类
  *
@@ -59,4 +62,22 @@ public class Constants {
 	// 网络指标
 	public static final int NORM_NET = 4;
 
+	// 当日
+	public static final int DAY_TIME = 1;
+	// 当月
+	public static final int MONTH_TIME = 2;
+	// 当年
+	public static final int YEAR_TIME = 3;
+	// 全部
+	public static final int ALL_TIME = 4;
+
+	// 缓存
+	public final static Map<String, Long> map = new HashMap<String, Long>() {
+
+		private static final long serialVersionUID = 1L;
+
+		{
+			put("jmx.remote.x.client.connection.check.period", 0L);
+		}
+	};
 }

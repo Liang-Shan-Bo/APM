@@ -7,30 +7,24 @@ package apm.entity.norm;
 public class NormEntity {
 
 	// ID
-	private Integer id;
+	private Long id;
 	// 指标名称
 	private String normName;
-	// 指标类型
+	// 指标类型(1：CPU；2：内存；3：网络；4：磁盘)
 	private Integer normType;
-	// 服务端口号
+	// 一般指标
 	private Integer normNormal;
-	// 服务监控端口号
+	// 警告指标
 	private Integer normWarning;
-	// CPU可使用数
+	// 过高指标
 	private Integer normDanger;
-	// 指标类型(1:服务指标;2:系统指标)
+	// 系统类型(1:服务指标;2:系统指标)
 	private Integer serviceType;
 	// 是否使用
 	private boolean used;
 	// 删除标识(0:不可删除;1:可删除)
 	private Integer deleteFlag;
 
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	public String getNormName() {
 		return normName;
 	}
@@ -78,5 +72,11 @@ public class NormEntity {
 	}
 	public void setDeleteFlag(Integer deleteFlag) {
 		this.deleteFlag = deleteFlag;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

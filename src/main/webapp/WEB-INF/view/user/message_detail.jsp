@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
@@ -19,6 +20,7 @@
 <!-- ace settings handler -->
 <script src="js/jquery.min.js"></script>
 <script src="style/assets/js/bootstrap.min.js"></script>
+<script src="style/assets/js/jquery.validate.min.js"></script>
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
 <script src="style/assets/js/ace-extra.min.js"></script>
@@ -49,68 +51,52 @@
 
 					<ul class="breadcrumb">
 						<li><i class="icon-home home-icon"></i> <a href="#">主页</a></li>
-						<li class="active">系统指标</li>
+						<li class="active">系统消息</li>
 					</ul>
-					<!-- .breadcrumb -->
 				</div>
 
 				<div class="page-content">
 					<div class="page-header">
 						<h1>
-							系统指标<small> <i class="icon-double-angle-right"></i> 查看
+							系统消息<small> <i class="icon-double-angle-right"></i> 详细
 							</small>
 						</h1>
 					</div>
-					<!-- 系统指标列表 -->
-					<div class="row">
-						<div class="col-xs-12">
-							<div class="table-responsive">
-								<table id="sample-table-2" class="table table-striped table-bordered table-hover">
-									<thead>
-										<tr>
-											<th>指标名称</th>
-											<th>正常负载</th>
-											<th>警告负载</th>
-											<th>过高负载</th>
-											<shiro:hasRole name="admin"> 
-												<th>操作</th>
-											</shiro:hasRole>
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach items="${normList}" var="norm">
-											<tr>
-												<td>${norm.normName}</td>
-												<td>${norm.normNormal}
-													<c:if test="${norm.normType == 1 or norm.normType == 3}">%</c:if>
-													<c:if test="${norm.normType == 2}">M</c:if>
-													<c:if test="${norm.normType == 4}">KB</c:if>
-												</td>
-												<td>${norm.normWarning}
-													<c:if test="${norm.normType == 1 or norm.normType == 3}">%</c:if>
-													<c:if test="${norm.normType == 2}">M</c:if>
-													<c:if test="${norm.normType == 4}">KB</c:if>
-												</td>
-												<td>${norm.normDanger}
-													<c:if test="${norm.normType == 1 or norm.normType == 3}">%</c:if>
-													<c:if test="${norm.normType == 2}">M</c:if>
-													<c:if test="${norm.normType == 4}">KB</c:if>
-												</td>
-												<shiro:hasRole name="admin"> 
-													<td>
-														<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-															<a class="green" href="updateSystemNorm?id=${norm.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
-														</div>
-													</td>
-												</shiro:hasRole>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-							</div>
+					<!-- 详细信息 -->
+					<div class="message-header">
+						<div>
+							<span class="blue bigger-125"> ${messageEntity.title} </span>
+
+							<div class="space-4"></div>
+
+							<i class="icon-star orange2 mark-star"></i>
+
+							&nbsp;
+							<span class="sender"> ${messageEntity.alarmSystemName} </span>
+
+							&nbsp;
+							<i class="icon-time bigger-110 orange middle"></i>
+							<span class="time">${fn:substring(messageEntity.alarmTime, 0, 19)}</span>
 						</div>
 					</div>
-					<!-- 系统指标列表 -->
+
+					<div class="hr hr-double"></div>
+
+					<div class="message-body clearfix">
+						<p>
+							${messageEntity.message}
+						</p>
+					</div>
+
+					<div class="hr hr-double"></div>
+					
+					<div class="form-actions clearfix">
+						<div class="col-md-offset-4 col-md-9">
+							<a onclick="history.back()"  class="btn"><i class="icon-reply bigger-110"></i>返&nbsp;&nbsp;&nbsp;&nbsp;回</a>
+							&nbsp; &nbsp; &nbsp;
+						</div>
+					</div>
+					<!-- 详细信息 -->
 				</div>
 			</div>
 		</div>

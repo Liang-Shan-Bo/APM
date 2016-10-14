@@ -76,7 +76,7 @@ public class AlarmPolicyService {
 	 */
 	public void updateAlarmPolicy(AlarmPolicyEntity alarmPolicyEntity) {
 		alarmPolicyDao.updateAlarmPolicy(alarmPolicyEntity);
-		int id = alarmPolicyEntity.getId();
+		long id = alarmPolicyEntity.getId();
 		alarmPolicyDao.deleteAlarmPolicyUser(id);
 		alarmPolicyDao.createAlarmPolicyUser(id, alarmPolicyEntity.getUsers());
 	}
@@ -117,7 +117,7 @@ public class AlarmPolicyService {
 	 * 
 	 * @return boolean
 	 */
-	public boolean isAlarmPolicyUsed(int id) {
+	public boolean isAlarmPolicyUsed(long id) {
 		if (alarmPolicyDao.getPolicyCount(id) != 0) {
 			return true;
 		}else {

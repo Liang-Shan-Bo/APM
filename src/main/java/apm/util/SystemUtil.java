@@ -14,6 +14,7 @@ public class SystemUtil {
 	 * @param password
 	 * @param address
 	 * @param path
+	 * @return 0:成功；1：失败
 	 */
 	public static Integer shell(String userName, String password, String address, String path) {
 		// 指明连接主机的IP地址
@@ -30,11 +31,12 @@ public class SystemUtil {
 				ssh = conn.openSession();
 				// 执行命令
 				ssh.execCommand("source /etc/profile;sh " + path);
+				Thread.sleep(5000);
 			}
 			// 连接的Session和Connection对象都需要关闭
 			ssh.close();
 			conn.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return 1;
 		}
 		return 0;

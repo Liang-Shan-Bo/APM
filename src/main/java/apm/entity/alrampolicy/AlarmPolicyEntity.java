@@ -7,7 +7,7 @@ package apm.entity.alrampolicy;
 public class AlarmPolicyEntity {
 
 	// ID
-	private Integer id;
+	private Long id;
 	// 策略名称
 	private String alarmPolicyName;
 	// 是否报警标识(0:否;1:是)
@@ -29,12 +29,6 @@ public class AlarmPolicyEntity {
 	// 删除标识(0:不可删除;1:可删除)
 	private Integer deleteFlag;
 
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	public String getAlarmPolicyName() {
 		return alarmPolicyName;
 	}
@@ -94,5 +88,11 @@ public class AlarmPolicyEntity {
 	}
 	public void setDeleteFlag(Integer deleteFlag) {
 		this.deleteFlag = deleteFlag;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

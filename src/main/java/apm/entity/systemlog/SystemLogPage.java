@@ -12,6 +12,7 @@ public class SystemLogPage extends Page<SystemLogEntity> {
 	private String alarmStartTime;
 	// 查询终止时间
 	private String alarmEndTime;
+	
 	public Integer getAlarmType() {
 		return alarmType;
 	}

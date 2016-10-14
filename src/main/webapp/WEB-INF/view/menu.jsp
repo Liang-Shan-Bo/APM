@@ -76,27 +76,31 @@
 				</li>
 			</ul>
 		</li>
-		<li>
-			<a href="#" class="dropdown-toggle"> 
-				<i class="icon-calendar"></i> <span class="menu-text">系统日志 </span> <b class="arrow icon-angle-down"></b>
-			</a>
-			<ul class="submenu">
-				<li>
-					<a href="<%=basePath%>/systemLogList"> <i class="icon-double-angle-right"></i> 监控日志</a>
-				</li>
-				<li>
-					<a href="<%=basePath%>/alarmList"> <i class="icon-double-angle-right"></i> 报警统计</a>
-				</li>
-			</ul>
-		</li>
+		<shiro:hasRole name="admin">
+			<li>
+				<a href="#" class="dropdown-toggle"> 
+					<i class="icon-calendar"></i> <span class="menu-text">报警日志 </span> <b class="arrow icon-angle-down"></b>
+				</a>
+				<ul class="submenu">
+					<li>
+						<a href="<%=basePath%>/systemLogList"> <i class="icon-double-angle-right"></i> 监控日志</a>
+					</li>
+					<li>
+						<a href="<%=basePath%>/alarmList"> <i class="icon-double-angle-right"></i> 报警统计</a>
+					</li>
+				</ul>
+			</li>
+		</shiro:hasRole>
+		<shiro:hasRole name="admin">
+			<li>
+				<a href="<%=basePath%>/userList"> <i class="icon-user"></i> <span class="menu-text">用户管理 </span></a>
+			</li>
+		</shiro:hasRole>
 		<li>
 			<a href="#" class="dropdown-toggle"> 
 				<i class="icon-list-alt"></i> <span class="menu-text">系统功能 </span> <b class="arrow icon-angle-down"></b>
 			</a>
 			<ul class="submenu">
-				<li>
-					<a href="#"> <i class="icon-double-angle-right"></i> 恢复默认设置</a>
-				</li>
 				<li>
 					<a href="#"> <i class="icon-double-angle-right"></i> 操作系统信息</a>
 				</li>

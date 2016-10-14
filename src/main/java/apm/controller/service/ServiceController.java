@@ -184,7 +184,7 @@ public class ServiceController {
 		String serviceUrl = SystemUtil.getJmxUrl(address, jmxPort + "");
 		try {
 			JMXServiceURL ServiceURL = new JMXServiceURL(serviceUrl);
-			JMXConnectorFactory.connect(ServiceURL);
+			JMXConnectorFactory.connect(ServiceURL, Constants.map);
 		} catch (Exception e) {
 			return Constants.PORT_JXM_LINK_REEOR;
 		}
@@ -213,7 +213,7 @@ public class ServiceController {
 				try {
 					// 连接监控服务
 					JMXServiceURL ServiceURL = new JMXServiceURL(serviceUrl);
-					jmxConnector = JMXConnectorFactory.connect(ServiceURL);
+					jmxConnector = JMXConnectorFactory.connect(ServiceURL, Constants.map);
 					MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
 					// 获取内存信息
 					MemoryMXBean memoryMXBean = ManagementFactory.newPlatformMXBeanProxy(mBeanServerConnection,
@@ -258,7 +258,7 @@ public class ServiceController {
 		try {
 			// 连接监控服务
 			JMXServiceURL ServiceURL = new JMXServiceURL(serviceUrl);
-			jmxConnector = JMXConnectorFactory.connect(ServiceURL);
+			jmxConnector = JMXConnectorFactory.connect(ServiceURL, Constants.map);
 			MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
 			// 获取系统信息
 			OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.newPlatformMXBeanProxy(

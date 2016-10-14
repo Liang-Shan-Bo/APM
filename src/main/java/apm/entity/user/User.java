@@ -9,7 +9,7 @@ import java.util.Date;
 public class User {
 
 	// ID
-	private Integer id;
+	private Long id;
 	// 用户名
 	private String loginName;
 	// 密码
@@ -27,12 +27,6 @@ public class User {
 	// 修改
 	private String updateUser;
 
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	public String getPassword() {
 		return password;
 	}
@@ -80,5 +74,11 @@ public class User {
 	}
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

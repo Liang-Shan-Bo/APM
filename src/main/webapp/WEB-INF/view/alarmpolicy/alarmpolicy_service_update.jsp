@@ -93,6 +93,7 @@
 									</div>
 								</div>
 								
+								<!-- hidden -->
 								<div id="send" hidden="hidden">
 									<div class="space-4"></div>
 								
@@ -142,25 +143,25 @@
 											</select> 
 										</div>
 									</div>
-								</div>
-								
-								<div class="space-4"></div>
-									
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="duallist">报警用户</label>
-
-									<div class="col-sm-8" style="margin-top: -17px;">
-										<select multiple="multiple" name="users" id="duallist">
-											<c:forEach items="${otherList}" var="user">
-												<option value="${user.id}">${user.loginName}</option>
-											</c:forEach>
-											<c:forEach items="${userList}" var="user">
-												<option value="${user.id}" selected="selected">${user.loginName}</option>
-											</c:forEach>
-										</select>
-										<div class="hr hr-16 hr-dotted"></div>
+												
+									<div class="space-4"></div>
+										
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="duallist">报警用户</label>
+	
+										<div class="col-sm-8" style="margin-top: -17px;">
+											<select multiple="multiple" name="users" id="duallist">
+												<c:forEach items="${otherList}" var="user">
+													<option value="${user.id}">${user.loginName}</option>
+												</c:forEach>
+												<c:forEach items="${userList}" var="user">
+													<option value="${user.id}" selected="selected">${user.loginName}</option>
+												</c:forEach>
+											</select>
+											<div class="hr hr-16 hr-dotted"></div>
+										</div>
 									</div>
-								</div>
+								</div><!-- hidden -->
 		
 								<div class="space-4"></div>
 		
@@ -173,8 +174,7 @@
 								</div>
 							</form>
 						</div>
-					</div>
-					<!-- 编辑策略 -->
+					</div><!-- 编辑策略 -->
 				</div>
 			</div>
 		</div>

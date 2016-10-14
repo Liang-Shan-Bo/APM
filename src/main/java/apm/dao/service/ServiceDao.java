@@ -36,7 +36,7 @@ public class ServiceDao {
 	 * 
 	 * @return ServiceEntity
 	 */
-	public ServiceEntity getServiceById(int id) {
+	public ServiceEntity getServiceById(long id) {
 		String sql = "select * from apm_service_info where id=?";
 		ServiceEntity serviceEntity = (ServiceEntity) jdbcTemplate.queryForObject(sql, new Object[]{id},
 				new BeanPropertyRowMapper<ServiceEntity>(ServiceEntity.class));

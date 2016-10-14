@@ -108,7 +108,7 @@ public class NormService {
 	 * 
 	 * @return boolean
 	 */
-	public boolean isNormUsed(int id) {
+	public boolean isNormUsed(long id) {
 		if (normDao.getServiceCount(id) != 0) {
 			return true;
 		}else {

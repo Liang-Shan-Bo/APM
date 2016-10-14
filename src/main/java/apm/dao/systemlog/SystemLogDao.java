@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import apm.entity.systemlog.AlarmStatiticsEntity;
 import apm.entity.systemlog.SystemLogEntity;
 import apm.entity.systemlog.SystemLogPage;
 
@@ -73,5 +74,32 @@ public class SystemLogDao {
 						SystemLogEntity.class));
 		return list;
 	}
-
+	
+	/**
+	 * 按时间段获取监控日志统计信息(1:本日；2：本月;3:本年；4：全部)
+	 * 
+	 * @return List<AlarmStatiticsEntity>
+	 */
+	public List<AlarmStatiticsEntity> getLogStatistics(int dateFlag) {
+		String sql = "select count(*) count,t.alarm_system_name " +
+						"from apm_alarm_log t " +
+						"where 1 = 1 ";
+		switch (dateFlag) {
+			case 1 :
+				sql += "and to_char(alarm_time,'yyyyMMdd')=to_char(sysdate,'yyyyMMdd') ";
+				break;
+			case 2 :
+				sql += "and to_char(alarm_time,'yyyyMM')=to_char(sysdate,'yyyyMM') ";
+				break;
+			case 3 :
+				sql += "and to_char(alarm_time,'yyyy')=to_char(sysdate,'yyyy') ";
+				break;
+			case 4 :
+				break;
+		}
+		sql += "group by t.alarm_system_name";
+		List<AlarmStatiticsEntity> list = (List<AlarmStatiticsEntity>) jdbcTemplate.query(sql,
+				new BeanPropertyRowMapper<AlarmStatiticsEntity>(AlarmStatiticsEntity.class));
+		return list;
+	}
 }

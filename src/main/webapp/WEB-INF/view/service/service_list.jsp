@@ -67,7 +67,9 @@
 					<form id="queryForm" class="form-inline checkForm" action="<%=path%>/serviceList" method="get">
 						<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
 					</form>
-					<a href="<%=path%>/createService" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加服务</a>
+					<shiro:hasRole name="admin">
+						<a href="<%=path%>/createService" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加服务</a>
+					</shiro:hasRole>
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="table-responsive">
@@ -106,7 +108,7 @@
 												<td>
 													<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
 														<c:if test="${service.status != 0}">
-															<a class="blue" href="serviceDetail?id=${service.id}" title="查看"> <i class="icon-zoom-in bigger-130"></i></a> 
+															<a id="detail${service.id}" class="blue" href="serviceDetail?id=${service.id}" title="查看"> <i class="icon-zoom-in bigger-130"></i></a> 
 														</c:if>
 													    <shiro:hasRole name="admin">  
 													    	<a class="green" href="updateService?id=${service.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
@@ -126,8 +128,9 @@
 										</c:forEach>
 									</tbody>
 								</table>
-								<ul class="pagination no-margin" id="paginator" style="float:right;">
-								</ul>
+								<c:if test="${page.totalPage > 1}">
+									<%@ include file="../page.jsp"%>
+								</c:if>
 							</div>
 						</div>
 					</div>
@@ -139,6 +142,7 @@
 			class="icon-double-angle-up icon-only bigger-110"></i>
 		</a>
 	</div>
+	<div id="loading" hidden="hidden" style="position:absolute; top:6%; left:47%;z-index:9999;"><i class="icon-spinner icon-spin orange bigger-500"></i></div>
 	<script type="text/javascript">
 		bootbox.setDefaults("locale","zh_CN");  
 		// 删除服务
@@ -153,6 +157,7 @@
 		function startup(id) {
 			bootbox.confirm("是否开启该服务？", function(re) {
 				if (re) {
+					$("#loading").show();
 					$.ajax({
 						url : "<%=path%>/startup",
 						method : 'post',
@@ -174,6 +179,7 @@
 					        });
 						}
 					});
+					$("#loading").hide();
 				}
 			});
 		}
@@ -181,6 +187,7 @@
 		function shutdown(id) {
 			bootbox.confirm("是否关闭该服务？", function(re) {
 				if (re) {
+					$("#loading").show();
 					$.ajax({
 						url : "<%=path%>/shutdown",
 						method : 'post',
@@ -202,6 +209,7 @@
 					        });
 						}
 					});
+					$("#loading").hide();
 				}
 			});
 		}
@@ -219,6 +227,7 @@
 						var status = $('#status' + list[i].id);
 						var load = $('#load' + list[i].id);
 						var switchFlag = $('#switch' + list[i].id);
+						var detail = $('#detail' + list[i].id);
 						if (list[i].load == 0) {
 							status.html("<span class=\"label label-sm label-danger\">关闭</span>");
 							load.html("<span class=\"label label-sm label-inverse\">无</span>");
@@ -226,12 +235,14 @@
 							switchFlag.attr("class", "green"); 
 							switchFlag.attr("title", "开启");
 							switchFlag.attr("onclick", "startup('" + list[i].id + "');");
+							detail.hide();
 						}else{
 							status.html("<span class=\"label label-sm label-success\">开启</span>");
 							switchFlag.html("<i class=\"icon-ban-circle bigger-130\"></i>");
 							switchFlag.attr("class", "red"); 
 							switchFlag.attr("title", "关闭");
 							switchFlag.attr("onclick", "shutdown('" + list[i].id + "');");
+							detail.show();
 							switch (list[i].load) {
 							case 1:
 								load.html("<span class=\"label label-sm label-success\">良好</span>");
@@ -256,65 +267,6 @@
 				}
 			});
 		}, 5000);
-	</script>
-	<script type="text/javascript">
-		var element = $('#paginator');
-		var options = {
-			bootstrapMajorVersion : 3,
-			size : 'small',
-			itemTexts : function(type, page, current) {
-				switch (type) {
-				case "first":
-					return "首页";
-				case "prev":
-					return "上一页";
-				case "next":
-					return "下一页 ";
-				case "last":
-					return "末页";
-				case "page":
-					return page;
-				}
-			},
-			tooltipTitles : function(type, page, current) {
-				switch (type) {
-				case "first":
-					return "首页";
-				case "prev":
-					return "上一页";
-				case "next":
-					return "下一页";
-				case "last":
-					return "末页";
-				case "page":
-					return "第" + page + "页";
-				}
-			},
-			currentPage : "${page.currentPage}",
-			numberOfPages : 3,
-			totalPages : "${page.totalPage}"
-		}
-
-		element.bootstrapPaginator(options);
-
-		var cp = options.currentPage;
-		var tp = options.totalPages;
-		$("#paginator a").click(function() {
-			var page = $(this).text().trim();
-			if (page == "下一页") {
-				cp++;
-			} else if (page == "上一页") {
-				cp--;
-			} else if (page == "首页") {
-				cp = 1;
-			} else if (page == "末页") {
-				cp = tp;
-			} else {
-				cp = page;
-			}
-			$("#currentPage").val(cp);
-			$("#queryForm").submit();
-		});
 	</script>
 </body>
 </html>

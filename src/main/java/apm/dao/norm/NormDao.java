@@ -37,7 +37,7 @@ public class NormDao {
 	 * 
 	 * @return NormEntity
 	 */
-	public NormEntity getNormById(int id) {
+	public NormEntity getNormById(long id) {
 		String sql = "select * from apm_norm where id=?";
 		NormEntity normEntity = (NormEntity) jdbcTemplate.queryForObject(sql, new Object[]{id},
 				new BeanPropertyRowMapper<NormEntity>(NormEntity.class));
@@ -148,7 +148,7 @@ public class NormDao {
 	 * 
 	 * @return int
 	 */
-	public Integer getServiceCount(int id) {
+	public Integer getServiceCount(long id) {
 		String sql = "select count(*) from apm_service_info where norm_id = ?";
 		return jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
 	}

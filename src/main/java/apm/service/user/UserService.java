@@ -47,7 +47,7 @@ public class UserService {
 	}
 
 	/**
-	 * 根据ID查询服务
+	 * 根据登录名查询用户
 	 * 
 	 * @return ServiceEntity
 	 */

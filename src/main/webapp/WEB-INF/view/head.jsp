@@ -13,32 +13,27 @@
 				<small><i class="icon-desktop"></i> 监控系统</small>
 			</a>
 		</div>
+		
 		<div class="navbar-header pull-right" role="navigation">
 			<ul class="nav ace-nav">
-				<li class="purple">
-					<a data-toggle="dropdown" class="dropdown-toggle" href="#"> 
-						<i class="icon-bell-alt icon-animated-bell"></i> 
-						<span class="badge badge-important">8</span>
-					</a>
-					<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
-						<li class="dropdown-header">
-							<i class="icon-warning-sign"></i> 8条报警
-						</li>
-						<li>
-							<a href="#">
-								<div class="clearfix">
-									<span class="pull-left"> 
-										<i class="btn btn-xs no-hover btn-pink icon-comment"></i> 系统警告
-									</span> 
-									<span class="pull-right badge badge-info">+8</span>
-								</div>
-							</a>
-						</li>
-						<li>
-							<a href="#"> 查看所有 <i class="icon-arrow-right"></i> </a>
-						</li>
-					</ul>
-				</li>
+				<!-- 报警信息 -->
+					<li class="purple" >
+						<a id="alarm" data-toggle="dropdown" class="dropdown-toggle" href="#" style="display:none;"> 
+							<i class="icon-bell-alt icon-animated-bell"></i> 
+							<span id="count" class="badge badge-important"></span>
+						</a>
+						<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+							<li class="dropdown-header">
+								<i class="icon-warning-sign"></i> <span id="subCount"></span>条报警
+							</li>
+							<div id="alarmForm" class="dropdown-navbar dropdown-menu2 navbar-pink" style="height:230px;overflow:auto;margin-top: -1px;">
+							</div>
+							<li>
+								<a href="<%=path%>/messageList"> 查看所有 <i class="icon-arrow-right"></i> </a>
+							</li>
+						</ul>
+					</li><!-- 报警信息 -->
+				
 				<li class="light-blue">
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle"> 
 						<img class="nav-user-photo" src="style/assets/avatars/user.jpg" alt="Jason's Photo" /> 
@@ -47,6 +42,7 @@
 								欢迎登录<br/>
 								<shiro:user>
 									<shiro:principal/>
+									<input id="loginName" type="hidden" value="<shiro:principal/>"/>
 								</shiro:user>
 							</small>
 						</span> 
@@ -54,14 +50,17 @@
 					</a>
 					<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 						<li>
-							<a href="<%=path%>/userOption"> <i class="icon-cog"></i> 设置 </a>
+							<a href="<%=path%>/userOption"> <i class="icon-cog orange"></i> 修改密码 </a>
 						</li>
 						<li>
-							<a href="<%=path%>/userDetail"> <i class="icon-user"></i> 个人资料 </a>
+							<a href="<%=path%>/userDetail"> <i class="icon-user blue"></i> 个人信息 </a>
+						</li>
+						<li>
+							<a href="<%=path%>/messageList"> <i class="icon-envelope green"></i> 系统消息 </a>
 						</li>
 						<li class="divider"></li>
 						<li>
-							<a href="<%=path%>/logout"> <i class="icon-off"></i> 退出 </a>
+							<a href="<%=path%>/logout"> <i class="icon-off red"></i> 退出 </a>
 						</li>
 					</ul>
 				</li>
@@ -69,4 +68,81 @@
 		</div>
 	</div>
 </div>
+
+<script src="style/assets/js/bootbox.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(showAlarmMessage());
+	setInterval("showAlarmMessage()",60000);
+	
+	//动态刷新报警信息
+	function showAlarmMessage(){
+		$.ajax({
+			url : "<%=path%>/getAlarmMessage",
+			method : 'post',
+			async: false,
+			dataType: "json",
+			data: { loginName : $("#loginName").val() },
+			success : function(data){
+				if(data.count <= 0){
+					$("#alarm").hide();
+				}else{
+					
+					//清空列表
+					$(".alarmList").remove();
+					//更新报警信息
+					for (var i = 0; i < data.count; i++) {
+						var alarm = data.list[i];
+						addAlarm(alarm, i);
+						
+					}
+					$("#count").html(data.count);
+					$("#subCount").html(data.count);
+					$("#alarm").show();
+				}
+			},
+			error : function(data){
+			}
+		});
+	}
+	
+	//写入报警信息到报警列表
+	function addAlarm(alarm, index){
+		var msg = "";
+		switch (alarm.alarmType) {
+		case 1:
+			msg += "CPU负载超标,当前负载为" + alarm.alarmValue + "%";
+			break;
+		case 2:
+			msg += "内存负载超标,当前负载为" + alarm.alarmValue + "M";
+			break;
+		case 3:
+			msg += "磁盘负载超标,当前负载为" + alarm.alarmValue + "%";
+			break;
+		case 4:
+			msg += "网络负载超标,当前负载为" + alarm.alarmValue + "KB";
+			break;
+		}
+		var html = "<div class=\"alarmList\" stlye=\"height:100px;\">";
+		html += "<a href=\"detailMessage?id=" + alarm.id + "\" style=\"margin-left: 20px;\">";
+		html += "<span class=\"msg-body\">";
+		html += "<span class=\"msg-title\" style=\"margin-top: 5px;\">";
+		html += "<span class=\"blue\">" + alarm.alarmSystemName + ":</span>";
+		html += msg;
+		html += "</span>";
+		html += "<span class=\"msg-time\">";
+		html += "<i class=\"icon-time\"></i>  ";
+		html += "<span>" + getLocalTime(alarm.alarmTime) + "</span>";
+		html += "</span>";
+		html += "</span>";
+		html += "</a>";
+		html += "<hr style=\"margin-top:0px;margin-bottom:0px;\"/>";
+		html += "</div>";
+		$("#alarmForm").append(html);
+	}
+	
+	//时间戳格式化为日期格式
+	function getLocalTime(nS) {
+		return new Date(parseInt(nS)).toLocaleString()
+	}
+</script>
 

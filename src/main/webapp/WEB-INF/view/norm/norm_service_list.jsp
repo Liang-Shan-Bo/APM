@@ -67,7 +67,9 @@
 					<form id="queryForm" class="form-inline checkForm" action="<%=path%>/serviceNormList" method="get">
 						<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
 					</form>
-					<a href="<%=path%>/createNorm" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加服务指标</a>
+					<shiro:hasRole name="admin"> 
+						<a href="<%=path%>/createNorm" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加服务指标</a>
+					</shiro:hasRole>
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="table-responsive">
@@ -79,7 +81,9 @@
 											<th>警告负载</th>
 											<th>过高负载</th>
 											<th>使用情况</th>
-											<th>操作</th>
+											<shiro:hasRole name="admin"> 
+												<th>操作</th>
+											</shiro:hasRole>
 										</tr>
 									</thead>
 									<tbody>
@@ -90,27 +94,28 @@
 												<td>${norm.normWarning}M</td>
 												<td>${norm.normDanger}M</td>
 												<td>
-													<c:if test="${norm.used == true}">已使用</c:if>
-													<c:if test="${norm.used == false}">未使用</c:if>
+													<c:if test="${norm.used == true}"><span class="label label-sm label-success">已使用</span></c:if>
+													<c:if test="${norm.used == false}"><span class="label label-sm label-danger">未使用</span></c:if>
 												</td>
-												<td>
-													<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-														<shiro:hasRole name="admin"> 
+												<shiro:hasRole name="admin"> 
+													<td>
+														<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
 															<a class="green" href="updateServiceNorm?id=${norm.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
 															<c:if test="${norm.deleteFlag == 1}">
 																<c:if test="${norm.used == false}">
 																	<a class="red" href="#" onclick="deleteService('${norm.id}');" title="删除"> <i class="icon-trash bigger-130"></i></a>
 																</c:if> 
 															</c:if>
-														</shiro:hasRole>
-													</div>
-												</td>
+														</div>
+													</td>
+												</shiro:hasRole>
 											</tr>
 										</c:forEach>
 									</tbody>
 								</table>
-								<ul class="pagination no-margin" id="paginator" style="float:right;">
-								</ul>
+								<c:if test="${page.totalPage > 1}">
+									<%@ include file="../page.jsp"%>
+								</c:if>
 							</div>
 						</div>
 					</div>
@@ -132,65 +137,6 @@
 				}
 			});
 		}
-	</script>
-	<script type="text/javascript">
-		var element = $('#paginator');
-		var options = {
-			bootstrapMajorVersion : 3,
-			size : 'small',
-			itemTexts : function(type, page, current) {
-				switch (type) {
-				case "first":
-					return "首页";
-				case "prev":
-					return "上一页";
-				case "next":
-					return "下一页 ";
-				case "last":
-					return "末页";
-				case "page":
-					return page;
-				}
-			},
-			tooltipTitles : function(type, page, current) {
-				switch (type) {
-				case "first":
-					return "首页";
-				case "prev":
-					return "上一页";
-				case "next":
-					return "下一页";
-				case "last":
-					return "末页";
-				case "page":
-					return "第" + page + "页";
-				}
-			},
-			currentPage : "${page.currentPage}",
-			numberOfPages : 3,
-			totalPages : "${page.totalPage}"
-		}
-
-		element.bootstrapPaginator(options);
-
-		var cp = options.currentPage;
-		var tp = options.totalPages;
-		$("#paginator a").click(function() {
-			var page = $(this).text().trim();
-			if (page == "下一页") {
-				cp++;
-			} else if (page == "上一页") {
-				cp--;
-			} else if (page == "首页") {
-				cp = 1;
-			} else if (page == "末页") {
-				cp = tp;
-			} else {
-				cp = page;
-			}
-			$("#currentPage").val(cp);
-			$("#queryForm").submit();
-		});
 	</script>
 </body>
 </html>

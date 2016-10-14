@@ -40,7 +40,7 @@ public class AlarmPolicyDao {
 	 * 
 	 * @return AlarmPolicyEntity
 	 */
-	public AlarmPolicyEntity getAlarmPolicyById(int id) {
+	public AlarmPolicyEntity getAlarmPolicyById(long id) {
 		String sql = "select * from apm_alarm_policy where id=?";
 		AlarmPolicyEntity AlarmPolicyEntity = (AlarmPolicyEntity) jdbcTemplate.queryForObject(sql, new Object[]{id},
 				new BeanPropertyRowMapper<AlarmPolicyEntity>(AlarmPolicyEntity.class));
@@ -153,7 +153,7 @@ public class AlarmPolicyDao {
 	 * 删除策略角色列表
 	 * 
 	 */
-	public void deleteAlarmPolicyUser(int id) {
+	public void deleteAlarmPolicyUser(long id) {
 		String sql = "delete from apm_policy_user where alarm_policy_id=?";
 		jdbcTemplate.update(sql, new Object[]{id});
 	}
@@ -174,7 +174,7 @@ public class AlarmPolicyDao {
 	 * 
 	 * @return int
 	 */
-	public int getPolicyCount(int id) {
+	public int getPolicyCount(long id) {
 		String sql = "select count(*) from apm_service_info where alarm_policy_id = ?";
 		return jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
 	}
@@ -183,7 +183,7 @@ public class AlarmPolicyDao {
 	 * 添加策略角色
 	 * 
 	 */
-	public void createAlarmPolicyUser(int policyId, int[] users) {
+	public void createAlarmPolicyUser(long policyId, int[] users) {
 		if (users == null) {
 			return;
 		}
@@ -192,7 +192,7 @@ public class AlarmPolicyDao {
 
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				ps.setInt(1, policyId);
+				ps.setLong(1, policyId);
 				ps.setInt(2, users[i]);
 			}
 

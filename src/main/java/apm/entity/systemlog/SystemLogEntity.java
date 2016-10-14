@@ -9,29 +9,18 @@ import java.util.Date;
 public class SystemLogEntity {
 
 	// ID
-	private Integer id;
+	private Long id;
 	// 报警参数
-	private Integer alarmValue;
+	private Double alarmValue;
 	// 报警时间
 	private Date alarmTime;
-	// 报警类型
+	// 报警类型(1：CPU；2：内存；3：磁盘；4：网络)
 	private Integer alarmType;
 	// 系统名称
 	private String alarmSystemName;
 	// 日志概述
 	private String alarmDesc;
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public Integer getAlarmValue() {
-		return alarmValue;
-	}
-	public void setAlarmValue(Integer alarmValue) {
-		this.alarmValue = alarmValue;
-	}
+	
 	public Date getAlarmTime() {
 		return alarmTime;
 	}
@@ -55,5 +44,17 @@ public class SystemLogEntity {
 	}
 	public void setAlarmDesc(String alarmDesc) {
 		this.alarmDesc = alarmDesc;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Double getAlarmValue() {
+		return alarmValue;
+	}
+	public void setAlarmValue(Double alarmValue) {
+		this.alarmValue = alarmValue;
 	}
 }

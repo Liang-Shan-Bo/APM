@@ -28,6 +28,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import apm.entity.service.ServiceEntity;
+import apm.util.Constants;
 import apm.util.DateUtil;
 import apm.util.PropertiesUtil;
 
@@ -134,7 +135,7 @@ public class ServiceSocket {
 		try {
 			// 连接监控服务
 			JMXServiceURL ServiceURL = new JMXServiceURL(serviceUrl);
-			jmxConnector = JMXConnectorFactory.connect(ServiceURL);
+			jmxConnector = JMXConnectorFactory.connect(ServiceURL, Constants.map);
 			MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
 
 			// 计算单位时间内的CPU使用率

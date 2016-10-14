@@ -7,7 +7,7 @@ package apm.entity.service;
 public class ServiceEntity {
 
 	// ID
-	private Integer id;
+	private Long id;
 	// 服务名称
 	private String serviceName;
 	// 服务IP地址
@@ -75,12 +75,6 @@ public class ServiceEntity {
 	// 删除标识(0:不可删除;1:可删除)
 	private Integer deleteFlag;
 
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	public String getServiceAddress() {
 		return serviceAddress;
 	}
@@ -278,5 +272,11 @@ public class ServiceEntity {
 	}
 	public void setDeleteFlag(Integer deleteFlag) {
 		this.deleteFlag = deleteFlag;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getId() {
+		return id;
 	}
 }
