@@ -118,6 +118,11 @@
 			class="icon-double-angle-up icon-only bigger-110"></i>
 		</a>
 	</div>
+	<script type="text/javascript">
+		$("#menu5").addClass("open");
+		$("#menu5").find(".submenu").css("display","block");
+		$("#systemNormList").addClass("active");
+	</script>
 </body>
 </html>
 

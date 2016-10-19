@@ -18,7 +18,6 @@
 <link rel="stylesheet" type="text/css" href="style/assets/css/ace-skins.min.css" />
 <!-- ace settings handler -->
 <script src="js/jquery.min.js"></script>
-<script src="js/bootstrap-paginator.js"></script>
 <script src="style/assets/js/bootstrap.min.js"></script>
 <script src="style/assets/js/ace-elements.min.js"></script>
 <script src="style/assets/js/ace.min.js"></script>
@@ -144,6 +143,7 @@
 	</div>
 	<div id="loading" hidden="hidden" style="position:absolute; top:6%; left:47%;z-index:9999;"><i class="icon-spinner icon-spin orange bigger-500"></i></div>
 	<script type="text/javascript">
+		$("#menu2").addClass("active");
 		bootbox.setDefaults("locale","zh_CN");  
 		// 删除服务
 		function deleteService(id) {
@@ -215,12 +215,13 @@
 		}
 		//定时刷新服务状态
 		var serviceInterval = setInterval(function() {
+			var cp = ${page.currentPage};
 			$.ajax({
 				url : "<%=path%>/getServiceStatus",
 				method : 'post',
 				async: false,
 				dataType: "json",
-				data: { currentPage : options.currentPage },
+				data: { currentPage : cp},
 				success : function(data){
 					var list = data.list;
 					for (var i = 0; i < list.length; i++) {

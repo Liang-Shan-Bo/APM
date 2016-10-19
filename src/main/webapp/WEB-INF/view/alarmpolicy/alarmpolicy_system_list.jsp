@@ -132,6 +132,9 @@
 		</a>
 	</div>
 	<script type="text/javascript">
+		$("#menu4").addClass("open");
+		$("#menu4").find(".submenu").css("display","block");
+		$("#systemAlarmPolicyList").addClass("active");
 		// 删除策略
 		function deletePolicy(id) {
 			bootbox.setDefaults("locale","zh_CN");  

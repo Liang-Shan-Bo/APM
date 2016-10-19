@@ -1,7 +1,5 @@
 package apm.util;
 
-import java.io.IOException;
-
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;
 

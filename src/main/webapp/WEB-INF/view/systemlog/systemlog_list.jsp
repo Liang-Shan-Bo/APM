@@ -70,7 +70,7 @@
 						<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
 						<label>报警时间： </label>
 						<div style="display:inline-block;" class="form-group">
-							<div class="input-daterange input-group" style="width:360px;">
+							<div class="input-daterange input-group" style="width:300px;">
 								<input type="text" class="input-sm form-control datepicker" name="alarmStartTime" value="${page.alarmStartTime}">
 								<span class="input-group-addon"><i class="icon-calendar"></i></span>
 								<input type="text" class="input-sm form-control datepicker" name="alarmEndTime" value="${page.alarmEndTime}">
@@ -78,7 +78,7 @@
 						</div>
 						<label style="margin-left:20px;">系统名称： </label>
 						<div style="display:inline-block;" class="form-group">
-							<input type="text" class="input-sm datepicker" name="alarmSystemName" value="${page.alarmSystemName}">
+							<input type="text" name="alarmSystemName" value="${page.alarmSystemName}">
 						</div>
 						<label style="margin-left:20px;">指标类型： </label>
 						<div style="display:inline-block;" class="form-group">
@@ -138,6 +138,9 @@
 		</a>
 	</div>
 	<script type="text/javascript">
+		$("#menu6").addClass("open");
+		$("#menu6").find(".submenu").css("display","block");
+		$("#systemLogList").addClass("active");
 		$(function () {
 	        $(".datepicker").datepicker({
 	            language: "zh-CN",

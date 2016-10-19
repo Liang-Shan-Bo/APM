@@ -72,7 +72,7 @@
 <script src="style/assets/js/bootbox.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(showAlarmMessage());
-	setInterval("showAlarmMessage()",60000);
+	var interval = setInterval("showAlarmMessage()",60000);
 	
 	//动态刷新报警信息
 	function showAlarmMessage(){
@@ -101,6 +101,7 @@
 				}
 			},
 			error : function(data){
+				clearInterval(interval);
 			}
 		});
 	}

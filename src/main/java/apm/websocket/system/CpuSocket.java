@@ -1,6 +1,8 @@
 package apm.websocket.system;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -13,16 +15,20 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import apm.listener.SystemListener;
+import org.hyperic.sigar.CpuPerc;
+import org.hyperic.sigar.Sigar;
+import org.hyperic.sigar.SigarException;
+
+import apm.entity.system.CpuEntity;
 import apm.util.PropertiesUtil;
 
-@ServerEndpoint(value = "/systemSocket", encoders = {SystemEncoder.class})
-public class SystemSocket {
+@ServerEndpoint(value = "/cpuSocket", encoders = {CpuEncoder.class})
+public class CpuSocket {
 
 	// 推送消息时间间隔(ms)
-	private static int interval = Integer.parseInt(PropertiesUtil.getValue("ws", "system.interval"));
+	private static int interval = Integer.parseInt(PropertiesUtil.getValue("ws", "monitor.interval"));
 	// concurrent包的线程安全Set，用来存放每个客户端对应的WebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
-	private static CopyOnWriteArraySet<SystemSocket> webSocketSet = new CopyOnWriteArraySet<SystemSocket>();
+	private static CopyOnWriteArraySet<CpuSocket> webSocketSet = new CopyOnWriteArraySet<CpuSocket>();
 	// 与某个客户端的连接会话，需要通过它来给客户端发送数据
 	private Session session;
 	// 定时任务
@@ -83,11 +89,27 @@ public class SystemSocket {
 	 * @param Session
 	 * @throws IOException
 	 * @throws EncodeException
+	 * @throws SigarException
 	 */
-	public void sendMessage(Session session) throws IOException, EncodeException {
+	public void sendMessage(Session session) throws IOException, EncodeException, SigarException {
 		if (session.isOpen()) {
-			session.getBasicRemote().sendObject(SystemListener.sysInfoList);
+			List<CpuEntity> list = getCpuInfo();
+			if (list != null) {
+				session.getBasicRemote().sendObject(list);
+			}
 		}
+	}
+
+	private List<CpuEntity> getCpuInfo() throws SigarException {
+		Sigar sigar = new Sigar();
+		CpuPerc cpuList[] = sigar.getCpuPercList();
+		List<CpuEntity> list = new ArrayList<CpuEntity>();
+		for (CpuPerc cpuPerc : cpuList) {
+			list.add(new CpuEntity(cpuPerc.getUser(), cpuPerc.getSys(), cpuPerc.getWait(), cpuPerc
+					.getIdle()));
+		}
+		sigar.close();
+		return list;
 	}
 
 	/**
@@ -100,6 +122,8 @@ public class SystemSocket {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (EncodeException e) {
+				e.printStackTrace();
+			} catch (SigarException e) {
 				e.printStackTrace();
 			}
 		}

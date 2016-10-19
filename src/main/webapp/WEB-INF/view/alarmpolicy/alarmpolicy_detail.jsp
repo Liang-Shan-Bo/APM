@@ -66,6 +66,7 @@
 					<div class="row">
 						<div class="col-xs-12">
 							<form id="updateForm" class="form-horizontal" role="form" action="<%=path%>/updateAlarmPolicy" method="post">
+								<input id="alarmPolicyType" type="hidden" value="${alarmPolicyEntity.alarmPolicyType}">
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"> 策略名称 </label>
 									<label class="col-xs-2"> ${alarmPolicyEntity.alarmPolicyName}</label>
@@ -151,6 +152,17 @@
 			class="icon-double-angle-up icon-only bigger-110"></i>
 		</a>
 	</div>
+	<script type="text/javascript">
+		var type = $("#alarmPolicyType").val();
+		$("#menu4").addClass("open");
+		$("#menu4").find(".submenu").css("display","block");
+		if (type == 1) {
+			$("#serviceAlarmPolicyList").addClass("active");
+		}else {
+			$("#systemAlarmPolicyList").addClass("active");
+		}
+		
+	</script>
 </body>
 </html>
 

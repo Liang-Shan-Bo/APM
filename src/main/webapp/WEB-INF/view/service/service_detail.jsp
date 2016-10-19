@@ -256,7 +256,7 @@
 		if ('WebSocket' in window) {
 			websocket = new WebSocket(url);
 		} else {
-			alert('Not support websocket');
+			alert('监控系统不支持此版本浏览器！');
 		}
 
 		//连接发生错误的回调方法

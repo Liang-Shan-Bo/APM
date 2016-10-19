@@ -77,8 +77,9 @@ public class UserDao {
 						"phone," +
 						"email," +
 						"create_time," +
-						"create_user" +
-					") values(APM_USER_SEQ.Nextval,?,?,?,?,SYSDATE,?)";
+						"create_user," +
+						"enabled" +
+					") values(APM_USER_SEQ.Nextval, ?, ?, ?, ?, SYSDATE, ?, 1)";
 		jdbcTemplate.update(sql, new Object[]{user.getLoginName(), user.getPassword(), user.getPhone(),
 				user.getEmail(), user.getLoginName()});
 	}

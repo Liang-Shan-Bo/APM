@@ -48,6 +48,7 @@
 	// 跳转页码
 	function paginate(page) {
 		$("#currentPage").val(page);
+		$("#queryForm")[0].reset();
 		$("#queryForm").submit();
 	}
 	// 回车触发事件
@@ -56,13 +57,14 @@
 		$("#pageNo").bind('keypress',function(event){
             if(event.keyCode == "13")    
             {	
-            	if ($("#pageNo").val() == "" || $("#pageNo").val() < 1 || $("#pageNo").val() > totalPage){
+            	var pageNo = Number($("#pageNo").val());
+            	if (Number(pageNo) < 1 || Number(pageNo) > totalPage){
             		bootbox.alert({  
 			            buttons: { ok: { label: '确认' } },  
 			            message: '请输入正确的页码',  
 			        });
 				}else {
-					paginate($("#pageNo").val());
+					paginate(pageNo);
 				}
             }
         });

@@ -29,6 +29,8 @@ public class SystemAlarmListener implements ServletContextListener {
 	private JdbcTemplate jdbcTemplate;
 	// 推送消息时间间隔(ms)
 	private static int interval = Integer.parseInt(PropertiesUtil.getValue("alarm", "alarm.interval"));
+	// 发送报警消息时间间隔(ms)
+	private static int sendMessage = Integer.parseInt(PropertiesUtil.getValue("alarm", "message.interval"));
 	// 定时任务
 	private Timer timer = null;
 	// 保留小数后2位
@@ -48,48 +50,51 @@ public class SystemAlarmListener implements ServletContextListener {
 	 */
 	TimerTask task = new TimerTask() {
 		public void run() {
-			if (SystemListener.sysInfoList.size() > 0) {
-				SystemInfo info = SystemListener.sysInfoList.get(SystemListener.sysInfoList.size() - 1);
-				double cpu = checkCpu(info);
-				int cpuNorm = getNormByNormType(Constants.SYSTEM_NORM_CPU);
-				Date now = new Date();
-				if (cpu >= cpuNorm) {
-					System.out.println("cpu:" + cpu + "%");
-					//添加日志
-					String desc = setMessage(cpu, Constants.SYSTEM_NORM_CPU, "操作系统", cpuNorm);
-					long logId = insertSystemLog(cpu, Constants.SYSTEM_NORM_CPU, now, "操作系统", desc);
-					//发送报警信息
-					alarm(logId, now, desc);
-				}
-				double mem = checkMem(info);
-				int memNorm = getNormByNormType(Constants.SYSTEM_NORM_MEM);
-				if (mem >= memNorm) {
-					System.out.println("mem:" + mem + "M");
-					//添加日志
-					String desc = setMessage(mem, Constants.SYSTEM_NORM_MEM, "操作系统", memNorm);
-					long logId = insertSystemLog(mem, Constants.SYSTEM_NORM_MEM, now, "操作系统", desc);
-					//发送报警信息
-					alarm(logId, now, desc);
-				}
-				double disk = checkDisk(info);
-				int diskNorm = getNormByNormType(Constants.SYSTEM_NORM_DIS);
-				if (disk >= diskNorm) {
-					System.out.println("disk:" + disk + "%");
-					//添加日志
-					String desc = setMessage(disk, Constants.SYSTEM_NORM_DIS, "操作系统", diskNorm);
-					long logId = insertSystemLog(disk, Constants.SYSTEM_NORM_DIS, now, "操作系统", desc);
-					//发送报警信息
-					alarm(logId, now, desc);
-				}
-				double net = checkNet(info);
-				int netNorm = getNormByNormType(Constants.SYSTEM_NORM_NET);
-				if (net >= netNorm) {
-					System.out.println("net:" + net + "K");
-					//添加日志
-					String desc = setMessage(net, Constants.SYSTEM_NORM_NET, "操作系统", netNorm);
-					long logId = insertSystemLog(net, Constants.SYSTEM_NORM_NET, now, "操作系统", desc);
-					//发送报警信息
-					alarm(logId, now, desc);
+			// 判断是否报警
+			if (isAlarm()) {
+				if (SystemListener.sysInfoList.size() > 0) {
+					SystemInfo info = SystemListener.sysInfoList.get(SystemListener.sysInfoList.size() - 1);
+					double cpu = checkCpu(info);
+					int cpuNorm = getNormByNormType(Constants.SYSTEM_NORM_CPU);
+					Date now = new Date();
+					if (cpu >= cpuNorm) {
+						System.out.println("cpu:" + cpu + "%");
+						//添加日志
+						String desc = setMessage(cpu, Constants.SYSTEM_NORM_CPU, "操作系统", cpuNorm);
+						long logId = insertSystemLog(cpu, Constants.SYSTEM_NORM_CPU, now, "操作系统", desc);
+						//发送报警信息
+						alarm(logId, now, desc);
+					}
+					double mem = checkMem(info);
+					int memNorm = getNormByNormType(Constants.SYSTEM_NORM_MEM);
+					if (mem >= memNorm) {
+						System.out.println("mem:" + mem + "M");
+						//添加日志
+						String desc = setMessage(mem, Constants.SYSTEM_NORM_MEM, "操作系统", memNorm);
+						long logId = insertSystemLog(mem, Constants.SYSTEM_NORM_MEM, now, "操作系统", desc);
+						//发送报警信息
+						alarm(logId, now, desc);
+					}
+					double disk = checkDisk(info);
+					int diskNorm = getNormByNormType(Constants.SYSTEM_NORM_DIS);
+					if (disk >= diskNorm) {
+						System.out.println("disk:" + disk + "%");
+						//添加日志
+						String desc = setMessage(disk, Constants.SYSTEM_NORM_DIS, "操作系统", diskNorm);
+						long logId = insertSystemLog(disk, Constants.SYSTEM_NORM_DIS, now, "操作系统", desc);
+						//发送报警信息
+						alarm(logId, now, desc);
+					}
+					double net = checkNet(info);
+					int netNorm = getNormByNormType(Constants.SYSTEM_NORM_NET);
+					if (net >= netNorm) {
+						System.out.println("net:" + net + "K");
+						//添加日志
+						String desc = setMessage(net, Constants.SYSTEM_NORM_NET, "操作系统", netNorm);
+						long logId = insertSystemLog(net, Constants.SYSTEM_NORM_NET, now, "操作系统", desc);
+						//发送报警信息
+						alarm(logId, now, desc);
+					}
 				}
 			}
 		}
@@ -184,7 +189,7 @@ public class SystemAlarmListener implements ServletContextListener {
 	private void alarm(long alarmLogId, Date now, String desc) {
 		List<Long> list = getUserIds();
 		Date lastDate = getLastAlarmTime();
-		if (lastDate == null || (now.getTime() - lastDate.getTime()) > 600000) {
+		if (lastDate == null || (now.getTime() - lastDate.getTime()) > sendMessage) {
 			for (Long userId : list) {
 				insertAlarmMessage(alarmLogId, userId, now, desc);
 			}
@@ -294,6 +299,21 @@ public class SystemAlarmListener implements ServletContextListener {
 						"where b.alarm_system_name = '操作系统'";
 		Date date = (Date) jdbcTemplate.queryForObject(sql, Date.class);
 		return date;
+	}
+	
+	/**
+	 * 判断是否发送报警消息
+	 * 
+	 * @param type
+	 */
+	private boolean isAlarm() {
+		String sql = "select t.send_flag from apm_alarm_policy t where t.alarm_policy_type = 2 ";
+		int sendFlag = jdbcTemplate.queryForObject(sql, Integer.class);
+		if (sendFlag == 1) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	@Override

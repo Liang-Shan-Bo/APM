@@ -1,10 +1,7 @@
 package apm.controller.system;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.FileSystem;
@@ -12,81 +9,68 @@ import org.hyperic.sigar.FileSystemUsage;
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.NetInterfaceConfig;
 import org.hyperic.sigar.NetInterfaceStat;
-import org.hyperic.sigar.NetStat;
-import org.hyperic.sigar.ProcCpu;
-import org.hyperic.sigar.ProcMem;
 import org.hyperic.sigar.ProcState;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
-import org.hyperic.sigar.cmd.Ps;
-import org.hyperic.sigar.ptql.ProcessFinder;
+import org.hyperic.sigar.Swap;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * @author 系统监控控制层
+ *
+ */
 @Controller
 public class SystemController {
 
 	/**
+	 * cpu监控页面
 	 * 
-	 * @param info
-	 * @param mod
-	 * @return
-	 * @throws IOException 
-	 * @throws InterruptedException 
+	 * @return String
 	 */
-	
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/ec", method = RequestMethod.GET)
-	public String ec(Model model) throws IOException, InterruptedException {
-//		Properties p=System.getProperties();//获取当前的系统属性
-//		  p.list(System.out);//将属性列表输出
-//		  System.out.print("CPU个数:");//Runtime.getRuntime()获取当前运行时的实例
-//		  System.out.println(Runtime.getRuntime().availableProcessors());//availableProcessors()获取当前电脑CPU数量
-//		  System.out.print("虚拟机内存总量:");
-//		  System.out.println(Runtime.getRuntime().totalMemory());//totalMemory()获取java虚拟机中的内存总量
-//		  System.out.print("虚拟机空闲内存量:");
-//		  System.out.println(Runtime.getRuntime().freeMemory());//freeMemory()获取java虚拟机中的空闲内存量
-//		  System.out.print("虚拟机使用最大内存量:");
-//		  System.out.println(Runtime.getRuntime().maxMemory());//maxMemory()获取java虚拟机试图使用的最大内存量
-		try {
-			Sigar sigar = new Sigar();
-			ProcCpu pCpu = new ProcCpu();
-		    pCpu.gather(sigar, 4076);
-//			cpu.gather(sigar, 4076);
-//			Thread.sleep(1000);
-			System.out.println("getPercent:" + pCpu.getUser());
-			System.out.println("getPercent:" + pCpu.getTotal());
-			sigar.close();
-		} catch (SigarException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "ec";
+	@RequestMapping(value = "/cpuMonitor", method = RequestMethod.GET)
+	public String cpuMonitor() {
+		return "system/cpu_monitor";
 	}
 	
-	@RequestMapping(value = "/show1", method = RequestMethod.GET)
-	public String show1(Model model) {
-		return "test1";
+	/**
+	 * 网络监控页面
+	 * 
+	 * @return String
+	 */
+	@RequestMapping(value = "/netMonitor", method = RequestMethod.GET)
+	public String netMonitor() {
+		return "system/net_monitor";
 	}
+	
+	/**
+	 * 进程监控页面
+	 * 
+	 * @return String
+	 */
+	@RequestMapping(value = "/proMonitor", method = RequestMethod.GET)
+	public String proMonitor() {
+		return "system/pro_monitor";
+	}
+	
 	@RequestMapping(value = "/show2", method = RequestMethod.GET)
 	public String show2(Model model) {
 		return "test2";
 	}
-	// private static void printCpuPerc(CpuPerc cpu) {
-	//
-	// System.out.println("用户使用率 :" + CpuPerc.format(cpu.getUser()));// 用户使用率
-	// System.out.println("系统使用率 :" + CpuPerc.format(cpu.getSys()));// 系统使用率
-	// System.out.println("当前等待率 :" + CpuPerc.format(cpu.getWait()));// 当前等待率
-	// System.out.println("当前空闲率 :" + CpuPerc.format(cpu.getIdle()));// 当前空闲率
-	// System.out.println("总的使用率 :" + CpuPerc.format(cpu.getCombined()));//
-	// 总的使用率
-	//
-	// }
+	 private static void printCpuPerc(CpuPerc cpu) {
+	
+	 System.out.println("用户使用率 :" + CpuPerc.format(cpu.getUser()));// 用户使用率
+	 System.out.println("系统使用率 :" + CpuPerc.format(cpu.getSys()));// 系统使用率
+	 System.out.println("当前等待率 :" + CpuPerc.format(cpu.getWait()));// 当前等待率
+	 System.out.println("当前空闲率 :" + CpuPerc.format(cpu.getIdle()));// 当前空闲率
+	 System.out.println("总的使用率 :" + CpuPerc.format(cpu.getCombined()));// 总的使用率
+	
+	 }
 
-	@RequestMapping(value = "/test", method = RequestMethod.POST)
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> test() throws SigarException {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -99,7 +83,7 @@ public class SystemController {
 		}
 		// 物理内存信息
 		Mem mem = sigar.getMem();
-
+		Swap a = sigar.getSwap();
 		map.put("user1", CpuPerc.format(cpuList[0].getUser()));
 		map.put("sys1", CpuPerc.format(cpuList[0].getSys()));
 		map.put("wait1", CpuPerc.format(cpuList[0].getWait()));
@@ -113,6 +97,7 @@ public class SystemController {
 		map.put("tmen", mem.getTotal() / 1024L / 1024 + "M");
 		map.put("umen", mem.getUsed() / 1024L / 1024 + "M");
 		map.put("fmen", mem.getFree() / 1024L / 1024 + "M");
+		System.out.println(mem.getUsedPercent());
 		return map;
 	}
 
@@ -125,11 +110,12 @@ public class SystemController {
 		for (String string : ifNames) {
 			System.out.println(sigar.getNetInterfaceConfig(string).getAddress());
 		}
-		String name = ifNames[9];
+		String name = ifNames[6];
 		NetInterfaceConfig ifconfig = sigar.getNetInterfaceConfig(name);
 		NetInterfaceStat ifstat = sigar.getNetInterfaceStat(name);
 		map.put("name", name);
 		map.put("Address", ifconfig.getAddress());
+		map.put("speed", ifstat.getSpeed());
 		map.put("RxPackets", ifstat.getRxPackets());
 		map.put("TxPackets", ifstat.getTxPackets());
 		map.put("RxBytes", ifstat.getRxBytes());
@@ -153,6 +139,7 @@ public class SystemController {
 			sb.append(prs.getName()+" pid: " + pid + " name:" + prs.getName()+"\n");
 		}
 		String str = sb.toString();
+		System.out.println(str);
 		map.put("str", str);
 		return map;
 	}

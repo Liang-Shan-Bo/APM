@@ -178,6 +178,9 @@
 		</a>
 	</div>
 	<script type="text/javascript">
+		$("#menu4").addClass("open");
+		$("#menu4").find(".submenu").css("display","block");
+		$("#serviceAlarmPolicyList").addClass("active");
 		var dualListbox = $('select[name="users"]').bootstrapDualListbox({showFilterInputs: false,infoTextEmpty:'空',infoText:''});
 		
 		$(document).ready(function() {

@@ -51,7 +51,7 @@
 
 					<ul class="breadcrumb">
 						<li><i class="icon-home home-icon"></i> <a href="#">主页</a></li>
-						<li class="active">报警日志</li>
+						<li class="active">系统监控</li>
 					</ul>
 					<!-- .breadcrumb -->
 				</div>
@@ -59,16 +59,14 @@
 				<div class="page-content">
 					<div class="page-header">
 						<h1>
-							报警统计<small> <i class="icon-double-angle-right"></i> 查看
+							CPU监控<small> <i class="icon-double-angle-right"></i> 查看
 							</small>
 						</h1>
 					</div>
 				</div>
 				<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-				<div id="alarmOfMonth" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
-				<div id="logOfMonth" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
-				<div id="alarmOfAll" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
-				<div id="logOfAll" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
+				<div id="cpuTotal" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
+				<div id="cpuDetail" style="width: 550px;height:280px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
 			</div>
 		</div>
 		<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse"> <i
@@ -76,9 +74,9 @@
 		</a>
 	</div>
 	<script type="text/javascript">
-		$("#menu6").addClass("open");
-		$("#menu6").find(".submenu").css("display","block");
-		$("#alarmList").addClass("active");
+		$("#menu3").addClass("open");
+		$("#menu3").find(".submenu").css("display","block");
+		$("#cpuMonitor").addClass("active");
 		// 当月报警
 		var am = ${alarmOfMonth};
 		// 当月日志
@@ -97,19 +95,19 @@
 		var laData = [];
 		for (var i = 0; i < am.length; i++) {
 			amLegned.push(am[i].alarmSystemName);
-			amData.push({value:am[i].count, name:am[i].alarmSystemName});
+			amData.push({value:am[i].count, name:am[i].alarmSystemName})
 		}
 		for (var i = 0; i < lm.length; i++) {
 			lmLegned.push(lm[i].alarmSystemName);
-			lmData.push({value:lm[i].count, name:lm[i].alarmSystemName});
+			lmData.push({value:lm[i].count, name:lm[i].alarmSystemName})
 		}
 		for (var i = 0; i < aa.length; i++) {
 			aaLegned.push(aa[i].alarmSystemName);
-			aaData.push({value:aa[i].count, name:aa[i].alarmSystemName});
+			aaData.push({value:aa[i].count, name:aa[i].alarmSystemName})
 		}
 		for (var i = 0; i < la.length; i++) {
 			laLegned.push(la[i].alarmSystemName);
-			laData.push({value:la[i].count, name:la[i].alarmSystemName});
+			laData.push({value:la[i].count, name:la[i].alarmSystemName})
 		}
 		var amChart = echarts.init(document.getElementById('alarmOfMonth'));
 		var lmChart = echarts.init(document.getElementById('logOfMonth'));

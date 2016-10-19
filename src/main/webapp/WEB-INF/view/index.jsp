@@ -2,7 +2,7 @@
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
-	String url = PropertiesUtil.getValue("ws", "websocket.url"); 
+	String url = PropertiesUtil.getValue("ws", "system.url"); 
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,6 +76,7 @@
 		</a>
 	</div>
 	<script type="text/javascript">
+		$("#menu1").addClass("active");
 		var websocket = null;
 		var url = "<%=url%>";
 		var cpuCount = 0;
@@ -86,7 +87,7 @@
 		if ('WebSocket' in window) {
 			websocket = new WebSocket(url);
 		} else {
-			alert('Not support websocket');
+			alert('监控系统不支持此版本浏览器！');
 		}
 
 		//连接发生错误的回调方法

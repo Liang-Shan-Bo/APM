@@ -24,9 +24,11 @@ public class User {
 	private String createUser;
 	// 修改时间
 	private Date updateTime;
-	// 修改
+	// 修改人
 	private String updateUser;
-
+	// 可用标识(0：不可用；1：可用)
+	private Integer enabled;
+	
 	public String getPassword() {
 		return password;
 	}
@@ -81,4 +83,11 @@ public class User {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	public Integer getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
+	}
+	
 }

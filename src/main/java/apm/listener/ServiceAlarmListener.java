@@ -37,6 +37,8 @@ public class ServiceAlarmListener implements ServletContextListener {
 	private JdbcTemplate jdbcTemplate;
 	// 推送消息时间间隔(ms)
 	private static int interval = Integer.parseInt(PropertiesUtil.getValue("alarm", "alarm.interval"));
+	// 发送报警消息时间间隔(ms)
+	private static int sendMessage = Integer.parseInt(PropertiesUtil.getValue("alarm", "message.interval"));
 	// 定时任务
 	private Timer timer = null;
 
@@ -114,7 +116,7 @@ public class ServiceAlarmListener implements ServletContextListener {
 	private void alarm(long alarmLogId, long policyId, String systemName, Date now, String desc) {
 		List<Long> list = getUserIds(policyId);
 		Date lastDate = getLastAlarmTime(systemName);
-		if (lastDate == null || (now.getTime() - lastDate.getTime()) > 600000) {
+		if (lastDate == null || (now.getTime() - lastDate.getTime()) > sendMessage) {
 			for (Long userId : list) {
 				insertAlarmMessage(alarmLogId, userId, systemName, now, desc);
 			}
@@ -139,11 +141,12 @@ public class ServiceAlarmListener implements ServletContextListener {
 				       " when b.alarm_policy_level = 2 then" +
 				       " c.norm_warning" +
 				       " else" +
-				       "  c.norm_danger" +
+				       " c.norm_danger" +
 				       " end) norm_value" +
 				       " from apm_service_info a" +
 				       " join apm_alarm_policy b on a.alarm_policy_id = b.id" +
-				       " join apm_norm c on a.norm_id = c.id";
+				       " join apm_norm c on a.norm_id = c.id" +
+				       " where b.send_flag = 1";
 		List<ServiceNorm> list = (List<ServiceNorm>) jdbcTemplate.query(sql,
 				new BeanPropertyRowMapper<ServiceNorm>(ServiceNorm.class));
 		return list;

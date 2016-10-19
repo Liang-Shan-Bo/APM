@@ -28,9 +28,9 @@ import apm.util.PropertiesUtil;
 public class SystemListener implements ServletContextListener {
 
 	// 推送消息时间间隔(ms)
-	private static int interval = Integer.parseInt(PropertiesUtil.getValue("ws", "websocket.interval"));
+	private static int interval = Integer.parseInt(PropertiesUtil.getValue("ws", "system.interval"));
 	// 消息队列存储数量
-	private static int count = Integer.parseInt(PropertiesUtil.getValue("ws", "websocket.count"));
+	private static int count = Integer.parseInt(PropertiesUtil.getValue("ws", "system.count"));
 	// 消息队列存储对象
 	public static List<SystemInfo> sysInfoList = new CopyOnWriteArrayList<SystemInfo>();
 	// 定时任务
@@ -87,7 +87,7 @@ public class SystemListener implements ServletContextListener {
 		List<Double> users = new ArrayList<Double>();
 		CpuPerc cpuList[] = sigar.getCpuPercList();
 		for (CpuPerc cpuPerc : cpuList) {
-			users.add(cpuPerc.getUser() * 100D);
+			users.add(cpuPerc.getCombined() * 100D);
 		}
 		return users;
 	}
@@ -125,7 +125,8 @@ public class SystemListener implements ServletContextListener {
 		String netName = null;
 		String ifNames[] = sigar.getNetInterfaceList();
 		for (String string : ifNames) {
-			if (!sigar.getNetInterfaceConfig(string).getAddress().equals("0.0.0.0")) {
+			String address = sigar.getNetInterfaceConfig(string).getAddress();
+			if (!address.equals("0.0.0.0") && !address.equals("127.0.0.1")) {
 				netName = string;
 				break;
 			}
