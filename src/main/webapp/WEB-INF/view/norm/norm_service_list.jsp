@@ -133,7 +133,7 @@
 		// 删除指标
 		function deleteService(id) {
 			bootbox.setDefaults("locale","zh_CN");  
-			bootbox.confirm("是否确认删除？", function(re) {
+			bootbox.confirm("确认删除？", function(re) {
 				if (re) {
 					location.href = "deleteNorm?id=" + id;
 				}

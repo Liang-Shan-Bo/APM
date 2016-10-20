@@ -61,6 +61,7 @@ public class ShiroRealm extends AuthorizingRealm {
 			// 若存在，将此用户存放到登录认证info中
 			return new SimpleAuthenticationInfo(user.getLoginName(), user.getPassword(), getName());
 		}
+		
 		return null;
 	}
 

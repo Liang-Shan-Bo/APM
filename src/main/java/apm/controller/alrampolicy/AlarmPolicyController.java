@@ -63,7 +63,7 @@ public class AlarmPolicyController {
 	 */
 	@RequestMapping(value = "/createAlarmPolicy", method = RequestMethod.GET)
 	public String createPage(Model model) {
-		List<User> userList = userService.getAll();
+		List<User> userList = userService.getAllEnabledUser();
 		model.addAttribute("userList", userList);
 		return "alarmpolicy/alarmpolicy_create";
 	}

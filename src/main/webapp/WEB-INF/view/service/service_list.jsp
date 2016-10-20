@@ -132,8 +132,7 @@
 								</c:if>
 							</div>
 						</div>
-					</div>
-					<!-- 服务管理列表 -->
+					</div><!-- 服务管理列表 -->
 				</div>
 			</div>
 		</div>
@@ -147,7 +146,7 @@
 		bootbox.setDefaults("locale","zh_CN");  
 		// 删除服务
 		function deleteService(id) {
-			bootbox.confirm("是否确认删除？", function(re) {
+			bootbox.confirm("确认删除？", function(re) {
 				if (re) {
 					location.href = "deleteService?id=" + id;
 				}

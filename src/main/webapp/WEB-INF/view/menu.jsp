@@ -90,7 +90,7 @@
 				</ul>
 			</li>
 		</shiro:hasRole>
-		<shiro:hasRole name="admin">
+		<shiro:hasRole name="super">
 			<li id="menu7">
 				<a href="<%=basePath%>/userList"> <i class="icon-user"></i> <span class="menu-text">用户管理 </span></a>
 			</li>

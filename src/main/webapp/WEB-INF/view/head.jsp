@@ -36,11 +36,10 @@
 				
 				<li class="light-blue">
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle"> 
-						<img class="nav-user-photo" src="style/assets/avatars/user.jpg" alt="Jason's Photo" /> 
 						<span class="user-info"> 
 							<small>
-								欢迎登录<br/>
-								<shiro:user>
+								&nbsp;&nbsp;欢迎登录<br/>
+								&nbsp;&nbsp;<shiro:user>
 									<shiro:principal/>
 									<input id="loginName" type="hidden" value="<shiro:principal/>"/>
 								</shiro:user>
@@ -50,11 +49,11 @@
 					</a>
 					<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 						<li>
-							<a href="<%=path%>/userOption"> <i class="icon-cog orange"></i> 修改密码 </a>
+							<a href="<%=path%>/passwordPage"> <i class="icon-cog orange"></i> 修改密码 </a>
 						</li>
-						<li>
-							<a href="<%=path%>/userDetail"> <i class="icon-user blue"></i> 个人信息 </a>
-						</li>
+<!-- 						<li> -->
+<%-- 							<a href="<%=path%>/userDetail"> <i class="icon-user blue"></i> 个人信息 </a> --%>
+<!-- 						</li> -->
 						<li>
 							<a href="<%=path%>/messageList"> <i class="icon-envelope green"></i> 系统消息 </a>
 						</li>

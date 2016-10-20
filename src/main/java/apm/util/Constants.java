@@ -71,6 +71,13 @@ public class Constants {
 	// 全部
 	public static final int ALL_TIME = 4;
 
+	// 超级管理员
+	public static final int ROLE_SUPER = 1;
+	// 管理员
+	public static final int ROLE_ADMIN = 2;
+	// 普通用户
+	public static final int ROLE_USER = 2;
+
 	// 缓存
 	public final static Map<String, Long> map = new HashMap<String, Long>() {
 

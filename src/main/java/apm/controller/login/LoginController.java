@@ -32,7 +32,7 @@ public class LoginController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginPage() {
+	public String loginPage(User user) {
 		return "login/login";
 	}
 
@@ -56,14 +56,22 @@ public class LoginController {
 	public String login(User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		try {
 			if (bindingResult.hasErrors()) {
-				return "/login";
+				return "redirect:/login";
+			}
+			User check = userService.getUserByName(user.getLoginName());
+			if (check == null) {
+				redirectAttributes.addFlashAttribute("message", "该用户不存在");
+				return "redirect:/login";
+			}else if (check.getEnabled() == 0) {
+				redirectAttributes.addFlashAttribute("message", "该用户已被冻结，请联系管理员");
+				return "redirect:/login";
 			}
 			// 使用权限工具进行用户登录，登录成功后跳到shiro配置的successUrl中，与下面的return没什么关系！
 			SecurityUtils.getSubject().login(
 					new UsernamePasswordToken(user.getLoginName(), EncUtil.MD5(user.getPassword())));
 			return "redirect:/index";
 		} catch (AuthenticationException e) {
-			redirectAttributes.addFlashAttribute("message", "用户名或密码错误");
+			redirectAttributes.addFlashAttribute("message", "密码不正确，请输入正确密码");
 			return "redirect:/login";
 		}
 	}

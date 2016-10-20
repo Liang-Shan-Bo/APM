@@ -122,7 +122,7 @@
 		// 全部设为已读
 		function setAllRead() {
 			bootbox.setDefaults("locale","zh_CN");  
-			bootbox.confirm("是否确认将所有未读消息设为已读？", function(re) {
+			bootbox.confirm("确认将所有未读消息设为已读？", function(re) {
 				if (re) {
 					location.href = "setAllRead";
 				}
@@ -132,7 +132,7 @@
 		// 清空所有已读消息
 		function clearAllRead() {
 			bootbox.setDefaults("locale","zh_CN");  
-			bootbox.confirm("是否确认清空所有已读消息？", function(re) {
+			bootbox.confirm("确认清空所有已读消息？", function(re) {
 				if (re) {
 					location.href = "clearAllRead";
 				}

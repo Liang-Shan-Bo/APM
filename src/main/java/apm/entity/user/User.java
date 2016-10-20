@@ -28,7 +28,9 @@ public class User {
 	private String updateUser;
 	// 可用标识(0：不可用；1：可用)
 	private Integer enabled;
-	
+	// 用户角色
+	private Integer role;
+
 	public String getPassword() {
 		return password;
 	}
@@ -89,5 +91,11 @@ public class User {
 	public void setEnabled(Integer enabled) {
 		this.enabled = enabled;
 	}
-	
+	public Integer getRole() {
+		return role;
+	}
+	public void setRole(Integer role) {
+		this.role = role;
+	}
+
 }
