@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Service;
 
 import apm.dao.user.UserDao;
@@ -30,7 +31,7 @@ public class UserService {
 	public List<User> getAllEnabledUser() {
 		return userDao.getAllEnabledUser();
 	}
-	
+
 	/**
 	 * 分页查询用户列表
 	 * 
@@ -74,6 +75,9 @@ public class UserService {
 	 * 
 	 */
 	public void createUser(User user) {
+		String loginName = (String) SecurityUtils.getSubject().getPrincipal();
+		user.setCreateUser(loginName);
+		user.setPassword(EncUtil.MD5(user.getPassword()));
 		userDao.createUser(user);
 	}
 
@@ -86,7 +90,7 @@ public class UserService {
 	}
 
 	/**
-	 * 校验IP和监控端口是否已存在
+	 * 校验旧密码是否正确
 	 * 
 	 * @return boolean
 	 */
@@ -98,7 +102,7 @@ public class UserService {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * 撤销管理员
 	 * 
@@ -106,7 +110,7 @@ public class UserService {
 	public void revoke(long id) {
 		userDao.revoke(id, Constants.ROLE_ADMIN);
 	}
-	
+
 	/**
 	 * 任命管理员
 	 * 
@@ -114,7 +118,7 @@ public class UserService {
 	public void appoint(long id) {
 		userDao.appoint(id, Constants.ROLE_ADMIN);
 	}
-	
+
 	/**
 	 * 启用用户
 	 * 
@@ -122,12 +126,26 @@ public class UserService {
 	public void unfreeze(long id) {
 		userDao.unfreeze(id);
 	}
-	
+
 	/**
 	 * 注销用户
 	 * 
 	 */
 	public void freeze(long id) {
 		userDao.freeze(id);
+	}
+
+	/**
+	 * 校验用户名是否存在
+	 * 
+	 * @return boolean
+	 */
+	public boolean checkLoginName(String loginName) {
+		User user = userDao.getUserByName(loginName);
+		if (user != null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

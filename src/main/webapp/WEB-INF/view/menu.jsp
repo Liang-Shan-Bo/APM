@@ -100,12 +100,12 @@
 				<i class="icon-list-alt"></i> <span class="menu-text">系统功能 </span> <b class="arrow icon-angle-down"></b>
 			</a>
 			<ul class="submenu">
-				<li>
-					<a href="#"> <i class="icon-double-angle-right"></i> 操作系统信息</a>
+				<li id="systemDetail">
+					<a href="<%=basePath%>/systemDetail"> <i class="icon-double-angle-right"></i> 操作系统信息</a>
 				</li>
-				<li>
-					<a href="#"> <i class="icon-double-angle-right"></i> ping监控</a>
-				</li>
+<!-- 				<li id="ping"> -->
+<%-- 					<a href="<%=basePath%>/ping"> <i class="icon-double-angle-right"></i> ping监控</a> --%>
+<!-- 				</li> -->
 			</ul>
 		</li>
 	</ul>

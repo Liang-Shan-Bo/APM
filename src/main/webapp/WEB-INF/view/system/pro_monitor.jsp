@@ -52,7 +52,7 @@
 					</script>
 
 					<ul class="breadcrumb">
-						<li><i class="icon-home home-icon"></i> <a href="#">主页</a></li>
+						<li><i class="icon-home home-icon"></i> <a href="<%=path%>/index">主页</a></li>
 						<li class="active">系统监控</li>
 					</ul>
 					<!-- .breadcrumb -->

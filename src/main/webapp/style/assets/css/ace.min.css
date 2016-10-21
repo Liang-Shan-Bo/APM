@@ -10388,7 +10388,7 @@ li.item-default {
 
 .profile-info-name {
 	position: absolute;
-	width: 110px;
+	width: 135px;
 	text-align: right;
 	padding: 6px 10px 6px 0;
 	left: 0;
@@ -10402,7 +10402,7 @@ li.item-default {
 
 .profile-info-value {
 	padding: 6px 4px 6px 6px;
-	margin-left: 120px;
+	margin-left: 145px;
 	border-top: 1px dotted #d5e4f1
 }
 

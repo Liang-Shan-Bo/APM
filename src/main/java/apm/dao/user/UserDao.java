@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -89,7 +90,7 @@ public class UserDao {
 						"apm_alarm_policy a " +
 						"where a.id=? " +
 						"and p.user_id=u.id " +
-						"and p.alarm_policy_id=a.id" +
+						"and p.alarm_policy_id=a.id " +
 						"and u.enabled = 1";
 		List<User> list = (List<User>) jdbcTemplate.query(sql, new Object[]{id}, new BeanPropertyRowMapper<User>(User.class));
 		return list;
@@ -160,7 +161,7 @@ public class UserDao {
 						"enabled" +
 					") values(APM_USER_SEQ.Nextval, ?, ?, ?, ?, SYSDATE, ?, 1)";
 		jdbcTemplate.update(sql, new Object[]{user.getLoginName(), user.getPassword(), user.getPhone(),
-				user.getEmail(), user.getLoginName()});
+				user.getEmail(), user.getCreateUser()});
 	}
 	
 	/**
@@ -168,8 +169,9 @@ public class UserDao {
 	 * 
 	 */
 	public void updatePassword(String password, long id) {
-		String sql = "update apm_user set password=? where id=?";
-		jdbcTemplate.update(sql, new Object[]{password, id});
+		String loginName = (String) SecurityUtils.getSubject().getPrincipal();
+		String sql = "update apm_user set password=?,update_user=?,update_time=SYSDATE where id=?";
+		jdbcTemplate.update(sql, new Object[]{password, loginName, id});
 	}
 	
 	/**
@@ -195,8 +197,9 @@ public class UserDao {
 	 * 
 	 */
 	public void unfreeze(long id) {
-		String sql = "update apm_user set enabled=1 where id=?";
-		jdbcTemplate.update(sql, new Object[]{id});
+		String loginName = (String) SecurityUtils.getSubject().getPrincipal();
+		String sql = "update apm_user set enabled=1,update_user=?,update_time=SYSDATE where id=?";
+		jdbcTemplate.update(sql, new Object[]{loginName, id});
 	}
 	
 	/**
@@ -204,7 +207,9 @@ public class UserDao {
 	 * 
 	 */
 	public void freeze(long id) {
-		String sql = "update apm_user set enabled=0 where id=?";
-		jdbcTemplate.update(sql, new Object[]{id});
+		String loginName = (String) SecurityUtils.getSubject().getPrincipal();
+		String sql = "update apm_user set enabled=0,update_user=?,update_time=SYSDATE where id=?";
+		jdbcTemplate.update(sql, new Object[]{loginName, id});
 	}
+	
 }

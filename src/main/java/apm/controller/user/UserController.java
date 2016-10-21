@@ -15,6 +15,7 @@ import apm.entity.message.MessagePage;
 import apm.entity.user.User;
 import apm.service.message.MessageService;
 import apm.service.user.UserService;
+import apm.util.Constants;
 import apm.util.Page;
 
 /**
@@ -69,6 +70,16 @@ public class UserController {
 		model.addAttribute("page", page);
 		return "user/user_list";
 	}
+	
+	/**
+	 * 跳转到新增用户页面
+	 * 
+	 * @return String
+	 */
+	@RequestMapping(value = "/createUser", method = RequestMethod.GET)
+	public String createUser() {
+		return "user/user_create";
+	}
 
 	/**
 	 * 修改密码
@@ -76,7 +87,7 @@ public class UserController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-	public String updatePassword(Model model, User user) {
+	public String updatePassword(User user) {
 		userService.updatePassword(user.getPassword(), user.getId());
 		return "user/password_success";
 	}
@@ -147,7 +158,7 @@ public class UserController {
 	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean resetPassword(int id) {
-		userService.updatePassword("123456", id);
+		userService.updatePassword(Constants.DEFAULT_PASSWORD, id);
 		return true;
 	}
 
@@ -193,5 +204,31 @@ public class UserController {
 	public String freeze(@RequestParam int id) {
 		userService.freeze(id);
 		return "redirect:/userList";
+	}
+	
+	/**
+	 * 新增用户
+	 * 
+	 * @return String
+	 */
+	@RequestMapping(value = "/createUser", method = RequestMethod.POST)
+	public String createUser(Model model, User user) {
+		user.setPassword(Constants.DEFAULT_PASSWORD);
+		userService.createUser(user);
+		if (user.getRole() == 2) {
+			userService.appoint(userService.getUserByName(user.getLoginName()).getId());
+		}
+		return "redirect:/userList";
+	}
+	
+	/**
+	 * 校验用户名是否已存在
+	 * 
+	 * @return boolean
+	 */
+	@RequestMapping(value = "/checkLoginName", method = RequestMethod.GET)
+	@ResponseBody
+	private boolean checkLoginName(String loginName) {
+		return userService.checkLoginName(loginName);
 	}
 }

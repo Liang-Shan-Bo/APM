@@ -53,7 +53,7 @@
 					</script>
 
 					<ul class="breadcrumb">
-						<li><i class="icon-home home-icon"></i> <a href="#">主页</a></li>
+						<li><i class="icon-home home-icon"></i> <a href="<%=path%>/index">主页</a></li>
 						<li class="active">个人中心</li>
 					</ul>
 				</div>

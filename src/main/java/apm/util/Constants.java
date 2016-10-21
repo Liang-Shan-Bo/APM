@@ -78,6 +78,9 @@ public class Constants {
 	// 普通用户
 	public static final int ROLE_USER = 2;
 
+	// 默认密码
+	public static final String DEFAULT_PASSWORD = "123456";
+
 	// 缓存
 	public final static Map<String, Long> map = new HashMap<String, Long>() {
 

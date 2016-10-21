@@ -41,7 +41,7 @@
 								&nbsp;&nbsp;欢迎登录<br/>
 								&nbsp;&nbsp;<shiro:user>
 									<shiro:principal/>
-									<input id="loginName" type="hidden" value="<shiro:principal/>"/>
+									<input id="userName" type="hidden" value="<shiro:principal/>"/>
 								</shiro:user>
 							</small>
 						</span> 
@@ -80,7 +80,7 @@
 			method : 'post',
 			async: false,
 			dataType: "json",
-			data: { loginName : $("#loginName").val() },
+			data: { loginName : $("#userName").val() },
 			success : function(data){
 				if(data.count <= 0){
 					$("#alarm").hide();

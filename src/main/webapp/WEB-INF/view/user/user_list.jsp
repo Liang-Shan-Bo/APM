@@ -53,7 +53,7 @@
 					</script>
 
 					<ul class="breadcrumb">
-						<li><i class="icon-home home-icon"></i> <a href="#">主页</a></li>
+						<li><i class="icon-home home-icon"></i> <a href="<%=path%>/index">主页</a></li>
 						<li class="active">用户管理</li>
 					</ul>
 				</div>
@@ -69,7 +69,7 @@
 						<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
 					</form>
 					
-					<a href="<%=path%>/createService" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加用户</a>
+					<a href="<%=path%>/createUser" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加用户</a>
 					
 					<div class="row">
 						<div class="col-xs-12">
