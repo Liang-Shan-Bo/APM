@@ -52,7 +52,6 @@
 						<li><i class="icon-home home-icon"></i> <a href="<%=path%>/index">主页</a></li>
 						<li class="active">服务监控</li>
 					</ul>
-					<!-- .breadcrumb -->
 				</div>
 
 				<div class="page-content">

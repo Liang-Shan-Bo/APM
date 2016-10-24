@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
 <div class="sidebar" id="sidebar">
 	<script type="text/javascript">
 		try {

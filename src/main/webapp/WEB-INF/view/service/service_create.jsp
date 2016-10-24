@@ -167,7 +167,7 @@
 		
 								<div class="clearfix form-actions">
 									<div class="col-md-offset-3 col-md-9">
-										<a onclick="history.back()"  class="btn"><i class="icon-reply bigger-110"></i>返&nbsp;&nbsp;&nbsp;&nbsp;回</a>
+										<a onclick="history.back()" class="btn"><i class="icon-reply bigger-110"></i>返&nbsp;&nbsp;&nbsp;&nbsp;回</a>
 										&nbsp; &nbsp; &nbsp;
 										<a id="submitBtn" class="btn btn-info"><i class="icon-ok bigger-110"></i>提&nbsp;&nbsp;&nbsp;&nbsp;交</a>
 									</div>

@@ -63,5 +63,15 @@ public class OptionController {
 	public String ping() {
 		return "option/ping";
 	}
+	
+	/**
+	 * 403
+	 * 
+	 * @return String
+	 */
+	@RequestMapping(value = "/403", method = RequestMethod.GET)
+	public String ErrorFor403() {
+		return "403";
+	}
 
 }

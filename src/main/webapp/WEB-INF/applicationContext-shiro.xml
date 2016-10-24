@@ -36,11 +36,17 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 				/style/**=anon
 				<!-- 设置不拦截websocket请求，防止ws协议路径被重定位 -->
 				/*Socket/**=anon
-				/register/**=anon
 				<!-- 只有管理角色才有增删改权限 -->
 				/update*/**=roles[super,admin]
 				/delete*/**=roles[super,admin]
 				/create*/**=roles[super,admin]
+				<!-- 只有超级管理员角色才有角色管理权限 -->
+				/userList/**=roles[super]
+				/revoke/**=roles[super]
+				/appoint/**=roles[super]
+				/unfreeze/**=roles[super]
+				/freeze/**=roles[super]
+				/resetPassword/**=roles[super]
 				<!--所有的请求(除去配置的静态资源请求或请求地址为anon的请求)都要通过登录验证,如果未登录则跳到/login -->
 				/** = authc
 			</value>

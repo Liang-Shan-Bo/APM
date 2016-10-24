@@ -66,7 +66,7 @@
 					<!-- 修改成功 -->
 					<div class="con clearfix">
 						<div style="text-align: center; margin-top: 100px; margin-bottom: 100px;">
-							<img src=style/assets/avatars/success.png height="50" width="50" /> <span style="font-size: 32px;">修改密码成功</span>
+							<img src=style/assets/images/success.png height="50" width="50" /> <span style="font-size: 32px;">修改密码成功</span>
 						</div>
 						<div style="text-align: center; margin-bottom: 10px;">
 							<span id="time">5</span>秒后<a href="index" style="color: blue">返回主页</a>
