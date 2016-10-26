@@ -71,6 +71,7 @@ public class ServiceDao {
 	 * 
 	 */
 	public void createService(ServiceEntity serviceEntity) {
+		int deleteFlag;
 		String sql = "insert into apm_service_info(" +
 						"id," +
 						"service_name," +
@@ -90,8 +91,13 @@ public class ServiceDao {
 						"service_password," +
 						"startup_path," +
 						"shutdown_path," +
-						"delete_falg" +
-					") values(APM_SERVICE_INFO_SEQ.Nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)";
+						"delete_flag" +
+					") values(APM_SERVICE_INFO_SEQ.Nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		if (serviceEntity.getDeleteFlag() == 0) {
+			deleteFlag = 0;
+		} else {
+			deleteFlag = 1;
+		}
 		jdbcTemplate.update(
 				sql,
 				new Object[]{serviceEntity.getServiceName(), serviceEntity.getServiceAddress(),
@@ -101,7 +107,7 @@ public class ServiceDao {
 						serviceEntity.getJvmName(), serviceEntity.getJvmVersion(), serviceEntity.getNormId(),
 						serviceEntity.getAlarmPolicyId(), serviceEntity.getServiceUserName(),
 						serviceEntity.getServicePassword(), serviceEntity.getStartupPath(),
-						serviceEntity.getShutdownPath()});
+						serviceEntity.getShutdownPath(), deleteFlag});
 	}
 	
 	/**

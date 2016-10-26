@@ -65,11 +65,11 @@ public class ServiceEntity {
 	// 负载(0:无;1:良好;2：正常;3：警告;4:过高)
 	private Integer load;
 	// 指标ID
-	private Integer normId;
+	private Long normId;
 	// 指标名称
 	private String normName;
 	// 报警策略ID
-	private Integer alarmPolicyId;
+	private Long alarmPolicyId;
 	// 报警策略名称
 	private String alarmPolicyName;
 	// 删除标识(0:不可删除;1:可删除)
@@ -219,10 +219,10 @@ public class ServiceEntity {
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
 	}
-	public Integer getNormId() {
+	public Long getNormId() {
 		return normId;
 	}
-	public void setNormId(Integer normId) {
+	public void setNormId(Long normId) {
 		this.normId = normId;
 	}
 	public String getNormName() {
@@ -231,10 +231,10 @@ public class ServiceEntity {
 	public void setNormName(String normName) {
 		this.normName = normName;
 	}
-	public Integer getAlarmPolicyId() {
+	public Long getAlarmPolicyId() {
 		return alarmPolicyId;
 	}
-	public void setAlarmPolicyId(Integer alarmPolicyId) {
+	public void setAlarmPolicyId(Long alarmPolicyId) {
 		this.alarmPolicyId = alarmPolicyId;
 	}
 	public String getAlarmPolicyName() {

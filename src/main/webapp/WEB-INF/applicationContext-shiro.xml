@@ -34,6 +34,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 				<!-- anon表示此地址不需要任何权限即可访问 -->
 				/js/**=anon
 				/style/**=anon
+				/init*/**=anon
 				<!-- 设置不拦截websocket请求，防止ws协议路径被重定位 -->
 				/*Socket/**=anon
 				<!-- 只有管理角色才有增删改权限 -->

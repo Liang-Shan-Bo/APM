@@ -1,5 +1,7 @@
 package apm.controller.login;
 
+import java.util.Properties;
+
 import javax.annotation.Resource;
 
 import org.apache.shiro.SecurityUtils;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import apm.entity.user.User;
 import apm.service.user.UserService;
 import apm.util.EncUtil;
+import apm.util.PropertiesUtil;
 
 /**
  * @author 用户登录控制层
@@ -32,8 +35,18 @@ public class LoginController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginPage(User user) {
-		return "login/login";
+	public String loginPage(Model model) {
+		Properties properties = PropertiesUtil.getProperties("config.properties");
+		String initFlag = properties.getProperty("system.init.flag");
+		if (initFlag.equals("1")) {
+			return "login/login";
+		} else {
+			model.addAttribute("driver", properties.getProperty("database.oracle.driver"));
+			model.addAttribute("url", properties.getProperty("database.oracle.url"));
+			model.addAttribute("username", properties.getProperty("database.oracle.username"));
+			model.addAttribute("password", properties.getProperty("database.oracle.password"));
+			return "init/init";
+		}
 	}
 
 	/**
@@ -43,7 +56,7 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(Model model) {
+	public String index() {
 		return "index";
 	}
 
@@ -62,7 +75,7 @@ public class LoginController {
 			if (check == null) {
 				redirectAttributes.addFlashAttribute("message", "该用户不存在");
 				return "redirect:/login";
-			}else if (check.getEnabled() == 0) {
+			} else if (check.getEnabled() == 0) {
 				redirectAttributes.addFlashAttribute("message", "该用户已被冻结，请联系管理员");
 				return "redirect:/login";
 			}

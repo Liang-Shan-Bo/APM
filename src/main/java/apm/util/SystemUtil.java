@@ -1,5 +1,16 @@
 package apm.util;
 
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
+
+import javax.management.MBeanServerConnection;
+import javax.management.ObjectName;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
+
+import apm.entity.service.ServiceEntity;
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;
 
@@ -39,8 +50,52 @@ public class SystemUtil {
 		}
 		return 0;
 	}
-
+	
+	/**
+	 * 获取JMX地址
+	 * 
+	 * @return String
+	 */
 	public static String getJmxUrl(String address, String port) {
 		return "service:jmx:rmi:///jndi/rmi://" + address + ":" + port + "/jmxrmi";
+	}
+	
+	/**
+	 * 获取服务基本信息
+	 * 
+	 * @return ServiceEntity
+	 */
+	public static ServiceEntity setServieInfo(ServiceEntity serviceEntity) {
+		String serviceUrl = SystemUtil.getJmxUrl(serviceEntity.getServiceAddress(), serviceEntity.getMonitorPort());
+		JMXConnector jmxConnector = null;
+		try {
+			// 连接监控服务
+			JMXServiceURL ServiceURL = new JMXServiceURL(serviceUrl);
+			jmxConnector = JMXConnectorFactory.connect(ServiceURL, Constants.map);
+			MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
+			// 获取系统信息
+			OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.newPlatformMXBeanProxy(
+					mBeanServerConnection, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
+			serviceEntity.setCpuAvailableCount(operatingSystemMXBean.getAvailableProcessors());
+			serviceEntity.setSystemName(operatingSystemMXBean.getName());
+			serviceEntity.setSystemArch(operatingSystemMXBean.getArch());
+			serviceEntity.setSystemVersion(operatingSystemMXBean.getVersion());
+			// 获取JVM信息
+			ObjectName runtimeObjName = new ObjectName("java.lang:type=Runtime");
+			serviceEntity.setJvmName((String) mBeanServerConnection.getAttribute(runtimeObjName, "VmName"));
+			serviceEntity.setJvmVendor((String) mBeanServerConnection.getAttribute(runtimeObjName, "VmVendor"));
+			serviceEntity.setJvmVersion((String) mBeanServerConnection.getAttribute(runtimeObjName, "VmVersion"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (jmxConnector != null) {
+				try {
+					jmxConnector.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return serviceEntity;
 	}
 }

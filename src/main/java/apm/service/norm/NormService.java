@@ -25,7 +25,7 @@ public class NormService {
 	 * 
 	 * @return ServiceEntity
 	 */
-	public NormEntity getNormById(int id) {
+	public NormEntity getNormById(long id) {
 		return normDao.getNormById(id);
 	}
 	
