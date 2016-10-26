@@ -100,7 +100,7 @@ public class NormDao {
 						"norm_warning," +
 						"norm_danger," +
 						"service_type," +
-						"delete_falg" +
+						"delete_flag" +
 					") values(APM_NORM_SEQ.Nextval,?,?,?,?,?,?,1)";
 		jdbcTemplate.update(sql,
 				new Object[]{normEntity.getNormName(), normEntity.getNormType(), normEntity.getNormNormal(),

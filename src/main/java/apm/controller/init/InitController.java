@@ -83,6 +83,11 @@ public class InitController {
 		return "redirect:/login";
 	}
 
+	/**
+	 * 初始化数据库
+	 * 
+	 * @throws IOException
+	 */
 	private void initDatabase() throws IOException {
 		for (String table : tables) {
 			dropTable(table);
@@ -95,6 +100,11 @@ public class InitController {
 		init();
 	}
 
+	/**
+	 * 删除表
+	 * 
+	 * @param table
+	 */
 	private void dropTable(String table) {
 		String sql = "drop table " + table;
 		if (isExistTable(table)) {
@@ -102,6 +112,11 @@ public class InitController {
 		}
 	}
 
+	/**
+	 * 删除序列
+	 * 
+	 * @param sequence
+	 */
 	private void dropSequence(String sequence) {
 		String sql = "drop sequence " + sequence;
 		if (isExistSequence(sequence)) {
@@ -109,6 +124,12 @@ public class InitController {
 		}
 	}
 
+	/**
+	 * 创建表
+	 * 
+	 * @param table
+	 * @throws IOException
+	 */
 	private void createTable(String table) throws IOException {
 		ClassLoader classLoader = getClass().getClassLoader();
 		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/" + table + ".sql"));
@@ -118,6 +139,12 @@ public class InitController {
 		}
 	}
 
+	/**
+	 * 创建序列
+	 * 
+	 * @param sequence
+	 * @throws IOException
+	 */
 	private void createSequence(String sequence) throws IOException {
 		ClassLoader classLoader = getClass().getClassLoader();
 		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/" + sequence + ".sql"));
@@ -127,6 +154,12 @@ public class InitController {
 		}
 	}
 
+	/**
+	 * 判断表是否存在
+	 * 
+	 * @param table
+	 * @return
+	 */
 	private boolean isExistTable(String table) {
 		String sql = "select COUNT(*) from user_tables where table_name='" + table + "'";
 		int count = jdbcTemplate.queryForObject(sql, Integer.class);
@@ -137,6 +170,12 @@ public class InitController {
 		}
 	}
 
+	/**
+	 * 判断序列是否存在
+	 * 
+	 * @param sequence
+	 * @return
+	 */
 	private boolean isExistSequence(String sequence) {
 		String sql = "select count(*) from user_sequences where sequence_name='" + sequence + "'";
 		int count = jdbcTemplate.queryForObject(sql, Integer.class);
@@ -147,6 +186,11 @@ public class InitController {
 		}
 	}
 	
+	/**
+	 * 写入初始数据
+	 * 
+	 * @throws IOException
+	 */
 	private void init() throws IOException {
 		ClassLoader classLoader = getClass().getClassLoader();
 		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/init.sql"));
@@ -157,6 +201,9 @@ public class InitController {
 		initService();
 	}
 	
+	/**
+	 * 添加默认系统监控
+	 */
 	private void initService(){
 		ServiceEntity serviceEntity = new ServiceEntity();
 		serviceEntity.setServiceName("监控系统");
@@ -170,6 +217,14 @@ public class InitController {
 		serviceService.createService(serviceEntity);
 	}
 	
+	/**
+	 * 重置配置文件
+	 * 
+	 * @param driver
+	 * @param url
+	 * @param username
+	 * @param password
+	 */
 	private void initProperties(String driver, String url,
 			 String username,  String password){
 		Properties properties = PropertiesUtil.getProperties("config.properties");
