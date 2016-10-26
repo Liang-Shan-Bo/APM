@@ -308,7 +308,12 @@ public class SystemAlarmListener implements ServletContextListener {
 	 */
 	private boolean isAlarm() {
 		String sql = "select t.send_flag from apm_alarm_policy t where t.alarm_policy_type = 2 ";
-		int sendFlag = jdbcTemplate.queryForObject(sql, Integer.class);
+		int sendFlag;
+		try {
+			sendFlag = jdbcTemplate.queryForObject(sql, Integer.class);
+		} catch (Exception e) {
+			return false;
+		}
 		if (sendFlag == 1) {
 			return true;
 		}else {

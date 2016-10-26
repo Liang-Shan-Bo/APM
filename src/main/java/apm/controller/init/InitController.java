@@ -132,7 +132,7 @@ public class InitController {
 	 */
 	private void createTable(String table) throws IOException {
 		ClassLoader classLoader = getClass().getClassLoader();
-		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/" + table + ".sql"));
+		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/" + table + ".sql"),"utf-8");
 		String sqls[] = buffer.split(";");
 		for (String sql : sqls) {
 			jdbcTemplate.execute(sql);
@@ -147,7 +147,7 @@ public class InitController {
 	 */
 	private void createSequence(String sequence) throws IOException {
 		ClassLoader classLoader = getClass().getClassLoader();
-		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/" + sequence + ".sql"));
+		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/" + sequence + ".sql"),"utf-8");
 		String sqls[] = buffer.split(";");
 		for (String sql : sqls) {
 			jdbcTemplate.execute(sql);
@@ -193,7 +193,7 @@ public class InitController {
 	 */
 	private void init() throws IOException {
 		ClassLoader classLoader = getClass().getClassLoader();
-		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/init.sql"));
+		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/init.sql"),"utf-8");
 		String sqls[] = buffer.split(";");
 		for (String sql : sqls) {
 			jdbcTemplate.execute(sql);
