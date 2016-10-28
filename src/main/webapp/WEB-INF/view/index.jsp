@@ -109,6 +109,9 @@
 					cpuLegend.push("CPU" + i);
 				}
 				for (var i = 0; i < diskCount; i++) {
+					if (i == 3) {
+						diskLegend.push('');
+					}
 					diskLegend.push(json[0].disks[i].devName);
 				}
 				cpuChart.setOption({

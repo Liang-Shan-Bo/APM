@@ -236,7 +236,7 @@ public class SystemAlarmListener implements ServletContextListener {
 						"alarm_desc" + 
 						") values(APM_ALARM_LOG_SEQ.Nextval, ?, ?, ?, ?, ?)";
 		jdbcTemplate.update(sql, new Object[]{value, now, type, systemName, desc});
-		return getSystemLogId(now, systemName);
+		return getSystemLogId(now, type, systemName);
 	}
 	
 	/**
@@ -244,13 +244,15 @@ public class SystemAlarmListener implements ServletContextListener {
 	 * 
 	 * @param type
 	 */
-	private long getSystemLogId(Date now, String systemName) {
+	private long getSystemLogId(Date now, int type, String systemName) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String sql = "select id " +
 						"from apm_alarm_log " +
 						"where alarm_time=to_date(?,'yyyy-mm-dd hh24:mi:ss') " +
-						"and alarm_system_name=?";
-		long id = (Long) jdbcTemplate.queryForObject(sql, new Object[]{format.format(now), systemName}, Long.class);
+						"and alarm_system_name=? " +
+						"and alarm_type=?";
+		long id = (Long) jdbcTemplate.queryForObject(sql, new Object[]{format.format(now), systemName, type},
+				Long.class);
 		return id;
 	}
 	

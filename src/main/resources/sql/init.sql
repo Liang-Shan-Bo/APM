@@ -7,11 +7,11 @@ values (APM_NORM_SEQ.Nextval, '默认指标', 2, 256, 512, 1024, 1, 0);
 insert into APM_NORM (ID, NORM_NAME, NORM_TYPE, NORM_NORMAL, NORM_WARNING, NORM_DANGER, SERVICE_TYPE, DELETE_FLAG)
 values (APM_NORM_SEQ.Nextval, 'CPU指标', 1, 30, 60, 90, 2, 0);
 insert into APM_NORM (ID, NORM_NAME, NORM_TYPE, NORM_NORMAL, NORM_WARNING, NORM_DANGER, SERVICE_TYPE, DELETE_FLAG)
-values (APM_NORM_SEQ.Nextval, '内存指标', 2, 1000, 2000, 4000, 2, 0);
+values (APM_NORM_SEQ.Nextval, '内存指标', 2, 2000, 4000, 6000, 2, 0);
 insert into APM_NORM (ID, NORM_NAME, NORM_TYPE, NORM_NORMAL, NORM_WARNING, NORM_DANGER, SERVICE_TYPE, DELETE_FLAG)
 values (APM_NORM_SEQ.Nextval, '磁盘指标', 3, 30, 50, 80, 2, 0);
 insert into APM_NORM (ID, NORM_NAME, NORM_TYPE, NORM_NORMAL, NORM_WARNING, NORM_DANGER, SERVICE_TYPE, DELETE_FLAG)
-values (APM_NORM_SEQ.Nextval, '网络指标', 4, 1000, 2000, 4000, 2, 0);
+values (APM_NORM_SEQ.Nextval, '网络指标', 4, 1000, 4000, 8000, 2, 0);
 insert into APM_ROLE (ID, ROLE_NAME)
 values (1, 'super');
 insert into APM_ROLE (ID, ROLE_NAME)
@@ -19,7 +19,7 @@ values (2, 'admin');
 insert into APM_ROLE (ID, ROLE_NAME)
 values (3, 'user');
 insert into APM_USER (ID, LOGIN_NAME, PASSWORD, PHONE, EMAIL, CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER, ENABLED)
-values (APM_USER_SEQ.Nextval, 'admin', '21232F297A57A5A743894A0E4A801FC3', null, null, null, null, null, null, 1);
+values (APM_USER_SEQ.Nextval, 'admin', '21232F297A57A5A743894A0E4A801FC3', null, null, SYSDATE, 'SYSTEM', null, null, 1);
 insert into APM_USER_ROLE (USER_ID, ROLE_ID)
 values (1, 1);
 insert into APM_USER_ROLE (USER_ID, ROLE_ID)

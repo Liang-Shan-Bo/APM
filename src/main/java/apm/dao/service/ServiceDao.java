@@ -93,10 +93,10 @@ public class ServiceDao {
 						"shutdown_path," +
 						"delete_flag" +
 					") values(APM_SERVICE_INFO_SEQ.Nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		if (serviceEntity.getDeleteFlag() == 0) {
-			deleteFlag = 0;
-		} else {
+		if (serviceEntity.getDeleteFlag() == null) {
 			deleteFlag = 1;
+		}else {
+			deleteFlag = serviceEntity.getDeleteFlag();
 		}
 		jdbcTemplate.update(
 				sql,

@@ -95,14 +95,14 @@ public class ProSocket {
 	 */
 	public void sendMessage(Session session) throws IOException, EncodeException, SigarException {
 		if (session.isOpen()) {
-			List<ProEntity> list = getNetInfo();
+			List<ProEntity> list = getProInfo();
 			if (list != null) {
 				session.getBasicRemote().sendObject(list);
 			}
 		}
 	}
 
-	private List<ProEntity> getNetInfo() throws SigarException {
+	private List<ProEntity> getProInfo() throws SigarException {
 		Sigar sigar = new Sigar();
 		List<ProEntity> list = new ArrayList<ProEntity>();
 		long[] pids = sigar.getProcList();
@@ -110,8 +110,8 @@ public class ProSocket {
 		for (long pid : pids) {
 			List<?> ps = Ps.getInfo(sigar, pid);
 			ProcState prs = sigar.getProcState(pid);
-			ProEntity pro = new ProEntity(pid, prs.getPpid(), prs.getName(),
-					prs.getState(), ps.get(4).toString(), prs.getThreads());
+			ProEntity pro = new ProEntity(pid, prs.getPpid(), prs.getName(), prs.getState(), ps.get(4).toString(),
+					prs.getThreads());
 			list.add(pro);
 		}
 		sigar.close();

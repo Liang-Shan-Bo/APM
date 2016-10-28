@@ -156,7 +156,9 @@ public class SystemListener implements ServletContextListener {
 		for (FileSystem fs : fslist) {
 			try {
 				usage = sigar.getFileSystemUsage(fs.getDirName());
-				disks.add(new DiskEntity(usage.getUsePercent() * 100D, fs.getDevName()));
+				if (usage.getAvail() != 0L && !fs.getDevName().equals("rootfs")) {
+					disks.add(new DiskEntity(usage.getUsePercent() * 100D, fs.getDirName()));
+				}
 			} catch (Exception e) {
 				continue;
 			}

@@ -2,7 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,7 +68,7 @@
 						<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
 					</form>
 					<shiro:hasRole name="admin">
-						<a href="<%=path%>/createService" class="btn btn-sm btn-success" style="margin-bottom:15px;float:right;">添加服务</a>
+						<a href="<%=path%>/createService" class="btn btn-sm btn-success" style="margin-bottom: 15px; float: right;">添加服务</a>
 					</shiro:hasRole>
 					<div class="row">
 						<div class="col-xs-12">
@@ -90,36 +92,44 @@
 												<td>${service.serviceName}</td>
 												<td>${service.serviceAddress}</td>
 												<td>${service.servicePort}</td>
-												<td id="status${service.id}">
-													<c:if test="${service.status == 0}"><span class="label label-sm label-danger">关闭</span></c:if>
-													<c:if test="${service.status != 0}"><span class="label label-sm label-success">开启</span></c:if>
-												</td>
-												<td id="load${service.id}">
-													<c:if test="${service.load == 0}"><span class="label label-sm label-inverse">无</span></c:if>
-													<c:if test="${service.load == 1}"><span class="label label-sm label-success">良好</span></c:if>
-													<c:if test="${service.load == 2}"><span class="label label-sm label-success">正常</span></c:if>
-													<c:if test="${service.load == 3}"><span class="label label-sm label-warning">警告</span></c:if>
-													<c:if test="${service.load == 4}"><span class="label label-sm label-danger">过高</span></c:if>
-												</td>
+												<td id="status${service.id}"><c:if test="${service.status == 0}">
+														<span class="label label-sm label-danger">关闭</span>
+													</c:if> <c:if test="${service.status != 0}">
+														<span class="label label-sm label-success">开启</span>
+													</c:if></td>
+												<td id="load${service.id}"><c:if test="${service.load == 0}">
+														<span class="label label-sm label-inverse">无</span>
+													</c:if> <c:if test="${service.load == 1}">
+														<span class="label label-sm label-success">良好</span>
+													</c:if> <c:if test="${service.load == 2}">
+														<span class="label label-sm label-success">正常</span>
+													</c:if> <c:if test="${service.load == 3}">
+														<span class="label label-sm label-warning">警告</span>
+													</c:if> <c:if test="${service.load == 4}">
+														<span class="label label-sm label-danger">过高</span>
+													</c:if></td>
 												<td>${service.normName}</td>
 												<td>${service.alarmPolicyName}</td>
 												<td>
 													<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-														<c:if test="${service.status != 0}">
-															<a id="detail${service.id}" class="blue" href="serviceDetail?id=${service.id}" title="查看"> <i class="icon-zoom-in bigger-130"></i></a> 
-														</c:if>
-													    <shiro:hasRole name="admin">  
-													    	<a class="green" href="updateService?id=${service.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
+														<a id="detail${service.id}" class="blue" href="serviceDetail?id=${service.id}" title="查看"
+															<c:if test="${service.status == 0}">style="display:none;"</c:if>> <i class="icon-zoom-in bigger-130"></i></a>
+														<shiro:hasRole name="admin">
+															<a class="green" href="updateService?id=${service.id}" title="编辑"> <i class="icon-pencil bigger-130"></i></a>
 															<c:if test="${service.deleteFlag == 1}">
-														    	<a class="red" href="#" onclick="deleteService('${service.id}');" title="删除" > <i class="icon-trash bigger-130"></i></a>
+																<a class="red" href="#" onclick="deleteService('${service.id}');" title="删除"> <i
+																	class="icon-trash bigger-130"></i></a>
 																<c:if test="${service.status == 0}">
-														    		<a id="switch${service.id}" class="green" href="#" onclick="startup('${service.id}');" title="开启"> <i class="icon-circle-blank bigger-130"></i></a>
-														    	</c:if>
-														    	<c:if test="${service.status != 0}">
-														    		<a id="switch${service.id}" class="red" href="#" onclick="shutdown('${service.id}');" title="关闭"> <i class="icon-ban-circle bigger-130"></i></a>
-														    	</c:if>
+																	<a id="switch${service.id}" class="green" href="#" onclick="startup('${service.id}');" title="开启">
+																		<i class="icon-circle-blank bigger-130"></i>
+																	</a>
+																</c:if>
+																<c:if test="${service.status != 0}">
+																	<a id="switch${service.id}" class="red" href="#" onclick="shutdown('${service.id}');" title="关闭"> <i
+																		class="icon-ban-circle bigger-130"></i></a>
+																</c:if>
 															</c:if>
-													    </shiro:hasRole> 
+														</shiro:hasRole>
 													</div>
 												</td>
 											</tr>
@@ -131,7 +141,8 @@
 								</c:if>
 							</div>
 						</div>
-					</div><!-- 服务管理列表 -->
+					</div>
+					<!-- 服务管理列表 -->
 				</div>
 			</div>
 		</div>
@@ -139,7 +150,9 @@
 			class="icon-double-angle-up icon-only bigger-110"></i>
 		</a>
 	</div>
-	<div id="loading" hidden="hidden" style="position:absolute; top:6%; left:47%;z-index:9999;"><i class="icon-spinner icon-spin orange bigger-500"></i></div>
+	<div id="loading" hidden="hidden" style="position: absolute; top: 6%; left: 47%; z-index: 9999;">
+		<i class="icon-spinner icon-spin orange bigger-500"></i>
+	</div>
 	<script type="text/javascript">
 		$("#menu2").addClass("active");
 		bootbox.setDefaults("locale","zh_CN");  
@@ -217,10 +230,12 @@
 			$.ajax({
 				url : "<%=path%>/getServiceStatus",
 				method : 'post',
-				async: false,
-				dataType: "json",
-				data: { currentPage : cp},
-				success : function(data){
+				async : false,
+				dataType : "json",
+				data : {
+					currentPage : cp
+				},
+				success : function(data) {
 					var list = data.list;
 					for (var i = 0; i < list.length; i++) {
 						var status = $('#status' + list[i].id);
@@ -231,14 +246,14 @@
 							status.html("<span class=\"label label-sm label-danger\">关闭</span>");
 							load.html("<span class=\"label label-sm label-inverse\">无</span>");
 							switchFlag.html("<i class=\"icon-circle-blank bigger-130\"></i>");
-							switchFlag.attr("class", "green"); 
+							switchFlag.attr("class", "green");
 							switchFlag.attr("title", "开启");
 							switchFlag.attr("onclick", "startup('" + list[i].id + "');");
 							detail.hide();
-						}else{
+						} else {
 							status.html("<span class=\"label label-sm label-success\">开启</span>");
 							switchFlag.html("<i class=\"icon-ban-circle bigger-130\"></i>");
-							switchFlag.attr("class", "red"); 
+							switchFlag.attr("class", "red");
 							switchFlag.attr("title", "关闭");
 							switchFlag.attr("onclick", "shutdown('" + list[i].id + "');");
 							detail.show();
