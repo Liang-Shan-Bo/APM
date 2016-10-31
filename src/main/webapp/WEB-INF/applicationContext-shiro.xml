@@ -38,9 +38,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 				<!-- 设置不拦截websocket请求，防止ws协议路径被重定位 -->
 				/*Socket/**=anon
 				<!-- 只有管理角色才有增删改权限 -->
-				/update*/**=roles[super,admin]
-				/delete*/**=roles[super,admin]
-				/create*/**=roles[super,admin]
+				/update*/**=roles[admin]
+				/delete*/**=roles[admin]
+				/create*/**=roles[admin]
 				<!-- 只有超级管理员角色才有角色管理权限 -->
 				/userList/**=roles[super]
 				/revoke/**=roles[super]

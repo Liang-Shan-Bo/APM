@@ -66,7 +66,7 @@
 					<!-- 修改密码 -->
 					<div class="row">
 						<div class="col-xs-12">
-							<form id="updateForm" class="form-horizontal" role="form" action="<%=path%>/updatePassword" method="post">
+							<form id="updateForm" class="form-horizontal" role="form" action="<%=path%>/changePassword" method="post">
 								<input type="password" style="display: none;">
 								<input type="hidden" id="id" name="id" value="${userId}"/>
 								<div class="form-group">

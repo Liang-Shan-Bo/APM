@@ -86,7 +86,7 @@ public class UserController {
 	 * 
 	 * @return String
 	 */
-	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
 	public String updatePassword(User user) {
 		userService.updatePassword(user.getPassword(), user.getId());
 		return "user/password_success";
