@@ -12,7 +12,7 @@ public class NormEntity {
 	private String normName;
 	// 指标类型(1：CPU；2：内存；3：网络；4：磁盘)
 	private Integer normType;
-	// 一般指标
+	// 正常指标
 	private Integer normNormal;
 	// 警告指标
 	private Integer normWarning;

@@ -102,7 +102,7 @@
 													<c:if test="${alarmPolicy.sendPhone == 1}">发送</c:if>
 												</td>
 												<td>
-													<c:if test="${alarmPolicy.alarmPolicyLevel == 1}">一般</c:if>
+													<c:if test="${alarmPolicy.alarmPolicyLevel == 1}">正常</c:if>
 													<c:if test="${alarmPolicy.alarmPolicyLevel == 2}">警告</c:if>
 													<c:if test="${alarmPolicy.alarmPolicyLevel == 3}">过高</c:if>
 												</td>

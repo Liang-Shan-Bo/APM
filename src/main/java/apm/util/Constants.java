@@ -27,7 +27,7 @@ public class Constants {
 	public static final int SERVICE_LOAD_NONE = 0;
 	// 良好
 	public static final int SERVICE_LOAD_FAVORABLE = 1;
-	// 一般
+	// 正常
 	public static final int SERVICE_LOAD_NORMAL = 2;
 	// 警告
 	public static final int SERVICE_LOAD_WARNING = 3;

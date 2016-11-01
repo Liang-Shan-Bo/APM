@@ -137,7 +137,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="alarmPolicyLevel"> 达到报警级别</label>
 										<div class="col-sm-9">
 											<select id="alarmPolicyLevel" name="alarmPolicyLevel">
-												<option value="1" <c:if test="${alarmPolicyEntity.alarmPolicyLevel == 1}">selected="selected"</c:if>>一般</option>
+												<option value="1" <c:if test="${alarmPolicyEntity.alarmPolicyLevel == 1}">selected="selected"</c:if>>正常</option>
 												<option value="2" <c:if test="${alarmPolicyEntity.alarmPolicyLevel == 2}">selected="selected"</c:if>>警告</option>
 												<option value="3" <c:if test="${alarmPolicyEntity.alarmPolicyLevel == 3}">selected="selected"</c:if>>过高</option>
 											</select> 

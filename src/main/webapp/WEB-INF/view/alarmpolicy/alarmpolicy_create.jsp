@@ -134,7 +134,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="alarmPolicyLevel"> 达到报警级别</label>
 										<div class="col-sm-9">
 											<select id="alarmPolicyLevel" name="alarmPolicyLevel">
-												<option value="1">一般</option>
+												<option value="1">正常</option>
 												<option value="2">警告</option>
 												<option value="3">过高</option>
 											</select> 

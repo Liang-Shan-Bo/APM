@@ -250,6 +250,7 @@
 		class="icon-double-angle-up icon-only bigger-110"></i>
 	</a>
 	<script type="text/javascript">
+		$("#menu2").addClass("active");
 		var websocket = null;
 		var url = "<%=url%>";
 		//判断当前浏览器是否支持WebSocket

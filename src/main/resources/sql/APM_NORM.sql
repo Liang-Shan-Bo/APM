@@ -28,7 +28,7 @@ comment on column APM_NORM.NORM_NAME
 comment on column APM_NORM.NORM_TYPE
   is '指标类型(1：CPU；2：内存；3：网络；4：磁盘)';
 comment on column APM_NORM.NORM_NORMAL
-  is '一般指标';
+  is '正常指标';
 comment on column APM_NORM.NORM_WARNING
   is '警告指标';
 comment on column APM_NORM.NORM_DANGER

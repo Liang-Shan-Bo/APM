@@ -115,7 +115,7 @@
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="alarmPolicyLevel"> 达到报警级别</label>
 										<label class="col-xs-2">
-											<c:if test="${alarmPolicyEntity.alarmPolicyLevel == 1}">一般</c:if>
+											<c:if test="${alarmPolicyEntity.alarmPolicyLevel == 1}">正常</c:if>
 											<c:if test="${alarmPolicyEntity.alarmPolicyLevel == 2}">警告</c:if>
 											<c:if test="${alarmPolicyEntity.alarmPolicyLevel == 3}">过高</c:if>
 										</label>

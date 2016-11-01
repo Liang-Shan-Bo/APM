@@ -35,7 +35,7 @@ comment on column APM_ALARM_POLICY.SEND_EMAIL
 comment on column APM_ALARM_POLICY.SEND_PHONE
   is '是否发送短信标识(0：不发送；1：发送)';
 comment on column APM_ALARM_POLICY.ALARM_POLICY_LEVEL
-  is '达到报警级别(1：一般；2：警告；3：过高)';
+  is '达到报警级别(1：正常；2：警告；3：过高)';
 comment on column APM_ALARM_POLICY.ALARM_POLICY_TYPE
   is '报警策略类型(1:服务策略；2:系统策略)';
 comment on column APM_ALARM_POLICY.DELETE_FLAG

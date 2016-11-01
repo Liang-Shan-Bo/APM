@@ -184,6 +184,7 @@
 		</a>
 	</div>
 	<script type="text/javascript">
+		$("#menu2").addClass("active");
 		// 点击提交
 		$("#submitBtn").click(function() {
 			if ($("#createForm").valid()) {

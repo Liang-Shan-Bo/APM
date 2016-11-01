@@ -18,7 +18,7 @@ public class AlarmPolicyEntity {
 	private Integer sendEmail;
 	// 是否发送短信标识(0:否;1:是)
 	private Integer sendPhone;
-	// 报警级别(1：一般;2：警告;3：过高)
+	// 报警级别(1：正常;2：警告;3：过高)
 	private Integer alarmPolicyLevel;
 	// 报警策略类型(1:服务策略;2:系统策略)
 	private Integer alarmPolicyType;
