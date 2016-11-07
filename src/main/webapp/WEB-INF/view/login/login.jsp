@@ -28,119 +28,54 @@
 <script src="style/assets/js/ace-extra.min.js"></script>
 </head>
 
-<body class="login-layout">
-	<div class="main-container">
-		<div class="main-content">
-			<div class="row">
-				<div class="col-sm-10 col-sm-offset-1">
-					<div class="login-container">
-						<div class="center">
-							<h1>
-								<i class="icon-desktop white"></i> <span class="white">监控系统</span>
-							</h1>
+<body class="login-layout" style="background-image: url(style/assets/images/background.jpg); background-size: cover; background-repeat: no-repeat;background-size:100% 100%;">
+	<div class="row" style="padding-top: 16%; width: 100%;">
+		<div class="col-lg-3 col-lg-offset-7 col-md-3 col-md-offset-7 col-sm-3 col-sm-offset-7">
+			<div id="login-box" class="login-box visible widget-box no-border" style="background-color: #4866b5;">
+				<div class="col-lg-10 col-lg-offset-1">
+				
+					<div class="space"></div>
+					
+					<h4 class="header white lighter bigger">登录系统</h4>
+
+					<form id="loginForm" action="<%=path%>/login" method="post">
+						<div class="space"></div>
+						<div class="form-group" style="height:43px;">
+							<label class="block clearfix"> 
+								<span class="block input-icon input-icon-right"> 
+									<input type="text" id="loginName" class="form-control" placeholder="用户名" name="loginName" /> 
+									<i class="icon-user"></i>
+								</span>
+							</label>
 						</div>
 
-						<div class="space-6"></div>
-
-						<div class="position-relative">
-							<div id="login-box" class="login-box visible widget-box no-border">
-								<div class="widget-body">
-									<div class="widget-main">
-										<h4 class="header blue lighter bigger">
-											<i class="icon-coffee green"></i> 请输入用户名和密码
-										</h4>
-
-										<div class="space-6"></div>
-
-										<form id="loginForm" action="<%=path%>/login" method="post">
-											<fieldset>
-												<div class="form-group">
-													<label class="block clearfix"> <span class="block input-icon input-icon-right"> <input
-															type="text" id="loginName" class="form-control" placeholder="用户名" name="loginName" /> <i class="icon-user"></i>
-													</span>
-													</label>
-												</div>
-
-												<div class="form-group">
-													<label class="block clearfix"> <span class="block input-icon input-icon-right"> <input
-															type="password" id="password" class="form-control" placeholder="密码" name="password" /> <span id="message"
-															class="help-block" style="color: #d16e6c">${message}</span> <i class="icon-lock"></i>
-													</span>
-													</label>
-												</div>
-
-												<div class="space"></div>
-
-												<div class="clearfix">
-													<button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
-														<i class="icon-key"></i> 登录
-													</button>
-												</div>
-
-												<div class="space-4"></div>
-											</fieldset>
-										</form>
-									</div>
-									<!-- /widget-main -->
-<!-- 									<div class="toolbar clearfix"> -->
-<!-- 										<div> -->
-<!-- 											<a href="#" onclick="show_box('forgot-box'); return false;" class="forgot-password-link"> <i -->
-<!-- 												class="icon-arrow-left"></i> 忘记密码 -->
-<!-- 											</a> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-								</div>
-								<!-- /widget-body -->
-							</div>
-							<!-- /login-box -->
-
-							<div id="forgot-box" class="forgot-box widget-box no-border">
-								<div class="widget-body">
-									<div class="widget-main">
-										<h4 class="header red lighter bigger">
-											<i class="icon-key"></i> 找回密码
-										</h4>
-
-										<div class="space-6"></div>
-										<p>请输入您的绑定邮箱地址</p>
-
-										<form>
-											<fieldset>
-												<label class="block clearfix"> <span class="block input-icon input-icon-right"> <input
-														type="email" class="form-control" placeholder="Email" /> <i class="icon-envelope"></i>
-												</span>
-												</label>
-
-												<div class="clearfix">
-													<button type="button" class="width-35 pull-right btn btn-sm btn-danger">
-														<i class="icon-lightbulb"></i> 发送
-													</button>
-												</div>
-											</fieldset>
-										</form>
-									</div>
-									<!-- /widget-main -->
-
-									<div class="toolbar center">
-										<a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link"> 回到登录页面 <i
-											class="icon-arrow-right"></i>
-										</a>
-									</div>
-								</div>
-								<!-- /widget-body -->
-							</div>
-							<!-- /forgot-box -->
+						<div class="space"></div>
+						
+						<div class="form-group" style="height:43px;">
+							<label class="block clearfix"> 
+								<span class="block input-icon input-icon-right"> 
+									<input type="password" id="password" class="form-control" placeholder="密码" name="password" /> 
+									<span id="message" class="help-block" style="color: #d16e6c">${message}</span>
+									<i class="icon-lock"></i>
+								</span>
+							</label>
 						</div>
-						<!-- /position-relative -->
-					</div>
+
+						<div class="space"></div>
+
+						<div class="clearfix">
+							<button type="submit" class="btn btn-login btn-block">
+								<span style="font-size: 16px;"> 登 录</span>
+							</button>
+						</div>
+
+						<div class="space"></div>
+						
+					</form>
 				</div>
-				<!-- /.col -->
 			</div>
-			<!-- /.row -->
 		</div>
 	</div>
-	<!-- /.main-container -->
-
 	<script type="text/javascript">
 		function show_box(id) {
 			jQuery('.widget-box.visible').removeClass('visible');
@@ -148,42 +83,44 @@
 		}
 
 		// 校验表单
-		$("#loginForm").validate({
-			errorElement : 'div',
-			errorClass : 'help-block',
-			focusInvalid : false,
-			rules : {
-				loginName : {
-					required : true
-				},
-				password : {
-					required : true
-				}
-			},
+		$("#loginForm").validate(
+				{
+					errorElement : 'div',
+					errorClass : 'help-block',
+					focusInvalid : false,
+					rules : {
+						loginName : {
+							required : true
+						},
+						password : {
+							required : true
+						}
+					},
 
-			messages : {
-				loginName : {
-					required : "请输入用户名"
-				},
-				password : {
-					required : "请输入密码"
-				}
-			},
+					messages : {
+						loginName : {
+							required : "请输入用户名"
+						},
+						password : {
+							required : "请输入密码"
+						}
+					},
 
-			invalidHandler : function(event, validator) { //display error alert on form submit   
-				$('.alert-danger', $('.login-form')).show();
-			},
+					invalidHandler : function(event, validator) { //display error alert on form submit   
+						$('.alert-danger', $('.login-form')).show();
+					},
 
-			highlight : function(e) {
-				$(e).closest('.form-group').removeClass('has-info').addClass('has-error');
-			},
+					highlight : function(e) {
+						$(e).closest('.form-group').removeClass('has-info')
+								.addClass('has-error');
+					},
 
-			success : function(e) {
-				$(e).closest('.form-group').removeClass('has-error').addClass('has-info');
-				$(e).remove();
-			}
-		});
-		
+					success : function(e) {
+						$(e).closest('.form-group').removeClass('has-error')
+								.addClass('has-info');
+						$(e).remove();
+					}
+				});
 	</script>
 </body>
 </html>

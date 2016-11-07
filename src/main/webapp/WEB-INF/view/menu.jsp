@@ -7,7 +7,7 @@
 		} catch (e) {
 		}
 	</script>
-	<div class="sidebar-shortcuts" id="sidebar-shortcuts" style="height:50px;">
+	<div class="sidebar-shortcuts" id="sidebar-shortcuts" style="height:50px;background: #438eb9;">
 		<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
 <!-- 			<button class="btn btn-success"> -->
 <!-- 				<i class="icon-signal"></i> -->

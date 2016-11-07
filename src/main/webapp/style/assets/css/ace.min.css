@@ -3059,6 +3059,16 @@ button.btn:active {
 	border-color: #428bca
 }
 
+.btn-login, .btn-login:focus {
+	background-color: #2447b0 !important;
+	border-color: #2447b0
+}
+
+.btn-login:hover, .open .login.dropdown-toggle {
+	background-color: #4f99c6 !important;
+	border-color: #2447b0
+}
+
 .btn-primary:hover, .open .btn-primary.dropdown-toggle {
 	background-color: #1b6aaa !important;
 	border-color: #428bca
