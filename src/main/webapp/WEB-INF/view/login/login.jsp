@@ -83,44 +83,43 @@
 		}
 
 		// 校验表单
-		$("#loginForm").validate(
-				{
-					errorElement : 'div',
-					errorClass : 'help-block',
-					focusInvalid : false,
-					rules : {
-						loginName : {
-							required : true
-						},
-						password : {
-							required : true
-						}
-					},
+		$("#loginForm").validate({
+			errorElement : 'div',
+			errorClass : 'help-block',
+			focusInvalid : false,
+			rules : {
+				loginName : {
+					required : true
+				},
+				password : {
+					required : true
+				}
+			},
 
-					messages : {
-						loginName : {
-							required : "请输入用户名"
-						},
-						password : {
-							required : "请输入密码"
-						}
-					},
+			messages : {
+				loginName : {
+					required : "请输入用户名"
+				},
+				password : {
+					required : "请输入密码"
+				}
+			},
 
-					invalidHandler : function(event, validator) { //display error alert on form submit   
-						$('.alert-danger', $('.login-form')).show();
-					},
+			invalidHandler : function(event, validator) { //display error alert on form submit   
+				$('.alert-danger', $('.login-form')).show();
+			},
 
-					highlight : function(e) {
-						$(e).closest('.form-group').removeClass('has-info')
-								.addClass('has-error');
-					},
+			highlight : function(e) {
+				$(e).closest('.form-group').removeClass('has-info')
+						.addClass('has-error');
+			},
 
-					success : function(e) {
-						$(e).closest('.form-group').removeClass('has-error')
-								.addClass('has-info');
-						$(e).remove();
-					}
-				});
+			success : function(e) {
+				$(e).closest('.form-group').removeClass('has-error')
+						.addClass('has-info');
+				$(e).remove();
+			}
+		});
 	</script>
 </body>
 </html>

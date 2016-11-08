@@ -65,7 +65,7 @@
 						</h1>
 					</div>
 					
-					<form id="queryForm" class="form-inline checkForm" action="<%=path%>/systemLogList" method="get">
+					<form id="queryForm" class="form-inline checkForm" action="<%=path%>/messageList" method="get">
 						<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
 					</form>
 					
