@@ -155,6 +155,7 @@
 	</div>
 	<script type="text/javascript">
 		$("#menu2").addClass("active");
+		$("#menu2 a img").attr('src',"style/assets/images/t2.png");
 		bootbox.setDefaults("locale","zh_CN");  
 		// 删除服务
 		function deleteService(id) {

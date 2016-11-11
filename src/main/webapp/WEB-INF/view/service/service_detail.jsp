@@ -76,30 +76,53 @@
 										</h4>
 									</div>
 									<div class="panel-collapse collapse in" id="collapseCpu">
-<!-- 										<div class="profile-info-row"> -->
-<!-- 											<div class="profile-info-name"> CPU占用百分比 </div> -->
-
-<!-- 											<div class="profile-info-value"> -->
-<!-- 												<span class="editable" id="cpuPercentage">0.00%</span> -->
-<!-- 											</div> -->
-<!-- 										</div> -->
-<!-- 										<div class="profile-info-row"> -->
-<!-- 											<div class="profile-info-name"> 已使用内存量 </div> -->
-<!-- 											<div class="profile-info-value"> -->
-<!-- 												<span class="editable" id="memoryUsed">0.0MB</span> -->
-<!-- 											</div> -->
-<!-- 										</div> -->
-<!-- 										<div class="profile-info-row"> -->
-<!-- 											<div class="profile-info-name"> 可使用内存量 </div> -->
-
-<!-- 											<div class="profile-info-value"> -->
-<!-- 												<span class="editable" id="memoryCommitted">0.0MB</span> -->
-<!-- 											</div> -->
-<!-- 										</div> -->
-										
+										<div class="col-xs-4">
+											<div class="profile-info-row">
+												<div class="profile-info-name"> 服务名称 </div>
+												<div class="profile-info-value">
+													<span class="editable">${serviceEntity.serviceName}</span>
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name"> 服务IP地址 </div>
+												<div class="profile-info-value">
+													<span class="editable">${serviceEntity.serviceAddress}</span>
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name"> 服务端口号 </div>
+												<div class="profile-info-value">
+													<span class="editable">${serviceEntity.servicePort}</span>
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name"> CPU使用率 </div>
+												<div class="profile-info-value">
+													<span class="editable" id="cpuPercentage">0.00%</span>
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name"> 已使用内存量 </div>
+												<div class="profile-info-value">
+													<span class="editable" id="memoryUsed">0.0MB</span>
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name"> 未使用内存量 </div>
+												<div class="profile-info-value">
+													<span class="editable" id="memoryUnUsed">0.0MB</span>
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name"> 可使用内存量 </div>
+												<div class="profile-info-value">
+													<span class="editable" id="memoryCommitted">0.0MB</span>
+												</div>
+											</div>
+										</div>
 										<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-										<div id="cpu" style="width: 400px;height:300px;padding: 0px 20px 0px;float:left;margin-left:150px;"></div>
-										<div id="mem" style="width: 400px;height:300px;padding: 0px 20px 0px;float:left;margin-left:20px;"></div>
+										<div id="cpu" class="col-xs-4" style="height:260px;float:left;"></div>
+										<div id="mem" class="col-xs-4" style="height:260px;float:left;"></div>
 									</div>
 								</div>
 							</div><!-- 即时监控 -->
@@ -251,6 +274,7 @@
 	</a>
 	<script type="text/javascript">
 		$("#menu2").addClass("active");
+		$("#menu2 a img").attr('src',"style/assets/images/t2.png");
 		var websocket = null;
 		var url = "<%=url%>";
 		//判断当前浏览器是否支持WebSocket
@@ -277,6 +301,7 @@
 			memCommitted = (json[0].memoryCommitted / 1024 / 1024).toFixed(1);
 			$("#cpuPercentage").text(cpuPer + "%");
 			$("#memoryUsed").text(memUsed + "MB");
+			$("#memoryUnUsed").text((memCommitted - memUsed).toFixed(1) + "MB");
 			$("#memoryCommitted").text(memCommitted + "MB");
 			$("#threadCount").text(json[0].threadCount);
 			$("#daemonThreadCount").text(json[0].daemonThreadCount);
@@ -316,6 +341,9 @@
 		// CPU仪表盘
 		var cpuChart = echarts.init(document.getElementById('cpu'));
 		cpuOption = {
+			title: {
+		        text: 'CPU监控'
+		    },
 			tooltip : {
 				formatter : "{a} <br/>{b} : {c}%"
 			},
@@ -366,6 +394,9 @@
 		// 内存仪表盘
 		var memChart = echarts.init(document.getElementById('mem'));
 		memOption = {
+			title: {
+		        text: '内存监控'
+		    },
 			tooltip : {
 				formatter : "{a} <br/>{b} : {c}MB"
 			},

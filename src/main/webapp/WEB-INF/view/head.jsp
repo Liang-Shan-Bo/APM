@@ -9,8 +9,8 @@
 	</script>
 	<div class="navbar-container" id="navbar-container">
 		<div class="navbar-header pull-left">
-			<a href="#" class="navbar-brand"> 
-				<small><i class="icon-desktop"></i> 监控系统</small>
+			<a href="<%=basePath%>/index" style="padding-top:20px;position:absolute;"> 
+				<img src="style/assets/images/logo.png"></img>
 			</a>
 		</div>
 		
@@ -34,7 +34,7 @@
 						</ul>
 					</li><!-- 报警信息 -->
 				
-				<li class="light-blue">
+				<li>
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle"> 
 						<span class="user-info"> 
 							<small>

@@ -7,7 +7,7 @@ body {
 	padding-bottom: 0;
 	background-color: #e4e6e9;
 	min-height: 100%;
-	font-family: 'Open Sans';
+	font-family: 'Microsoft YaHei';
 	font-size: 13px;
 	color: #393939;
 	line-height: 1.5
@@ -1256,7 +1256,7 @@ blockquote, blockquote.pull-right {
 	padding-right: 0;
 	min-height: 45px;
 	position: relative;
-	background: #438eb9
+	background: #2e363f
 }
 
 .navbar>.container {
@@ -2071,7 +2071,7 @@ blockquote, blockquote.pull-right {
 	bottom: 0;
 	top: 0;
 	z-index: -1;
-	background-color: #f2f2f2;
+	background-color: #2e363f;
 	border: 1px solid #ccc;
 	border-width: 0 1px 0 0
 }
@@ -2100,7 +2100,7 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 }
 
 .nav-list .open>a, .nav-list .open>a:hover, .nav-list .open>a:focus {
-	background-color: #fafafa
+	background-color: #2e363f
 }
 
 .nav-list>li>a, .nav-list .nav-header {
@@ -2112,8 +2112,7 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 	padding: 0;
 	margin: 0;
 	border: 0;
-	border-top: 1px solid #fcfcfc;
-	border-bottom: 1px solid #e5e5e5;
+	border-bottom: 1px solid #1f262d;
 	position: relative
 }
 
@@ -2130,10 +2129,10 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 	height: 38px;
 	line-height: 36px;
 	padding: 0 16px 0 7px;
-	background-color: #f9f9f9;
-	color: #585858;
+	background-color: #2e363f;
+	color: #949391;
 	text-shadow: none !important;
-	font-size: 13px;
+	font-size: 15px;
 	text-decoration: none
 }
 
@@ -2148,13 +2147,13 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 }
 
 .nav-list>li>a:focus {
-	background-color: #f9f9f9;
-	color: #1963aa
+	background-color: #2e363f;
+	color: #fff
 }
 
 .nav-list>li>a:hover {
-	background-color: #FFF;
-	color: #1963aa
+	background-color: #2e363f;
+	color: #fff
 }
 
 .nav-list>li>a:hover:before {
@@ -2199,8 +2198,8 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 }
 
 .nav-list>li.open>a {
-	background-color: #fafafa;
-	color: #1963aa
+	background-color: #2e363f;
+	color: #949391
 }
 
 .nav-list>li.active {
@@ -2209,10 +2208,9 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 
 .nav-list>li.active>a, .nav-list>li.active>a:hover, .nav-list>li.active>a:focus,
 	.nav-list>li.active>a:active {
-	background-color: #fff;
-	color: #2b7dbc;
-	font-weight: bold;
-	font-size: 13px
+	background-color: #27a9e3;
+    color: #fff;
+    font-size: 15px;
 }
 
 .nav-list>li.active>a>[class*="icon-"] {
@@ -2231,12 +2229,12 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 	top: -1px;
 	bottom: 0;
 	z-index: 1;
-	border: 2px solid #2b7dbc;
+	border: 2px solid #fff;
 	border-width: 0 2px 0 0
 }
 
 .nav-list>li.open {
-	border-bottom-color: #e5e5e5
+	border-bottom-color: #e5e5e5;
 }
 
 .nav-list>li.active .submenu {
@@ -2249,22 +2247,21 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 	margin: 0;
 	padding: 0;
 	position: relative;
-	background-color: #fff;
-	border-top: 1px solid #e5e5e5
+	background-color: #2e363f;
 }
 
 .nav-list>li .submenu>li {
 	margin-left: 0;
-	position: relative
+	position: relative;
 }
 
 .nav-list>li .submenu>li>a {
 	display: block;
 	position: relative;
-	color: #616161;
+	color: #949391;
 	padding: 7px 0 9px 37px;
 	margin: 0;
-	border-top: 1px dotted #e4e4e4
+	border-top: 1px dotted #e4e4e4;
 }
 
 .nav-list>li .submenu>li>a:focus {
@@ -2273,11 +2270,12 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 
 .nav-list>li .submenu>li>a:hover {
 	text-decoration: none;
-	color: #4b88b7
+	color: #fff
 }
 
 .nav-list>li .submenu>li.active>a {
-	color: #2b7dbc
+	background-color: #27a9e3;
+	color: #fff
 }
 
 .nav-list>li .submenu>li a>[class*="icon-"]:first-child {
@@ -2292,7 +2290,7 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 	left: 10px;
 	top: 11px;
 	z-index: 1;
-	background-color: #FFF
+	background-color: #2e363f
 }
 
 .nav-list>li .submenu>li.active>a>[class*="icon-"]:first-child,
@@ -2301,6 +2299,7 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 }
 
 .nav-list>li .submenu>li.active>a>[class*="icon-"]:first-child {
+	background-color: #27a9e3;
 	color: #c86139
 }
 
@@ -2315,7 +2314,7 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 }
 
 .nav-list>li>.submenu>li:first-child>a {
-	border-top: 1px solid #fafafa
+/* 	border-top: 1px solid #fafafa */
 }
 
 .nav-list>li>.submenu:before {
@@ -2350,7 +2349,7 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 	top: 4px;
 	border: 8px solid transparent;
 	border-width: 14px 10px;
-	border-right-color: #2b7dbc
+	border-right-color: #fff
 }
 
 .nav-list li.open>a:after {
@@ -2437,7 +2436,7 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 
 .sidebar-shortcuts {
 	background-color: #fafafa;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #2e363f;
 	text-align: center;
 	line-height: 39px;
 	max-height: 41px;
@@ -3065,8 +3064,8 @@ button.btn:active {
 }
 
 .btn-login:hover, .open .login.dropdown-toggle {
-	background-color: #4f99c6 !important;
-	border-color: #2447b0
+	background-color: #d6c399 !important;
+	border-color: #d6c399
 }
 
 .btn-primary:hover, .open .btn-primary.dropdown-toggle {

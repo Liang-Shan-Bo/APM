@@ -7,33 +7,29 @@
 		} catch (e) {
 		}
 	</script>
-	<div class="sidebar-shortcuts" id="sidebar-shortcuts" style="height:50px;background: #438eb9;">
+	<div class="sidebar-shortcuts" id="sidebar-shortcuts" style="height:50px;background: #2e363f;">
 		<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-<!-- 			<button class="btn btn-success"> -->
-<!-- 				<i class="icon-signal"></i> -->
-<!-- 			</button> -->
-<!-- 			<button class="btn btn-info"> -->
-<!-- 				<i class="icon-pencil"></i> -->
-<!-- 			</button> -->
-<!-- 			<button class="btn btn-warning"> -->
-<!-- 				<i class="icon-group"></i> -->
-<!-- 			</button> -->
-<!-- 			<button class="btn btn-danger"> -->
-<!-- 				<i class="icon-cogs"></i> -->
-<!-- 			</button> -->
 		</div>
 	</div>
 	<!-- #sidebar-shortcuts -->
 	<ul class="nav nav-list">
 		<li id="menu1">
-			<a href="<%=basePath%>/index"> <i class="icon-dashboard"></i> <span class="menu-text">实时监控 </span></a>
+			<a href="<%=basePath%>/index"> 
+				<img src="style/assets/images/h1.png" style="padding-left:10px;"></img> 
+				<span class="menu-text" style="padding-left:17px;">实时监控 </span>
+			</a>
 		</li>
 		<li id="menu2">
-			<a href="<%=basePath%>/serviceList"> <i class="icon-off"></i> <span class="menu-text">服务监控 </span></a>
+			<a href="<%=basePath%>/serviceList"> 
+				<img src="style/assets/images/h2.png" style="padding-left:10px;"></img> 
+				<span class="menu-text" style="padding-left:17px;">服务监控 </span>
+			</a>
 		</li>
 		<li id="menu3">
 			<a href="#" class="dropdown-toggle"> 
-				<i class="icon-desktop"></i><span class="menu-text">系统监控 </span><b class="arrow icon-angle-down"></b>
+				<img src="style/assets/images/h3.png" style="padding-left:10px;"></img> 
+				<span class="menu-text" style="padding-left:17px;">系统监控 </span>
+				<b class="arrow icon-angle-down"></b>
 			</a>
 			<ul class="submenu">
 				<li id="cpuMonitor">
@@ -52,7 +48,9 @@
 		</li>
 		<li id="menu4">
 			<a href="#" class="dropdown-toggle"> 
-				<i class="icon-list"></i> <span class="menu-text"> 报警策略 </span> <b class="arrow icon-angle-down"></b>
+				<img src="style/assets/images/h4.png" style="padding-left:10px;"></img> 
+				<span class="menu-text" style="padding-left:17px;"> 报警策略 </span> 
+				<b class="arrow icon-angle-down"></b>
 			</a>
 			<ul class="submenu">
 				<li id="serviceAlarmPolicyList">
@@ -65,7 +63,9 @@
 		</li>
 		<li id="menu5">
 			<a href="#" class="dropdown-toggle"> 
-				<i class="icon-edit"></i> <span class="menu-text"> 指标设置</span> <b class="arrow icon-angle-down"></b>
+				<img src="style/assets/images/h5.png" style="padding-left:10px;"></img> 
+				<span class="menu-text" style="padding-left:17px;"> 指标设置</span> 
+				<b class="arrow icon-angle-down"></b>
 			</a>
 			<ul class="submenu">
 				<li id="serviceNormList">
@@ -79,7 +79,9 @@
 		<shiro:hasRole name="admin">
 			<li id="menu6">
 				<a href="#" class="dropdown-toggle"> 
-					<i class="icon-calendar"></i> <span class="menu-text">报警日志 </span> <b class="arrow icon-angle-down"></b>
+					<img src="style/assets/images/h6.png" style="padding-left:10px;"></img> 
+					<span class="menu-text" style="padding-left:17px;">报警日志 </span> 
+					<b class="arrow icon-angle-down"></b>
 				</a>
 				<ul class="submenu">
 					<li id="systemLogList">
@@ -93,12 +95,17 @@
 		</shiro:hasRole>
 		<shiro:hasRole name="super">
 			<li id="menu7">
-				<a href="<%=basePath%>/userList"> <i class="icon-user"></i> <span class="menu-text">用户管理 </span></a>
+				<a href="<%=basePath%>/userList"> 
+					<img src="style/assets/images/h7.png" style="padding-left:10px;"></img> 
+					<span class="menu-text" style="padding-left:17px;">用户管理 </span>
+				</a>
 			</li>
 		</shiro:hasRole>
 		<li id="menu8">
 			<a href="#" class="dropdown-toggle"> 
-				<i class="icon-list-alt"></i> <span class="menu-text">系统功能 </span> <b class="arrow icon-angle-down"></b>
+				<img src="style/assets/images/h8.png" style="padding-left:10px;"></img> 
+				<span class="menu-text" style="padding-left:17px;">系统功能 </span> 
+				<b class="arrow icon-angle-down"></b>
 			</a>
 			<ul class="submenu">
 				<li id="systemDetail">
@@ -111,3 +118,8 @@
 		</li>
 	</ul>
 </div>
+
+<script type="text/javascript">
+		
+</script>
+

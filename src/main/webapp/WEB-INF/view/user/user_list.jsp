@@ -150,6 +150,7 @@
 	</a>
 	<script type="text/javascript">
 		$("#menu7").addClass("active");
+		$("#menu7 a img").attr('src',"style/assets/images/t7.png");
 		// 重置密码
 		function resetPassword(id) {
 			bootbox.setDefaults("locale","zh_CN");  

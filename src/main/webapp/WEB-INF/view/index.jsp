@@ -77,6 +77,7 @@
 	</div>
 	<script type="text/javascript">
 		$("#menu1").addClass("active");
+		$("#menu1 a img").attr('src',"style/assets/images/t1.png");
 		var websocket = null;
 		var url = "<%=url%>";
 		var cpuCount = 0;

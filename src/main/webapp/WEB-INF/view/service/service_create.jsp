@@ -185,6 +185,7 @@
 	</div>
 	<script type="text/javascript">
 		$("#menu2").addClass("active");
+		$("#menu2 a img").attr('src',"style/assets/images/t2.png");
 		// 点击提交
 		$("#submitBtn").click(function() {
 			if ($("#createForm").valid()) {
