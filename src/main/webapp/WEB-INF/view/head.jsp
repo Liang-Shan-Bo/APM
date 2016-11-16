@@ -7,6 +7,7 @@
 		} catch (e) {
 		}
 	</script>
+	<audio src="style/assets/music/warning.mp3" controls="controls" loop="loop" preload id="warning" hidden="hidden"></audio>
 	<div class="navbar-container" id="navbar-container">
 		<div class="navbar-header pull-left">
 			<a href="<%=basePath%>/index" style="padding-top:20px;position:absolute;"> 
@@ -17,22 +18,22 @@
 		<div class="navbar-header pull-right" role="navigation">
 			<ul class="nav ace-nav">
 				<!-- 报警信息 -->
-					<li class="purple" >
-						<a id="alarm" data-toggle="dropdown" class="dropdown-toggle" href="#" style="display:none;"> 
-							<i class="icon-bell-alt icon-animated-bell"></i> 
-							<span id="count" class="badge badge-important"></span>
-						</a>
-						<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
-							<li class="dropdown-header">
-								<i class="icon-warning-sign"></i> <span id="subCount"></span>条报警
-							</li>
-							<div id="alarmForm" class="dropdown-navbar dropdown-menu2 navbar-pink" style="height:230px;overflow:auto;margin-top: -1px;">
-							</div>
-							<li>
-								<a href="<%=path%>/messageList"> 查看所有 <i class="icon-arrow-right"></i> </a>
-							</li>
-						</ul>
-					</li><!-- 报警信息 -->
+				<li class="purple" >
+					<a id="alarm" data-toggle="dropdown" class="dropdown-toggle" href="#" style="display:none;"> 
+						<i class="icon-bell-alt icon-animated-bell"></i> 
+						<span id="count" class="badge badge-important"></span>
+					</a>
+					<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+						<li class="dropdown-header">
+							<i class="icon-warning-sign"></i> <span id="subCount"></span>条报警
+						</li>
+						<div id="alarmForm" class="dropdown-navbar dropdown-menu2 navbar-pink" style="height:230px;overflow:auto;margin-top: -1px;">
+						</div>
+						<li>
+							<a href="<%=path%>/messageList"> 查看所有 <i class="icon-arrow-right"></i> </a>
+						</li>
+					</ul>
+				</li><!-- 报警信息 -->
 				
 				<li>
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle"> 
@@ -85,7 +86,7 @@
 				if(data.count <= 0){
 					$("#alarm").hide();
 				}else{
-					
+// 					$("#warning")[0].play();
 					//清空列表
 					$(".alarmList").remove();
 					//更新报警信息

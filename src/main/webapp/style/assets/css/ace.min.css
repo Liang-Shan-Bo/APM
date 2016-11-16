@@ -102,7 +102,7 @@ a:focus, a:active {
 h1 {
 	font-size: 32px;
 	font-weight: normal;
-	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif
+	font-family: Microsoft YaHei
 }
 
 h1.smaller {
@@ -120,7 +120,7 @@ h1.block {
 h2 {
 	font-size: 26px;
 	font-weight: normal;
-	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif
+	font-family: Microsoft YaHei
 }
 
 h2.smaller {
@@ -138,7 +138,7 @@ h2.block {
 h3 {
 	font-size: 22px;
 	font-weight: normal;
-	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif
+	font-family: Microsoft YaHei
 }
 
 h3.smaller {
@@ -156,7 +156,7 @@ h3.block {
 h4 {
 	font-size: 18px;
 	font-weight: normal;
-	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif
+	font-family: Microsoft YaHei
 }
 
 h4.smaller {
@@ -3065,14 +3065,15 @@ button.btn:active {
 
 .btn-login:hover, .open .login.dropdown-toggle {
 	background-color: #d6c399 !important;
-	border-color: #d6c399
+	border-color: #d6c399;
+	color: #727171 !important;
 }
 
 .btn-primary:hover, .open .btn-primary.dropdown-toggle {
 	background-color: #1b6aaa !important;
 	border-color: #428bca
 }
-
+iao
 .btn-primary.no-border:hover {
 	border-color: #1b6aaa
 }

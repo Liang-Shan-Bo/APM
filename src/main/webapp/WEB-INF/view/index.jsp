@@ -110,9 +110,6 @@
 					cpuLegend.push("CPU" + i);
 				}
 				for (var i = 0; i < diskCount; i++) {
-					if (i == 3) {
-						diskLegend.push('');
-					}
 					diskLegend.push(json[0].disks[i].devName);
 				}
 				cpuChart.setOption({
@@ -163,10 +160,10 @@
 					value : [ now, (json[i].totalBytes/1024).toFixed(1) ]
 				});
 				//写入新磁盘列表数据
-				for (var j = 0; j < diskCount; j++) {
-					diskData[j].push({
+				for (var k = 0; k < diskCount; k++) {
+					diskData[k].push({
 						name : time,
-						value : [ now, json[i].disks[j].usePercent.toFixed(1)]
+						value : [ now, json[i].disks[k].usePercent.toFixed(1)]
 					});
 				}
 			}

@@ -124,7 +124,7 @@ public class ServiceAlarmListener implements ServletContextListener {
 	}
 
 	/**
-	 * 获取所有服务
+	 * 获取所有发送报警信息的服务
 	 * 
 	 * @return List<ServiceEntity>
 	 */

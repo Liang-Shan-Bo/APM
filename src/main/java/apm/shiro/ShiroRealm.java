@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Component;
 import apm.entity.user.User;
 
 /**
- * @author songyekun
+ * @author shiro
  *
  */
 @Component
@@ -57,6 +58,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
 		// 查出是否有此用户
 		User user = getUserByName(token.getUsername());
+		
 		if (user != null) {
 			// 若存在，将此用户存放到登录认证info中
 			return new SimpleAuthenticationInfo(user.getLoginName(), user.getPassword(), getName());
