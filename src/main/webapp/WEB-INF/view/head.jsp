@@ -86,14 +86,13 @@
 				if(data.count <= 0){
 					$("#alarm").hide();
 				}else{
-// 					$("#warning")[0].play();
+					$("#warning")[0].play();
 					//清空列表
 					$(".alarmList").remove();
 					//更新报警信息
 					for (var i = 0; i < data.count; i++) {
 						var alarm = data.list[i];
 						addAlarm(alarm, i);
-						
 					}
 					$("#count").html(data.count);
 					$("#subCount").html(data.count);

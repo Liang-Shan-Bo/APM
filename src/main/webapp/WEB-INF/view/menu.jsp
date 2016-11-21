@@ -104,7 +104,7 @@
 		<li id="menu8">
 			<a href="#" class="dropdown-toggle"> 
 				<img src="style/assets/images/h8.png" style="padding-left:10px;"></img> 
-				<span class="menu-text" style="padding-left:17px;">系统功能 </span> 
+				<span class="menu-text" style="padding-left:17px;">系统设置 </span> 
 				<b class="arrow icon-angle-down"></b>
 			</a>
 			<ul class="submenu">
@@ -113,6 +113,12 @@
 				</li>
 <!-- 				<li id="ping"> -->
 <%-- 					<a href="<%=basePath%>/ping"> <i class="icon-double-angle-right"></i> ping监控</a> --%>
+<!-- 				</li> -->
+				<li id="initOption">
+					<a href="<%=basePath%>/initOption"> <i class="icon-double-angle-right"></i> 恢复默认设置</a>
+				</li>
+<!-- 				<li id="propertyOption"> -->
+<%-- 					<a href="<%=basePath%>/propertyOption"> <i class="icon-double-angle-right"></i> 参数配置</a> --%>
 <!-- 				</li> -->
 			</ul>
 		</li>

@@ -2,7 +2,7 @@
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
-	String url = PropertiesUtil.getValue("ws", "service.url"); 
+	String url = "ws://" + request.getServerName() + ":" + request.getServerPort() + path + "/serviceSocket";  
 	String interval = PropertiesUtil.getValue("ws", "service.interval"); 
 %>
 <!DOCTYPE html>

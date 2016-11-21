@@ -6,7 +6,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path;
-	String url = PropertiesUtil.getValue("ws", "pro.url");
+	String url = "ws://" + request.getServerName() + ":" + request.getServerPort() + path + "/proSocket";
 %>
 <!DOCTYPE html>
 <html lang="en">

@@ -1,8 +1,8 @@
-<%@ page language="java" import="java.util.*,apm.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
-	String url = PropertiesUtil.getValue("ws", "system.url"); 
+	String url = "ws://" + request.getServerName() + ":" + request.getServerPort() + path + "/systemSocket"; 
 %>
 <!DOCTYPE html>
 <html lang="en">

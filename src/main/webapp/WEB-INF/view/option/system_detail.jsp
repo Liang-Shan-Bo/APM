@@ -2,8 +2,6 @@
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
-	String url = PropertiesUtil.getValue("ws", "service.url"); 
-	String interval = PropertiesUtil.getValue("ws", "service.interval"); 
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +49,7 @@
 
 					<ul class="breadcrumb">
 						<li><i class="icon-home home-icon"></i> <a href="<%=path%>/index">主页</a></li>
-						<li class="active">系统功能</li>
+						<li class="active">系统设置</li>
 					</ul>
 				</div>
 				<div class="page-content">

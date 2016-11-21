@@ -4,7 +4,7 @@
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
-	String url = PropertiesUtil.getValue("ws", "net.url"); 
+	String url = "ws://" + request.getServerName() + ":" + request.getServerPort() + path + "/netSocket";
 %>
 <!DOCTYPE html>
 <html lang="en">

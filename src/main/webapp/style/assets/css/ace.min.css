@@ -2234,7 +2234,6 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 }
 
 .nav-list>li.open {
-	border-bottom-color: #e5e5e5;
 }
 
 .nav-list>li.active .submenu {
@@ -2259,9 +2258,9 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 	display: block;
 	position: relative;
 	color: #949391;
-	padding: 7px 0 9px 37px;
+	padding: 7px 0 9px 66px;
 	margin: 0;
-	border-top: 1px dotted #e4e4e4;
+	border-top: 1px solid #3f454d;
 }
 
 .nav-list>li .submenu>li>a:focus {
@@ -2287,7 +2286,7 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 	line-height: 12px;
 	text-align: center;
 	position: absolute;
-	left: 10px;
+	left: 40px;
 	top: 11px;
 	z-index: 1;
 	background-color: #2e363f
@@ -2310,7 +2309,6 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 	width: 7px;
 	left: 20px;
 	top: 17px;
-	border-top: 1px dotted #9dbdd6
 }
 
 .nav-list>li>.submenu>li:first-child>a {
@@ -2325,7 +2323,6 @@ li [class^="icon-"], li [class*=" icon-"], .nav-list li [class^="icon-"],
 	left: 18px;
 	top: 0;
 	bottom: 0;
-	border: 1px dotted #9dbdd6;
 	border-width: 0 0 0 1px
 }
 
