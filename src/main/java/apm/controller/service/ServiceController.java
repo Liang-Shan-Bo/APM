@@ -250,7 +250,7 @@ public class ServiceController {
 	 * 
 	 * @return boolean
 	 */
-	@RequestMapping(value = "/checkPort", method = RequestMethod.GET)
+	@RequestMapping(value = "/checkPort", method = RequestMethod.POST)
 	@ResponseBody
 	private boolean checkPort(ServiceEntity serviceEntity) {
 		return serviceService.checkPort(serviceEntity);
@@ -261,7 +261,7 @@ public class ServiceController {
 	 * 
 	 * @return boolean
 	 */
-	@RequestMapping(value = "/checkJmxPort", method = RequestMethod.GET)
+	@RequestMapping(value = "/checkJmxPort", method = RequestMethod.POST)
 	@ResponseBody
 	private boolean checkJmxPort(ServiceEntity serviceEntity) {
 		return serviceService.checkJmxPort(serviceEntity);

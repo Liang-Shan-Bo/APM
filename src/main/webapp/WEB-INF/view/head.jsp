@@ -79,7 +79,7 @@
 		$.ajax({
 			url : "<%=path%>/getAlarmMessage",
 			method : 'post',
-			async: false,
+			async: true,
 			dataType: "json",
 			data: { loginName : $("#userName").val() },
 			success : function(data){

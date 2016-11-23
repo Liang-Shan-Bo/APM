@@ -140,7 +140,7 @@
 				oldPassword: {
 					required: true,
 					remote:{
-			               type:"get",
+			               type:"post",
 			               url:"<%=path%>/checkPassword",           
 			               data:{ id: function() { return $("#id").val(); }, 
 			            	   	  password: function() { return $("#oldPassword").val(); }

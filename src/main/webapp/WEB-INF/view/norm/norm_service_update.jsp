@@ -140,7 +140,7 @@
 				normName : {
 					required : true,
 					remote:{
-			               type:"get",
+			               type:"post",
 			               url:"<%=path%>/checkName",           
 			               data:{ id : function() { return $("#id").val(); },
             	   				  normName : function() { return $("#normName").val(); }

@@ -150,8 +150,11 @@
 			class="icon-double-angle-up icon-only bigger-110"></i>
 		</a>
 	</div>
-	<div id="loading" hidden="hidden" style="position: absolute; top: 6%; left: 47%; z-index: 9999;">
-		<i class="icon-spinner icon-spin orange bigger-500"></i>
+
+	<div hidden="hidden" id="loading" class="modal-backdrop fade in">
+		<div style="position: absolute; top: 40%; left: 50%; z-index: 1040;">
+			<i class="icon-spinner icon-spin orange bigger-1100"></i>
+		</div>
 	</div>
 	<script type="text/javascript">
 		$("#menu2").addClass("active");
@@ -173,7 +176,7 @@
 					$.ajax({
 						url : "<%=path%>/startup",
 						method : 'post',
-						async: false,
+						async: true,
 						dataType: "json",
 						data: { id : id },
 						success : function(data){
@@ -183,6 +186,7 @@
 						            message: '请确认服务参数是否正确',  
 						        });
 							}
+							$("#loading").hide();
 						},
 						error : function(data){
 							bootbox.alert({  
@@ -191,7 +195,6 @@
 					        });
 						}
 					});
-					$("#loading").hide();
 				}
 			});
 		}
@@ -203,7 +206,7 @@
 					$.ajax({
 						url : "<%=path%>/shutdown",
 						method : 'post',
-						async: false,
+						async: true,
 						dataType: "json",
 						data: { id : id },
 						success : function(data){
@@ -213,6 +216,7 @@
 						            message: '请确认服务参数是否正确',  
 						        });
 							}
+							$("#loading").hide();
 						},
 						error : function(data){
 							bootbox.alert({  
@@ -221,7 +225,6 @@
 					        });
 						}
 					});
-					$("#loading").hide();
 				}
 			});
 		}
@@ -231,7 +234,7 @@
 			$.ajax({
 				url : "<%=path%>/getServiceStatus",
 				method : 'post',
-				async : false,
+				async : true,
 				dataType : "json",
 				data : {
 					currentPage : cp

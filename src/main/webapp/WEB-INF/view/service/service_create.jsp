@@ -258,7 +258,7 @@
 					required: true,
 					range: [1,65535],
 					remote:{
-			               type:"get",
+			               type:"post",
 			               url:"<%=path%>/checkPort",           
 			               data:{ serviceAddress: function() { return $("#serviceAddress").val(); }, 
 								  servicePort: function() { return $('#servicePort').val(); }
@@ -269,7 +269,7 @@
 					required: true,
 					range: [1,65535],
 					remote:{
-			               type:"get",
+			               type:"post",
 			               url:"<%=path%>/checkJmxPort",           
 			               data:{ serviceAddress: function() { return $("#serviceAddress").val(); }, 
 			            	   	  monitorPort: function() { return $('#monitorPort').val(); }

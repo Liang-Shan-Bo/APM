@@ -144,7 +144,7 @@ public class UserController {
 	 * 
 	 * @return boolean
 	 */
-	@RequestMapping(value = "/checkPassword", method = RequestMethod.GET)
+	@RequestMapping(value = "/checkPassword", method = RequestMethod.POST)
 	@ResponseBody
 	private boolean checkPassword(User user) {
 		return userService.checkPassword(user.getPassword(), user.getId());
@@ -226,7 +226,7 @@ public class UserController {
 	 * 
 	 * @return boolean
 	 */
-	@RequestMapping(value = "/checkLoginName", method = RequestMethod.GET)
+	@RequestMapping(value = "/checkLoginName", method = RequestMethod.POST)
 	@ResponseBody
 	private boolean checkLoginName(String loginName) {
 		return userService.checkLoginName(loginName);

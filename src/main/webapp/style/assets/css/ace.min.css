@@ -567,8 +567,8 @@ blockquote, blockquote.pull-right {
 	font-size: 300%
 }
 
-.bigger-500 {
-	font-size: 500%
+.bigger-1100 {
+	font-size: 1100%
 }
 
 .bigger-125 {
@@ -1297,7 +1297,7 @@ blockquote, blockquote.pull-right {
 
 .navbar-container {
 	padding-left: 10px;
-	padding-right: 20px
+	padding-right: 0px
 }
 
 .navbar-container.container {

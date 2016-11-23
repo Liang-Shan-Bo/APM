@@ -129,7 +129,7 @@ public class NormController {
 	 * 
 	 * @return boolean
 	 */
-	@RequestMapping(value = "/checkName", method = RequestMethod.GET)
+	@RequestMapping(value = "/checkName", method = RequestMethod.POST)
 	@ResponseBody
 	private boolean checkName(NormEntity normEntity) {
 		return normService.checkName(normEntity);

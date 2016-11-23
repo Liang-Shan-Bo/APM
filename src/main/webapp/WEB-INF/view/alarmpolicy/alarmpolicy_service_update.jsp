@@ -268,7 +268,7 @@
 				alarmPolicyName : {
 					required : true,
 					remote : {
-						type : "get",
+						type : "post",
 						url : "<%=path%>/checkPolicyName",
 						data : { id : function() {return $("#id").val();},
 								 alarmPolicyName : function() {return $("#alarmPolicyName").val();}

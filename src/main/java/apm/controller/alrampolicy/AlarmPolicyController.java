@@ -157,7 +157,7 @@ public class AlarmPolicyController {
 	 * 
 	 * @return boolean
 	 */
-	@RequestMapping(value = "/checkPolicyName", method = RequestMethod.GET)
+	@RequestMapping(value = "/checkPolicyName", method = RequestMethod.POST)
 	@ResponseBody
 	private boolean checkName(AlarmPolicyEntity alarmPolicyEntity) {
 		return alarmPolicyService.checkName(alarmPolicyEntity);

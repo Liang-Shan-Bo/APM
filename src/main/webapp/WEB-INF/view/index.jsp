@@ -234,7 +234,8 @@
 					formatter : '{value}%'
 				},
 			},
-			series : []
+			series : [],
+			color:['#f4886c', '#30b5fa']
 		};
 		
 		//刷新图表
@@ -323,7 +324,8 @@
 				showSymbol : false,
 				hoverAnimation : false,
 				smooth : true
-			}]
+			}],
+			color:['#30b5a7']
 		};
 
 		// 使用刚指定的配置项和数据显示图表。
@@ -381,7 +383,8 @@
 				showSymbol : false,
 				hoverAnimation : false,
 				smooth : true
-			}]
+			}],
+			color:['#28b6c7']
 		};
 
 		// 使用刚指定的配置项和数据显示图表。
@@ -431,7 +434,8 @@
 					formatter : '{value}%'
 				},
 			},
-			series : []
+			series : [],
+			color:['#c23531', '#fdab00', '#30b5fa', '#4d90ff']
 		};
 
 		// 使用刚指定的配置项和数据显示图表。

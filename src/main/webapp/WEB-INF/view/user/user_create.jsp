@@ -148,7 +148,7 @@
 					required: true,
 					minlength: 5,
 					remote:{
-			               type:"get",
+			               type:"post",
 			               url:"<%=path%>/checkLoginName",           
 			               data:{ loginName: function() { return $("#loginName").val(); }
 			               } 

@@ -114,9 +114,9 @@
 <!-- 				<li id="ping"> -->
 <%-- 					<a href="<%=basePath%>/ping"> <i class="icon-double-angle-right"></i> ping监控</a> --%>
 <!-- 				</li> -->
-				<li id="initOption">
-					<a href="<%=basePath%>/initOption"> <i class="icon-double-angle-right"></i> 恢复默认设置</a>
-				</li>
+<!-- 				<li id="initOption"> -->
+<%-- 					<a href="<%=basePath%>/initOption"> <i class="icon-double-angle-right"></i> 恢复默认设置</a> --%>
+<!-- 				</li> -->
 <!-- 				<li id="propertyOption"> -->
 <%-- 					<a href="<%=basePath%>/propertyOption"> <i class="icon-double-angle-right"></i> 参数配置</a> --%>
 <!-- 				</li> -->
