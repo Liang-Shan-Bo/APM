@@ -31,6 +31,8 @@ public class SystemAlarmListener implements ServletContextListener {
 	private static int interval = Integer.parseInt(PropertiesUtil.getValue("alarm", "alarm.interval"));
 	// 发送报警消息时间间隔(ms)
 	private static int sendMessage = Integer.parseInt(PropertiesUtil.getValue("alarm", "message.interval"));
+	// 系统名称
+	private static final String SYSTEMNAME = "操作系统";
 	// 定时任务
 	private Timer timer = null;
 	// 保留小数后2位
@@ -60,8 +62,8 @@ public class SystemAlarmListener implements ServletContextListener {
 					if (cpu >= cpuNorm) {
 						System.out.println("cpu:" + cpu + "%");
 						//添加日志
-						String desc = setMessage(cpu, Constants.SYSTEM_NORM_CPU, "操作系统", cpuNorm);
-						long logId = insertSystemLog(cpu, Constants.SYSTEM_NORM_CPU, now, "操作系统", desc);
+						String desc = setMessage(cpu, Constants.SYSTEM_NORM_CPU, SYSTEMNAME, cpuNorm);
+						long logId = insertSystemLog(cpu, Constants.SYSTEM_NORM_CPU, now, SYSTEMNAME, desc);
 						//发送报警信息
 						alarm(logId, now, desc);
 					}
@@ -70,8 +72,8 @@ public class SystemAlarmListener implements ServletContextListener {
 					if (mem >= memNorm) {
 						System.out.println("mem:" + mem + "M");
 						//添加日志
-						String desc = setMessage(mem, Constants.SYSTEM_NORM_MEM, "操作系统", memNorm);
-						long logId = insertSystemLog(mem, Constants.SYSTEM_NORM_MEM, now, "操作系统", desc);
+						String desc = setMessage(mem, Constants.SYSTEM_NORM_MEM, SYSTEMNAME, memNorm);
+						long logId = insertSystemLog(mem, Constants.SYSTEM_NORM_MEM, now, SYSTEMNAME, desc);
 						//发送报警信息
 						alarm(logId, now, desc);
 					}
@@ -80,8 +82,8 @@ public class SystemAlarmListener implements ServletContextListener {
 					if (disk >= diskNorm) {
 						System.out.println("disk:" + disk + "%");
 						//添加日志
-						String desc = setMessage(disk, Constants.SYSTEM_NORM_DIS, "操作系统", diskNorm);
-						long logId = insertSystemLog(disk, Constants.SYSTEM_NORM_DIS, now, "操作系统", desc);
+						String desc = setMessage(disk, Constants.SYSTEM_NORM_DIS, SYSTEMNAME, diskNorm);
+						long logId = insertSystemLog(disk, Constants.SYSTEM_NORM_DIS, now, SYSTEMNAME, desc);
 						//发送报警信息
 						alarm(logId, now, desc);
 					}
@@ -90,8 +92,8 @@ public class SystemAlarmListener implements ServletContextListener {
 					if (net >= netNorm) {
 						System.out.println("net:" + net + "K");
 						//添加日志
-						String desc = setMessage(net, Constants.SYSTEM_NORM_NET, "操作系统", netNorm);
-						long logId = insertSystemLog(net, Constants.SYSTEM_NORM_NET, now, "操作系统", desc);
+						String desc = setMessage(net, Constants.SYSTEM_NORM_NET, SYSTEMNAME, netNorm);
+						long logId = insertSystemLog(net, Constants.SYSTEM_NORM_NET, now, SYSTEMNAME, desc);
 						//发送报警信息
 						alarm(logId, now, desc);
 					}
@@ -246,7 +248,7 @@ public class SystemAlarmListener implements ServletContextListener {
 	 */
 	private long getSystemLogId(Date now, int type, String systemName) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String sql = "select id " +
+		String sql = "select max(id) " +
 						"from apm_alarm_log " +
 						"where alarm_time=to_date(?,'yyyy-mm-dd hh24:mi:ss') " +
 						"and alarm_system_name=? " +

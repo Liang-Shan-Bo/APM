@@ -77,7 +77,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="alarmPolicyName"> 策略名称 </label>
 									<div class="col-sm-9">
-										<input type="text" id="alarmPolicyName" class="col-xs-10 col-sm-4" name="alarmPolicyName" value="${alarmPolicyEntity.alarmPolicyName}"/>
+										<input type="text" id="alarmPolicyName" class="col-xs-10 col-sm-4" name="alarmPolicyName" value="${alarmPolicyEntity.alarmPolicyName}" <c:if test="${alarmPolicyEntity.deleteFlag == 0}">readonly="readonly"</c:if>/>
 									</div>
 								</div>
 		

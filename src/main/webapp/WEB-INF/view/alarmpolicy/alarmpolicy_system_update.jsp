@@ -74,10 +74,11 @@
 								<input type="hidden" id="sendMessage" name="sendMessage"/>
 								<input type="hidden" id="sendEmail" name="sendEmail"/>
 								<input type="hidden" id="sendPhone" name="sendPhone"/>
-								<input type="hidden" id="alarmPolicyName" name="alarmPolicyName" value="${alarmPolicyEntity.alarmPolicyName}"/>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="alarmPolicyName"> 策略名称 </label>
-									<label class="col-xs-2"> ${alarmPolicyEntity.alarmPolicyName}</label>
+									<div class="col-sm-9">
+										<input type="text" id="alarmPolicyName" class="col-xs-10 col-sm-4" name="alarmPolicyName" value="${alarmPolicyEntity.alarmPolicyName}" readonly="readonly"/>
+									</div>
 								</div>
 		
 								<div class="space-4"></div>

@@ -91,8 +91,8 @@
 					<div class="hr hr-double"></div>
 					
 					<div class="form-actions clearfix">
-						<div class="col-md-offset-4 col-md-9">
-							<a onclick="history.back()"  class="btn"><i class="icon-reply bigger-110"></i>返&nbsp;&nbsp;&nbsp;&nbsp;回</a>
+						<div class="col-md-offset-5">
+							<a onclick="history.back()" class="btn"><i class="icon-reply bigger-110"></i>返&nbsp;&nbsp;&nbsp;&nbsp;回</a>
 							&nbsp; &nbsp; &nbsp;
 						</div>
 					</div>

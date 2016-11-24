@@ -71,7 +71,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="normName"> 指标名称 </label>
 									<div class="col-sm-9">
-										<input type="text" id="normName" class="col-xs-10 col-sm-4" name="normName" value="${normEntity.normName}"/>
+										<input type="text" id="normName" class="col-xs-10 col-sm-4" name="normName" value="${normEntity.normName}" <c:if test="${normEntity.deleteFlag == 0}">readonly="readonly"</c:if>/>
 									</div>
 								</div>
 		
