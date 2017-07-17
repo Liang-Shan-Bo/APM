@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,14 +31,14 @@ import apm.util.SystemUtil;
 @Controller
 public class InitController {
 
-	private final static String[] tables = {"APM_ALARM_LOG", "APM_ALARM_POLICY", "APM_ALARM_SEND", "APM_NORM",
-			"APM_POLICY_USER", "APM_ROLE", "APM_SERVICE_INFO", "APM_USER", "APM_USER_ROLE"};
-	private final static String[] sequences = {"APM_ALARM_LOG_SEQ", "APM_ALARM_POLICY_SEQ", "APM_ALARM_SEND_SEQ",
-			"APM_NORM_SEQ", "APM_SERVICE_INFO_SEQ", "APM_USER_SEQ"};
-	
+	private final static String[] tables = { "APM_ALARM_LOG", "APM_ALARM_POLICY", "APM_ALARM_SEND", "APM_NORM",
+			"APM_POLICY_USER", "APM_ROLE", "APM_SERVICE_INFO", "APM_USER", "APM_USER_ROLE" };
+	private final static String[] sequences = { "APM_ALARM_LOG_SEQ", "APM_ALARM_POLICY_SEQ", "APM_ALARM_SEND_SEQ",
+			"APM_NORM_SEQ", "APM_SERVICE_INFO_SEQ", "APM_USER_SEQ" };
+
 	@Resource
 	private ServiceService serviceService;
-	
+
 	@Resource
 	private JdbcTemplate jdbcTemplate;
 
@@ -78,8 +79,14 @@ public class InitController {
 	public String init(@RequestParam(value = "driver") String driver, @RequestParam(value = "url") String url,
 			@RequestParam(value = "username") String username, @RequestParam(value = "password") String password)
 			throws IOException {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName(driver);
+		dataSource.setUrl(url);
+		dataSource.setUsername(username);
+		dataSource.setPassword(password);
+		jdbcTemplate.setDataSource(dataSource);
 		initDatabase();
-		initProperties(driver,url,username,password);
+		initProperties(driver, url, username, password);
 		return "redirect:/login";
 	}
 
@@ -132,7 +139,7 @@ public class InitController {
 	 */
 	private void createTable(String table) throws IOException {
 		ClassLoader classLoader = getClass().getClassLoader();
-		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/" + table + ".sql"),"utf-8");
+		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/" + table + ".sql"), "utf-8");
 		String sqls[] = buffer.split(";");
 		for (String sql : sqls) {
 			jdbcTemplate.execute(sql);
@@ -147,7 +154,7 @@ public class InitController {
 	 */
 	private void createSequence(String sequence) throws IOException {
 		ClassLoader classLoader = getClass().getClassLoader();
-		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/" + sequence + ".sql"),"utf-8");
+		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/" + sequence + ".sql"), "utf-8");
 		String sqls[] = buffer.split(";");
 		for (String sql : sqls) {
 			jdbcTemplate.execute(sql);
@@ -185,7 +192,7 @@ public class InitController {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * 写入初始数据
 	 * 
@@ -193,18 +200,18 @@ public class InitController {
 	 */
 	private void init() throws IOException {
 		ClassLoader classLoader = getClass().getClassLoader();
-		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/init.sql"),"utf-8");
+		String buffer = IOUtils.toString(classLoader.getResourceAsStream("sql/init.sql"), "utf-8");
 		String sqls[] = buffer.split(";");
 		for (String sql : sqls) {
 			jdbcTemplate.execute(sql);
 		}
 		initService();
 	}
-	
+
 	/**
 	 * 添加默认系统监控
 	 */
-	private void initService(){
+	private void initService() {
 		ServiceEntity serviceEntity = new ServiceEntity();
 		serviceEntity.setServiceName("监控系统");
 		serviceEntity.setServiceAddress("127.0.0.1");
@@ -216,7 +223,7 @@ public class InitController {
 		serviceEntity = SystemUtil.setServieInfo(serviceEntity);
 		serviceService.createService(serviceEntity);
 	}
-	
+
 	/**
 	 * 重置配置文件
 	 * 
@@ -225,8 +232,7 @@ public class InitController {
 	 * @param username
 	 * @param password
 	 */
-	private void initProperties(String driver, String url,
-			 String username,  String password){
+	private void initProperties(String driver, String url, String username, String password) {
 		Properties properties = PropertiesUtil.getProperties("config.properties");
 		properties.setProperty("system.init.flag", "1");
 		properties.setProperty("database.oracle.driver", driver);
@@ -236,7 +242,7 @@ public class InitController {
 		String path = this.getClass().getResource("/").getPath().replaceAll("%20", "");
 		String filePath = path.substring(0, path.indexOf("WEB-INF")) + "WEB-INF/config.properties";
 		try {
-			properties.store(new FileOutputStream(filePath),null);
+			properties.store(new FileOutputStream(filePath), null);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

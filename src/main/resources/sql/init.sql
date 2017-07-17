@@ -21,6 +21,6 @@ values (3, 'user');
 insert into APM_USER (ID, LOGIN_NAME, PASSWORD, PHONE, EMAIL, CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER, ENABLED)
 values (APM_USER_SEQ.Nextval, 'admin', '21232F297A57A5A743894A0E4A801FC3', null, null, SYSDATE, 'SYSTEM', null, null, 1);
 insert into APM_USER_ROLE (USER_ID, ROLE_ID)
-values (1, 1);
+values ((select id from APM_USER where LOGIN_NAME = 'admin'), 1);
 insert into APM_USER_ROLE (USER_ID, ROLE_ID)
-values (1, 2);
+values ((select id from APM_USER where LOGIN_NAME = 'admin'), 2);
