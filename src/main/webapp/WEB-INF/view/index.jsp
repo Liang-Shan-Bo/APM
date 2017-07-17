@@ -113,9 +113,9 @@
 					diskLegend.push(json[0].disks[i].devName);
 				}
 				cpuChart.setOption({
-					legend : {
-						data : cpuLegend
-					}
+// 					legend : {
+// 						data : cpuLegend
+// 					}
 				});
 				diskChart.setOption({
 					legend : {
@@ -234,8 +234,7 @@
 					formatter : '{value}%'
 				},
 			},
-			series : [],
-			color:['#f4886c', '#30b5fa']
+			series : []
 		};
 		
 		//刷新图表

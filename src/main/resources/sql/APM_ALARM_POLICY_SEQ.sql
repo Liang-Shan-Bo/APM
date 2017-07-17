@@ -1,7 +1,7 @@
 -- Create sequence 
 create sequence APM_ALARM_POLICY_SEQ
-minvalue 0
+minvalue 1
 maxvalue 9999999999999999999999999999
-start with 0
+start with 1
 increment by 1
 cache 20;

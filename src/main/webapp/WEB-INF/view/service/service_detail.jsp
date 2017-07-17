@@ -141,25 +141,25 @@
 										<div class="profile-info-row">
 											<div class="profile-info-name"> 可用处理器数 </div>
 											<div class="profile-info-value">
-												<span class="editable">${serviceEntity.cpuAvailableCount}</span>
+												<span class="editable">${serviceEntity.cpuAvailableCount}&nbsp;</span>
 											</div>
 										</div>
 										<div class="profile-info-row">
 											<div class="profile-info-name"> 操作系统名称 </div>
 											<div class="profile-info-value">
-												<span class="editable">${serviceEntity.systemName}</span>
+												<span class="editable">${serviceEntity.systemName}&nbsp;</span>
 											</div>
 										</div>
 										<div class="profile-info-row">
 											<div class="profile-info-name"> 操作系统架构 </div>
 											<div class="profile-info-value">
-												<span class="editable">${serviceEntity.systemArch}</span>
+												<span class="editable">${serviceEntity.systemArch}&nbsp;</span>
 											</div>
 										</div>
 										<div class="profile-info-row">
 											<div class="profile-info-name"> 操作系统版本 </div>
 											<div class="profile-info-value">
-												<span class="editable">${serviceEntity.systemVersion}</span>
+												<span class="editable">${serviceEntity.systemVersion}&nbsp;</span>
 											</div>
 										</div>
 									</div>
@@ -232,19 +232,19 @@
 										<div class="profile-info-row">
 											<div class="profile-info-name"> 供应商</div>
 											<div class="profile-info-value">
-												<span class="editable">${serviceEntity.jvmVendor}</span>
+												<span class="editable">${serviceEntity.jvmVendor}&nbsp;</span>
 											</div>
 										</div>
 										<div class="profile-info-row">
 											<div class="profile-info-name"> 名称 </div>
 											<div class="profile-info-value">
-												<span class="editable">${serviceEntity.jvmName}</span>
+												<span class="editable">${serviceEntity.jvmName}&nbsp;</span>
 											</div>
 										</div>
 										<div class="profile-info-row">
 											<div class="profile-info-name"> 版本 </div>
 											<div class="profile-info-value">
-												<span class="editable">${serviceEntity.jvmVersion}</span>
+												<span class="editable">${serviceEntity.jvmVersion}&nbsp;</span>
 											</div>
 										</div>
 										<div class="profile-info-row">
