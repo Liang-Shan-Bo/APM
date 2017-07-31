@@ -107,6 +107,9 @@
 	<listener>  
 	    <listener-class>apm.listener.ServiceAlarmListener</listener-class>  
 	</listener>
+	<listener>  
+	    <listener-class>apm.listener.ChartListener</listener-class>  
+	</listener>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/applicationContext*</param-value>

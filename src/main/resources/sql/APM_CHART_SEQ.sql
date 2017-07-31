@@ -1,5 +1,5 @@
 -- Create sequence 
-create sequence APM_NORM_SEQ
+create sequence APM_CHART_SEQ
 minvalue 0
 maxvalue 9999999999999999999999999999
 start with 1

@@ -80,7 +80,7 @@
 			<li id="menu6">
 				<a href="#" class="dropdown-toggle"> 
 					<img src="style/assets/images/h6.png" style="padding-left:10px;"></img> 
-					<span class="menu-text" style="padding-left:17px;">报警日志 </span> 
+					<span class="menu-text" style="padding-left:17px;">统计记录 </span> 
 					<b class="arrow icon-angle-down"></b>
 				</a>
 				<ul class="submenu">
@@ -89,6 +89,9 @@
 					</li>
 					<li id="alarmList">
 						<a href="<%=basePath%>/alarmList"> <i class="icon-double-angle-right"></i> 报警统计</a>
+					</li>
+					<li id="chartList">
+						<a href="<%=basePath%>/chartList"> <i class="icon-double-angle-right"></i> 监控统计</a>
 					</li>
 				</ul>
 			</li>

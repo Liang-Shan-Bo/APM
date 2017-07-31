@@ -41,6 +41,8 @@ public class ServiceAlarmListener implements ServletContextListener {
 	private static int sendMessage = Integer.parseInt(PropertiesUtil.getValue("alarm", "message.interval"));
 	// 定时任务
 	private Timer timer = null;
+	
+	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
@@ -176,7 +178,6 @@ public class ServiceAlarmListener implements ServletContextListener {
 	 * @param type
 	 */
 	private long getSystemLogId(Date now, String systemName) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String sql = "select id " +
 						"from apm_alarm_log " +
 						"where alarm_time=to_date(?,'yyyy-mm-dd hh24:mi:ss') " +

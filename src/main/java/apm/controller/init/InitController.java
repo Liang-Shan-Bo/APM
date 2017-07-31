@@ -32,9 +32,9 @@ import apm.util.SystemUtil;
 public class InitController {
 
 	private final static String[] tables = { "APM_ALARM_LOG", "APM_ALARM_POLICY", "APM_ALARM_SEND", "APM_NORM",
-			"APM_POLICY_USER", "APM_ROLE", "APM_SERVICE_INFO", "APM_USER", "APM_USER_ROLE" };
+			"APM_POLICY_USER", "APM_ROLE", "APM_SERVICE_INFO", "APM_USER", "APM_USER_ROLE", "APM_CHART" };
 	private final static String[] sequences = { "APM_ALARM_LOG_SEQ", "APM_ALARM_POLICY_SEQ", "APM_ALARM_SEND_SEQ",
-			"APM_NORM_SEQ", "APM_SERVICE_INFO_SEQ", "APM_USER_SEQ" };
+			"APM_NORM_SEQ", "APM_SERVICE_INFO_SEQ", "APM_USER_SEQ", "APM_CHART_SEQ" };
 
 	@Resource
 	private ServiceService serviceService;

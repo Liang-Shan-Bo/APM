@@ -134,14 +134,13 @@ public class ServiceSocket {
 
 		try {
 			// 连接监控服务
-			JMXServiceURL ServiceURL = new JMXServiceURL(serviceUrl);
-			jmxConnector = JMXConnectorFactory.connect(ServiceURL, Constants.map);
+			JMXServiceURL serviceURL = new JMXServiceURL(serviceUrl);
+			jmxConnector = JMXConnectorFactory.connect(serviceURL, Constants.map);
 			MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
-
 			// 计算单位时间内的CPU使用率
 			OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.newPlatformMXBeanProxy(
 					mBeanServerConnection, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
-			double ratio = 0.0;
+			double ratio = 0.0D;
 			long start = System.currentTimeMillis();
 			long startC = (long) mBeanServerConnection.getAttribute(operatingSystemMXBean.getObjectName(),
 					"ProcessCpuTime");
