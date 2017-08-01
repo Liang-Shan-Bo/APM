@@ -203,4 +203,14 @@ public class AlarmPolicyDao {
 		});
 	}
 	
+	/**
+	 * 根据策略名查询ID
+	 * 
+	 * @return long
+	 */
+	public long getIdByName(String name) {
+		String sql = "select id from apm_alarm_policy where alarm_policy_name = ?";
+		return jdbcTemplate.queryForObject(sql, new Object[] { name }, Long.class);
+	}
+	
 }

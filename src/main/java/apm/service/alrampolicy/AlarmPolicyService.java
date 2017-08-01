@@ -124,5 +124,14 @@ public class AlarmPolicyService {
 			return false;
 		}
 	}
+	
+	/**
+	 * 根据策略名查询ID
+	 * 
+	 * @return long
+	 */
+	public long getIdByName(String name) {
+		return alarmPolicyDao.getIdByName(name);
+	}
 
 }

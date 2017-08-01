@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import apm.entity.service.ServiceEntity;
+import apm.service.alrampolicy.AlarmPolicyService;
+import apm.service.norm.NormService;
 import apm.service.service.ServiceService;
 import apm.util.PropertiesUtil;
 import apm.util.SystemUtil;
@@ -38,6 +40,12 @@ public class InitController {
 
 	@Resource
 	private ServiceService serviceService;
+	
+	@Resource
+	private AlarmPolicyService alarmPolicyService;
+	
+	@Resource
+	private NormService normService;
 
 	@Resource
 	private JdbcTemplate jdbcTemplate;
@@ -217,8 +225,8 @@ public class InitController {
 		serviceEntity.setServiceAddress("127.0.0.1");
 		serviceEntity.setServicePort("8877");
 		serviceEntity.setMonitorPort("8999");
-		serviceEntity.setAlarmPolicyId(1L);
-		serviceEntity.setNormId(1L);
+		serviceEntity.setAlarmPolicyId(alarmPolicyService.getIdByName("默认策略"));
+		serviceEntity.setNormId(normService.getIdByName("默认指标"));
 		serviceEntity.setDeleteFlag(0);
 		serviceEntity = SystemUtil.setServieInfo(serviceEntity);
 		serviceService.createService(serviceEntity);

@@ -124,5 +124,14 @@ public class NormService {
 	public Integer getNormByNormType(int type) {
 		return normDao.getNormByNormType(type);
 	}
+	
+	/**
+	 * 根据指标名查询ID
+	 * 
+	 * @return long
+	 */
+	public long getIdByName(String name) {
+		return normDao.getIdByName(name);
+	}
 
 }

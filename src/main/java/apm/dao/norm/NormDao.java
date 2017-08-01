@@ -176,4 +176,14 @@ public class NormDao {
 						"and service_type = 2";
 		return jdbcTemplate.queryForObject(sql, new Object[]{type}, Integer.class);
 	}
+	
+	/**
+	 * 根据指标名查询ID
+	 * 
+	 * @return long
+	 */
+	public long getIdByName(String name) {
+		String sql = "select id from apm_norm where norm_name = ?";
+		return jdbcTemplate.queryForObject(sql, new Object[] { name }, Long.class);
+	}
 }
