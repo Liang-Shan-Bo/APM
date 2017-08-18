@@ -115,7 +115,7 @@
 	            autoclose: true,//选中之后自动隐藏日期选择框
 	            todayHighlight: true,
 	            todayBtn: true,//今日按钮
-	            clearBtn: true,//今日按钮
+	            clearBtn: true,//清除按钮
 	            format: "yyyy-mm-dd"//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
 	        });
 	    });
@@ -159,18 +159,22 @@
 						        align: 'left'
 						    },
 						    toolbox: {
-						        // y: 'bottom',
 						        feature: {
-						            magicType: {
-						                type: ['stack', 'tiled']
-						            },
 						            dataView: {},
 						            saveAsImage: {
 						                pixelRatio: 2
 						            }
 						        }
 						    },
-						    tooltip: {},
+						    tooltip: {
+						    	formatter : function(params) {
+				                    if (params.seriesIndex ==1) {
+			                        	return "内存<br/>" + params.name + " : " + params.data + "M";
+				                    }else{
+				                    	return "CPU<br/>" + params.name + " : " + params.data + "%"; 
+				                    }
+			                    }
+							},
 						    xAxis: {
 						        data: xAxisData,
 						        silent: false,
